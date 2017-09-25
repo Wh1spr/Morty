@@ -31,6 +31,7 @@ public class Permission {
 	}
 	
 	public static boolean hasPerm(int perm, User user, boolean specific) {
+//		return true;
 		String sql = "SELECT Perms FROM Users WHERE UserID = " + user.getId();
 		
 		if (!exists(user)) return false;

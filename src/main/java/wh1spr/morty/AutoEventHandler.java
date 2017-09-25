@@ -95,25 +95,9 @@ public class AutoEventHandler extends ListenerAdapter {
 		}
 	}
 	
-	public void setLink(boolean bool) {
-		AutoEventHandler.link = bool;
-	}
-	public void setReverse(boolean bool) {
-		AutoEventHandler.reverse = bool;
-	}
-	
-	public static boolean link = true;
-	public static boolean reverse = false;
-	
 	@Override
 	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-		if (event.getChannel().getId().equals("353934296559648791") && link && !event.getAuthor().getId().equals(C.SELF)) {
-			String newMessage = "**" + event.getAuthor().getName() + "** - " + event.getMessage().getContent(); //INFORMATICA#SPAM -> MAELSTROM#YGGDRASIL
-			event.getJDA().getTextChannelById("356539822799847425").sendMessage(newMessage).queue();
-		} else if (event.getChannel().getId().equals("356539822799847425") && reverse && link && !event.getAuthor().getId().equals(C.SELF)) {
-			String newMessage = "**" + event.getAuthor().getName() + "** - " + event.getMessage().getContent(); //INFORMATICA#SPAM <- MAELSTROM#YGGDRASIL
-			event.getJDA().getTextChannelById("353934296559648791").sendMessage(newMessage).queue();
-		}
+		// Will be for introduction channel...
 	}
 	
 }

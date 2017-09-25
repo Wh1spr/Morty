@@ -50,8 +50,14 @@ public class VoteCommand extends Command {
 			String newMessage = "**VOTE** - *" + arguments[0].split(" ", 2)[1].trim() + "*\n";
 			
 			for (int i = 1; i < arguments.length; i++) {
-				emoticons.add(EmojiManager.getByUnicode(arguments[i].substring(0, arguments[i].indexOf("]")).replaceAll(":", "").trim()));
-				newMessage += arguments[i].substring(0, arguments[i].indexOf("]")).trim() + " - " + arguments[i].substring(arguments[i].indexOf("]") + 1).trim() + "\n";
+				try {
+					emoticons.add(EmojiManager.getByUnicode(arguments[i].substring(0, arguments[i].indexOf("]")).replaceAll(":", "").trim()));
+					newMessage += arguments[i].substring(0, arguments[i].indexOf("]")).trim() + " - " + arguments[i].substring(arguments[i].indexOf("]") + 1).trim() + "\n";
+			
+				} catch (Exception e) {
+					emoticons.add(null);
+					break;
+				}
 			}
 			if (emoticons.contains(null)) {
 				channel.sendMessage(":x: Please don't use custom emoticons.").queue();
@@ -135,14 +141,25 @@ public class VoteCommand extends Command {
 	    		winnerMessage = msg.getContent().substring(msg.getContent().indexOf(winner.getUnicode()));
 	    	}
 	    	try {
-	    		Message end = channel.sendMessage("**Vote \"*"+ title.trim() + "*\" has ended. **\n**WINNER:** *" + winnerMessage + "*").complete(true);
-	    		end.pin().queue();
+	    		channel.sendMessage("**Vote \"*"+ title.trim() + "*\" has ended. **\n**WINNER:** *" + winnerMessage + "*").queue();
 	    		msg.unpin().queue();
+	    		
 	    	} catch (Exception e) {
 	    		// Should never happen, see complete(true) for more info
 	    	}
 	        
-	        
+	    	String results = "**Vote \"*"+ title.trim() + "*\" has ended. **\n**WINNER:** *" + winnerMessage + "*";
+	    	String next;
+	    	for (Emoji result : emoticons) {
+	    		try {
+		    		next = msg.getContent().substring(msg.getContent().indexOf(result.getUnicode()), msg.getContent().indexOf("\n", msg.getContent().indexOf(result.getUnicode())));
+		    	} catch (IndexOutOfBoundsException e) {
+		    		next = msg.getContent().substring(msg.getContent().indexOf(result.getUnicode()));
+		    	}
+	    		results += "\n" + next + " **with " + count.get(result) + " votes.**";
+	    	}
+	    	msg.delete().queue();
+	        channel.getJDA().getTextChannelById(C.CHANNEL_BOT_VOTES).sendMessage(results).queue();
 	    }
 	}
 
