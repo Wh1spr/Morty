@@ -23,8 +23,8 @@ public class IntroductionCommand extends Command {
 	public void onCall(JDA jda, Guild guild, TextChannel channel, Member invoker, Message message, List<String> args) {
 		if (!Permission.hasPerm(Permission.MEMBER, invoker.getUser(), false)) return;
 		
-		if (args.size() == 1) {
-			User target = jda.getUserById(args.get(0));
+		if (message.getMentionedUsers().size() == 1) {
+			User target = message.getMentionedUsers().get(0);
 			String msgId = Database.getIntroductionId(target);
 			if (msgId.equals("0")) {
 				channel.sendMessage(":x: This user does not have an introduction.").queue();
