@@ -4,6 +4,7 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 import java.util.List;
 
+import net.dv8tion.jda.core.entities.PrivateChannel;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.events.guild.member.*;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
@@ -98,6 +99,20 @@ public class AutoEventHandler extends ListenerAdapter {
 	@Override
 	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
 		// Will be for introduction channel...
+		
+		if (event.getChannel().getId().equals(C.CHANNEL_INTRODUCTION)) {
+			if (!Database.hasIntroduction(event.getAuthor())) {
+				Database.putIntroduction(event.getAuthor(), event.getMessageId());
+			} else {
+				PrivateChannel channel = event.getAuthor().openPrivateChannel().complete();
+				channel.sendMessage(":x: You can not have more than one message in introduction.").queue();
+				
+				channel.sendMessage("Here is your original message: \n" + event.getJDA().getTextChannelById(C.CHANNEL_INTRODUCTION).getMessageById(Database.getIntroductionId(event.getAuthor())).complete().getContent()).queue();
+				channel.sendMessage("Here is your new message: \n" + event.getMessage().getContent()).queue();
+				event.getMessage().delete().queue();
+				
+			}
+		}
 	}
 	
 }
