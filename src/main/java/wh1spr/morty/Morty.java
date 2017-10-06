@@ -36,6 +36,7 @@ public class Morty {
 		// Channel Commands
 		commandRegistry.registerCommand(new CleanCommand("clean"));
 		commandRegistry.registerCommand(new VoteCommand("vote"));
+		commandRegistry.registerCommand(new IntroductionCommand("intro"));
 		
 		// Role Command
 		commandRegistry.registerCommand(new RoleCommand("role"));

@@ -23,6 +23,8 @@ public class IntroductionCommand extends Command {
 	public void onCall(JDA jda, Guild guild, TextChannel channel, Member invoker, Message message, List<String> args) {
 		if (!Permission.hasPerm(Permission.MEMBER, invoker.getUser(), false)) return;
 		
+		if (!guild.getId().equals(C.GUILD)) return;
+		
 		if (message.getMentionedUsers().size() == 1) {
 			User target = message.getMentionedUsers().get(0);
 			String msgId = Database.getIntroductionId(target);

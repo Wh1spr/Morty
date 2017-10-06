@@ -14,6 +14,7 @@ public class AutoEventHandler extends ListenerAdapter {
 
 	@Override
 	public void onGuildMemberJoin(GuildMemberJoinEvent event) {
+		if (!event.getGuild().getId().equals(C.GUILD)) return;
 		if (!event.getUser().isBot()) {
 			event.getGuild().getController().addRolesToMember(event.getMember(), event.getGuild().getRoleById(C.ROLE_GUEST)).queue();
 			event.getGuild().getTextChannelById(C.CHANNEL_WELCOME).sendMessage("**Please welcome "+ event.getUser().getAsMention() +" to the server!**").queue();
@@ -25,12 +26,14 @@ public class AutoEventHandler extends ListenerAdapter {
 	@Override
 	public void onGuildMemberLeave(GuildMemberLeaveEvent event) {
 		//remove from database
+		if (!event.getGuild().getId().equals(C.GUILD)) return;
 		Database.remove(event.getUser());
 		event.getGuild().getTextChannelById(C.CHANNEL_WELCOME).sendMessage("**Goodbye, " + event.getUser().getAsMention() + "**").queue();
 	}
 	
 	@Override
 	public void onGuildMemberRoleAdd(GuildMemberRoleAddEvent event) {
+		if (!event.getGuild().getId().equals(C.GUILD)) return;
 		List<Role> roles = event.getRoles();
 		for (Role role : roles) {
 			switch (role.getId()) {
@@ -64,6 +67,7 @@ public class AutoEventHandler extends ListenerAdapter {
 	}
 	@Override
 	public void onGuildMemberRoleRemove(GuildMemberRoleRemoveEvent event) {
+		if (!event.getGuild().getId().equals(C.GUILD)) return;
 		List<Role> roles = event.getRoles();
 		for (Role role : roles) {
 			switch (role.getId()) {
@@ -99,6 +103,7 @@ public class AutoEventHandler extends ListenerAdapter {
 	@Override
 	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
 		// Will be for introduction channel...
+		if (!event.getGuild().getId().equals(C.GUILD)) return;
 		
 		if (event.getChannel().getId().equals(C.CHANNEL_INTRODUCTION)) {
 			if (!Database.hasIntroduction(event.getAuthor())) {
