@@ -9,7 +9,7 @@ import wh1spr.morty.commands.*;
 
 public class Morty {
 	
-	public static final String MORTY_TOKEN = "MzU0MjY4NDIyODI3Mjc4MzM2.DI7xsg.alESMmRfk8k3sGDuRFW5QiP1Ruc";
+	public static final String MORTY_TOKEN = "[REDACTED]";
 	public static final String PREFIX = ".";
 	
 	public static final CommandRegistry commandRegistry = new CommandRegistry();

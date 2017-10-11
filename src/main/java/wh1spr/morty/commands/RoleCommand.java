@@ -23,6 +23,7 @@ public class RoleCommand extends Command {
 
 	@Override
 	public void onCall(JDA jda, Guild guild, TextChannel channel, Member invoker, Message message, List<String> args) {
+		if (!guild.getId().equals(C.GUILD)) return;
 		// Anyone can use the base command.
 		
 		List<Role> roles = invoker.getRoles();
