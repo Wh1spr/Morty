@@ -5,6 +5,8 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
+import com.vdurmont.emoji.EmojiManager;
+
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.MessageBuilder;
@@ -31,7 +33,10 @@ public class SendImageCommand extends Command {
 
 	@Override
 	public void onCall(JDA jda, Guild guild, TextChannel channel, Member invoker, Message message, List<String> args) {
-		if (!Permission.hasPerm(Permission.MEMBER, invoker.getUser(), false)) return;
+		if (!Permission.hasPerm(Permission.MEMBER, invoker.getUser(), false)) {
+			message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();
+			return;
+		}
 		
 		File image = new File(imageUrl);
 		

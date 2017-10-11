@@ -16,25 +16,11 @@ public class Permission {
 	public static final int ADMIN = 7;
 	public static final int OWNER = 9;
 	
-	public static boolean exists(User user) {
-		String sql = "SELECT COUNT(*) AS total FROM Users WHERE UserID = " + user.getId();
-		try (Statement stmt  = Database.conn.createStatement();
-		     ResultSet rs    = stmt.executeQuery(sql)){
-			rs.next();
-			boolean result = rs.getInt("total") != 0;
-			stmt.close();
-			return result;
-			
-		} catch (Exception e) {
-			return false;
-		}
-	}
-	
 	public static boolean hasPerm(int perm, User user, boolean specific) {
 //		return true;
 		String sql = "SELECT Perms FROM Users WHERE UserID = " + user.getId();
 		
-		if (!exists(user)) return false;
+		if (!Database.exists(user)) return false;
 		
 		try (Statement stmt  = Database.conn.createStatement();
 		     ResultSet rs    = stmt.executeQuery(sql)){
@@ -59,7 +45,7 @@ public class Permission {
 	public static void givePerm(int perm, User user) {
 		String sql;
 		if (!hasPerm(perm, user, true)) {
-			if (!exists(user)) {
+			if (!Database.exists(user)) {
 				sql = "INSERT INTO Users(UserID, Perms) VALUES('" + user.getId() + "','" + perm + "')"; 
 			} else {
 				sql = "UPDATE Users SET Perms = " + getPerms(user) + perm + " WHERE UserID = " + user.getId();
@@ -76,7 +62,7 @@ public class Permission {
 	}
 	
 	public static String getPerms(User user) {
-		if (exists(user)) {
+		if (Database.exists(user)) {
 			String sql = "SELECT Perms FROM Users WHERE UserID = " + user.getId();
 			
 			try (Statement stmt  = Database.conn.createStatement();

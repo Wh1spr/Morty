@@ -20,6 +20,7 @@ public class Morty {
 		registerCommands();
 		Database.start();
 		jda = run();
+//		Database.test();
 	}
 	
 	public static void registerCommands() {
@@ -83,5 +84,19 @@ public class Morty {
 	
 	public static void save() {
 		//save items
+		// not necessary for now since nothing needs to be saved.
+	}
+	
+	// Log outs
+	public static void logInfo(String msg) {
+		System.out.println("[MORTY] INFO: " + msg);
+	}
+	
+	public static void logFatal(String msg) {
+		System.out.println("[MORTY] FATAL: " + msg);
+	}
+	
+	public static void logError(String msg) {
+		System.out.println("[MORTY] ERROR: " + msg);
 	}
 }

@@ -6,7 +6,9 @@ import java.util.List;
 
 import net.dv8tion.jda.core.entities.PrivateChannel;
 import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.guild.member.*;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageDeleteEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 
 //Handles all automatic events, such as updating the database when someone joins
@@ -112,11 +114,28 @@ public class AutoEventHandler extends ListenerAdapter {
 				PrivateChannel channel = event.getAuthor().openPrivateChannel().complete();
 				channel.sendMessage(":x: You can not have more than one message in introduction.").queue();
 				
-				channel.sendMessage("Here is your original message: \n" + event.getJDA().getTextChannelById(C.CHANNEL_INTRODUCTION).getMessageById(Database.getIntroductionId(event.getAuthor())).complete().getContent()).queue();
-				channel.sendMessage("Here is your new message: \n" + event.getMessage().getContent()).queue();
-				event.getMessage().delete().queue();
+				String origMsgId = Database.getIntroductionId(event.getAuthor());
+				
+				channel.sendMessage("Here is your original message: \n```" + event.getJDA().getTextChannelById(C.CHANNEL_INTRODUCTION).getMessageById(origMsgId).complete().getContent() + "```").queue();
+				channel.sendMessage("Here is your new message: \n```" + event.getMessage().getContent() + "```").queue();
+				channel.sendMessage("Your original message has been deleted.").queue();
+				
+				event.getChannel().deleteMessageById(origMsgId).queue();
+				Database.putIntroduction(event.getAuthor(), event.getMessageId());
 				
 			}
+		}
+	}
+	
+	@Override
+	public void onGuildMessageDelete(GuildMessageDeleteEvent event) {
+		if (!event.getGuild().getId().equals(C.GUILD)) return;
+		
+		if (event.getChannel().getId().equals(C.CHANNEL_INTRODUCTION)) {
+			User author = event.getJDA().getUserById(Database.getUserIdByIntroMsgId(event.getMessageId()));
+			if (author == null) return;
+			Database.removeIntroduction(author);
+			author.openPrivateChannel().complete().sendMessage(":x: Your introduction has been removed.").queue();
 		}
 	}
 	

@@ -11,6 +11,7 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import wh1spr.morty.AutoEventHandler;
+import wh1spr.morty.Database;
 import wh1spr.morty.Permission;
 import wh1spr.morty.command.Command;
 
@@ -29,7 +30,6 @@ public class EvalCommand extends Command {
         se.put("guild", guild);
         se.put("channel", channel);
         se.put("imagetimeout", new SendImageCommand(null, null));
-        se.put("auto", new AutoEventHandler());
         
         try
         {
