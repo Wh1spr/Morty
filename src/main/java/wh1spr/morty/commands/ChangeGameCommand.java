@@ -26,7 +26,7 @@ public class ChangeGameCommand extends Command {
 		}
 		
 		if (args.size() > 0) {
-			jda.getPresence().setGame(Game.of(message.getStrippedContent().split(" ",3)[2]));
+			jda.getPresence().setGame(Game.of(message.getStrippedContent().split(" ",2)[1]));
 		} else {
 			jda.getPresence().setGame(null);
 		}
