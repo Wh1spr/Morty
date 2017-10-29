@@ -31,7 +31,7 @@ public class RoleCommand extends Command {
 		}
 		// Anyone can use the base command.
 		
-		List<Role> roles = invoker.getRoles();
+		List<Role> roles = new ArrayList<>(invoker.getRoles());
 		GuildController cont = guild.getController();
 		
 		List<Role> toAdd = new ArrayList<>();
