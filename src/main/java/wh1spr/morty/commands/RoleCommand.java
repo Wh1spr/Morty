@@ -135,8 +135,8 @@ public class RoleCommand extends Command {
 						toRemove.add(guild.getRoleById(C.ROLE_MINOR_BAI));
 						toRemove.add(guild.getRoleById(C.ROLE_FIRST));
 						
-						String highestRoleId = roles.get(0).getId();
-						if (highestRoleId != C.ROLE_ADMIN || highestRoleId != C.ROLE_WINA) {
+						roles.removeAll(toRemove);
+						if (roles.size() == 0) {
 							toAdd.add(guild.getRoleById(C.ROLE_GUEST));
 						}
 						cont.modifyMemberRoles(invoker, toAdd, toRemove).queue();
@@ -151,8 +151,8 @@ public class RoleCommand extends Command {
 						toRemove.add(guild.getRoleById(C.ROLE_MINOR_BAI));
 						toRemove.add(guild.getRoleById(C.ROLE_SECOND));
 						
-						String highestRoleId = roles.get(0).getId();
-						if (highestRoleId != C.ROLE_ADMIN || highestRoleId != C.ROLE_WINA) {
+						roles.removeAll(toRemove);
+						if (roles.size() == 0) {
 							toAdd.add(guild.getRoleById(C.ROLE_GUEST));
 						}
 						cont.modifyMemberRoles(invoker, toAdd, toRemove).queue();
@@ -167,8 +167,8 @@ public class RoleCommand extends Command {
 						toRemove.add(guild.getRoleById(C.ROLE_MINOR_BAI));
 						toRemove.add(guild.getRoleById(C.ROLE_THIRD));
 						
-						String highestRoleId = roles.get(0).getId();
-						if (highestRoleId != C.ROLE_ADMIN || highestRoleId != C.ROLE_WINA) {
+						roles.removeAll(toRemove);
+						if (roles.size() == 0) {
 							toAdd.add(guild.getRoleById(C.ROLE_GUEST));
 						}
 						cont.modifyMemberRoles(invoker, toAdd, toRemove).queue();
@@ -181,8 +181,8 @@ public class RoleCommand extends Command {
 						message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
 						toRemove.add(guild.getRoleById(C.ROLE_GRAD));
 						
-						String highestRoleId = roles.get(0).getId();
-						if (highestRoleId != C.ROLE_ADMIN || highestRoleId != C.ROLE_WINA) {
+						roles.removeAll(toRemove);
+						if (roles.size() == 0) {
 							toAdd.add(guild.getRoleById(C.ROLE_GUEST));
 						}
 						cont.modifyMemberRoles(invoker, toAdd, toRemove).queue();
@@ -215,28 +215,34 @@ public class RoleCommand extends Command {
 				case "first":
 					if (roles.contains(guild.getRoleById(C.ROLE_FIRST))) {
 						channel.sendMessage(":x: You already have this role, " + invoker.getAsMention() + ".").queue();
+					} else if (!roles.contains(guild.getRoleById(C.ROLE_SECOND)) && !roles.contains(guild.getRoleById(C.ROLE_THIRD))) {
+						channel.sendMessage(":x: Please use `.role add first` instead.").queue();
 					} else {
 						message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
 						toAdd.add(guild.getRoleById(C.ROLE_FIRST));
-						cont.modifyMemberRoles(invoker, toAdd, toRemove);
+						cont.modifyMemberRoles(invoker, toAdd, toRemove).queue();
 					}
 					break;
 				case "second":
 					if (roles.contains(guild.getRoleById(C.ROLE_SECOND))) {
 						channel.sendMessage(":x: You already have this role, " + invoker.getAsMention() + ".").queue();
+					} else if (!roles.contains(guild.getRoleById(C.ROLE_FIRST)) && !roles.contains(guild.getRoleById(C.ROLE_THIRD))) {
+						channel.sendMessage(":x: Please use `.role add second` instead.").queue();
 					} else {
 						message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
 						toAdd.add(guild.getRoleById(C.ROLE_SECOND));
-						cont.modifyMemberRoles(invoker, toAdd, toRemove);
+						cont.modifyMemberRoles(invoker, toAdd, toRemove).queue();
 					}
 					break;
 				case "third":
 					if (!roles.contains(guild.getRoleById(C.ROLE_THIRD))) {
 						channel.sendMessage(":x: You already have this role, " + invoker.getAsMention() + ".").queue();
+					} else if (!roles.contains(guild.getRoleById(C.ROLE_SECOND)) && !roles.contains(guild.getRoleById(C.ROLE_FIRST))) {
+						channel.sendMessage(":x: Please use `.role add third` instead.").queue();
 					} else {
 						message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
 						toAdd.add(guild.getRoleById(C.ROLE_THIRD));
-						cont.modifyMemberRoles(invoker, toAdd, toRemove);
+						cont.modifyMemberRoles(invoker, toAdd, toRemove).queue();
 					}
 					break;
 				default:
@@ -253,7 +259,7 @@ public class RoleCommand extends Command {
 					} else {
 						message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
 						toAdd.add(guild.getRoleById(C.ROLE_FIRST));
-						cont.modifyMemberRoles(invoker, toAdd, toRemove);
+						cont.modifyMemberRoles(invoker, toAdd, toRemove).queue();
 					}
 					break;
 				case "second":
@@ -264,7 +270,7 @@ public class RoleCommand extends Command {
 					} else {
 						message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
 						toAdd.add(guild.getRoleById(C.ROLE_SECOND));
-						cont.modifyMemberRoles(invoker, toAdd, toRemove);
+						cont.modifyMemberRoles(invoker, toAdd, toRemove).queue();
 					}
 					break;
 				case "third":
@@ -275,7 +281,7 @@ public class RoleCommand extends Command {
 					} else {
 						message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
 						toAdd.add(guild.getRoleById(C.ROLE_THIRD));
-						cont.modifyMemberRoles(invoker, toAdd, toRemove);
+						cont.modifyMemberRoles(invoker, toAdd, toRemove).queue();
 					}
 					break;
 				default:
