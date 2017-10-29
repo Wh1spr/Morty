@@ -136,7 +136,7 @@ public class RoleCommand extends Command {
 						toRemove.add(guild.getRoleById(C.ROLE_FIRST));
 						
 						String highestRoleId = roles.get(0).getId();
-						if (highestRoleId != C.ROLE_ADMIN || highestRoleId != C.ROLE_MOD) {
+						if (highestRoleId != C.ROLE_ADMIN || highestRoleId != C.ROLE_WINA) {
 							toAdd.add(guild.getRoleById(C.ROLE_GUEST));
 						}
 						cont.modifyMemberRoles(invoker, toAdd, toRemove).queue();
@@ -152,7 +152,7 @@ public class RoleCommand extends Command {
 						toRemove.add(guild.getRoleById(C.ROLE_SECOND));
 						
 						String highestRoleId = roles.get(0).getId();
-						if (highestRoleId != C.ROLE_ADMIN || highestRoleId != C.ROLE_MOD) {
+						if (highestRoleId != C.ROLE_ADMIN || highestRoleId != C.ROLE_WINA) {
 							toAdd.add(guild.getRoleById(C.ROLE_GUEST));
 						}
 						cont.modifyMemberRoles(invoker, toAdd, toRemove).queue();
@@ -168,7 +168,7 @@ public class RoleCommand extends Command {
 						toRemove.add(guild.getRoleById(C.ROLE_THIRD));
 						
 						String highestRoleId = roles.get(0).getId();
-						if (highestRoleId != C.ROLE_ADMIN || highestRoleId != C.ROLE_MOD) {
+						if (highestRoleId != C.ROLE_ADMIN || highestRoleId != C.ROLE_WINA) {
 							toAdd.add(guild.getRoleById(C.ROLE_GUEST));
 						}
 						cont.modifyMemberRoles(invoker, toAdd, toRemove).queue();
@@ -182,7 +182,7 @@ public class RoleCommand extends Command {
 						toRemove.add(guild.getRoleById(C.ROLE_GRAD));
 						
 						String highestRoleId = roles.get(0).getId();
-						if (highestRoleId != C.ROLE_ADMIN || highestRoleId != C.ROLE_MOD) {
+						if (highestRoleId != C.ROLE_ADMIN || highestRoleId != C.ROLE_WINA) {
 							toAdd.add(guild.getRoleById(C.ROLE_GUEST));
 						}
 						cont.modifyMemberRoles(invoker, toAdd, toRemove).queue();
