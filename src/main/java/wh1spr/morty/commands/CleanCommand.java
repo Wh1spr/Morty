@@ -21,8 +21,6 @@ public class CleanCommand extends Command {
 
 	public CleanCommand(String name, String... aliases) {
 		super(name, aliases);
-		this.commandInfo = new CommandInfo(this.name, "Cleans a channel's messages by user, or by number of messages, up to 100 messages.", 
-				"PREFIXclean <int> \nPREFIXclean @user1 @user2... \nPREFIXclean <int> @user1 @user2...", this.aliases);
 	}
 
 	// This code has been copied from another bot of mine that I made a while back, that's why it's so messy

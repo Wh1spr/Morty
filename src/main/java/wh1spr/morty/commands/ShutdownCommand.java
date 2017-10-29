@@ -15,7 +15,6 @@ public class ShutdownCommand extends Command {
 
 	public ShutdownCommand(String name, String... aliases) {
 		super(name, aliases);
-		this.commandInfo = new CommandInfo(this.name, "Shuts down the bot.", "PREFIXshutdown", this.aliases);
 	}
 
 	@Override

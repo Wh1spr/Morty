@@ -17,7 +17,6 @@ public class CommandDisableCommand extends Command {
 
 	public CommandDisableCommand(String name, String... aliases) {
 		super(name, aliases);
-		this.commandInfo = new CommandInfo(this.name, "Disables a command and it's aliases.", "PREFIXdcmd <cmd1> <cmd2>...", this.aliases);
 	}
 
 	//admins can dcmd in case of abuse, overuse or unnecessary use

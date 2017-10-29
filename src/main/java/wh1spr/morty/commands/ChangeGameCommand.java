@@ -17,7 +17,6 @@ public class ChangeGameCommand extends Command {
 
 	public ChangeGameCommand(String name, String... aliases) {
 		super(name, aliases);
-		this.commandInfo = new CommandInfo(this.name, "Changes Morty's status message.", "PREFIXchangegame [message]", this.aliases);
 	}
 
 	@Override

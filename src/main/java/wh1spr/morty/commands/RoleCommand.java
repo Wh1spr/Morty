@@ -20,7 +20,6 @@ public class RoleCommand extends Command {
 
 	public RoleCommand(String name, String... aliases) {
 		super(name, aliases);
-		this.commandInfo = new CommandInfo(this.name, "Manages a user's roles.", "", this.aliases);
 	}
 
 	@Override

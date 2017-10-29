@@ -16,7 +16,6 @@ public class ChangeNameCommand extends Command {
 
 	public ChangeNameCommand(String name, String... aliases) {
 		super(name, aliases);
-		this.commandInfo = new CommandInfo(this.name, "Changes Morty's nickname.", "PREFIXchangename [name]", this.aliases);
 	}
 
 	@Override

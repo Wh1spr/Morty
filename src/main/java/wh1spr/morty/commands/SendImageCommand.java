@@ -18,7 +18,6 @@ public class SendImageCommand extends Command {
 
 	public SendImageCommand(String imageUrl, String name, String... aliases) {
 		super(name, aliases);
-		this.commandInfo = new CommandInfo(this.name, "Sends an image to the channel.", "Custom for each image.", this.aliases);
 		this.imageUrl = imageUrl;
 	}
 	
