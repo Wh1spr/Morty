@@ -5,6 +5,8 @@ import java.util.List;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
+import com.vdurmont.emoji.EmojiManager;
+
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
@@ -23,7 +25,10 @@ public class EvalCommand extends Command {
 	
 	@Override
 	public void onCall(JDA jda, Guild guild, TextChannel channel, Member invoker, Message message, List<String> args) {
-		if (!Permission.hasPerm(Permission.OWNER, invoker.getUser(), true)) return;
+		if (!Permission.hasPerm(Permission.OWNER, invoker.getUser(), true)) {
+			message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();
+			return;
+		}
 		
 		ScriptEngine se = new ScriptEngineManager().getEngineByName("nashorn");
         se.put("jda", jda);
@@ -34,12 +39,12 @@ public class EvalCommand extends Command {
         try
         {
             channel.sendMessage("Evaluated Successfully:\n```\n"+se.eval(message.getStrippedContent().split(" ",2)[1])+" ```").queue();
-            message.addReaction("✅").queue();
+            message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
         } 
         catch(Exception e)
         {
             channel.sendMessage("An exception was thrown:\n```\n"+e+" ```").queue();
-            message.addReaction("❌").queue();
+            message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();
         }
 	}
 

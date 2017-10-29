@@ -55,7 +55,7 @@ public class Morty {
 		commandRegistry.registerCommand(new SendImageCommand("images/waitAMin.jpg", "holdup"));
 		commandRegistry.registerCommand(new SendImageCommand("images/what.jpg", "wat"));
 		commandRegistry.registerCommand(new SendImageCommand("images/whyulying.png", "liar"));
-		commandRegistry.registerCommand(new SendBeautyCommand("images/beauty.jpg", "beauty"));
+//		commandRegistry.registerCommand(new SendBeautyCommand("images/beauty.jpg", "beauty")); REDUNDANT NOW
 		
 	}
 	

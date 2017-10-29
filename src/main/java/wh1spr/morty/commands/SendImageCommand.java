@@ -42,15 +42,15 @@ public class SendImageCommand extends Command {
 		
 		if (Permission.hasPerm(Permission.ADMIN, invoker.getUser(), false)) {
 			channel.sendFile(image, null).queue();
-			message.addReaction("✅").queue();
+			message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
 		} else if (canUse(channel)) {
 			channel.sendFile(image, null).queue();
-			message.addReaction("✅").queue();
+			message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
 			timer.put(channel.getId(), System.currentTimeMillis());
 		} else {
 			Double outputTime = Math.ceil((timeout - (System.currentTimeMillis() - timer.get(channel.getId()))) / 1000);
 			int out = outputTime.intValue() + 1;
-			
+			message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();
 			channel.sendMessage(":x: This command is on cooldown for " + out + " seconds.").queue();
 		}
 		

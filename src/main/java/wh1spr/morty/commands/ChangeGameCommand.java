@@ -2,6 +2,8 @@ package wh1spr.morty.commands;
 
 import java.util.List;
 
+import com.vdurmont.emoji.EmojiManager;
+
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Guild;
@@ -21,7 +23,7 @@ public class ChangeGameCommand extends Command {
 	@Override
 	public void onCall(JDA jda, Guild guild, TextChannel channel, Member invoker, Message message, List<String> args) {
 		if (!Permission.hasPerm(Permission.OWNER, invoker.getUser(), true)) {
-			channel.deleteMessageById(message.getId()).queue();
+			message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();
 			return;
 		}
 		
@@ -30,6 +32,8 @@ public class ChangeGameCommand extends Command {
 		} else {
 			jda.getPresence().setGame(null);
 		}
+		
+		message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
 		
 	}
 

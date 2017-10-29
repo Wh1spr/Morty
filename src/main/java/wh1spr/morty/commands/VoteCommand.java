@@ -39,7 +39,10 @@ public class VoteCommand extends Command {
 	// If wrongly formatted, it just doesnt care
 	@Override
 	public void onCall(JDA jda, Guild guild, TextChannel channel, Member invoker, Message message, List<String> args) {
-		if (!Permission.hasPerm(Permission.ADMIN, invoker.getUser(), true)) return;
+		if (!Permission.hasPerm(Permission.ADMIN, invoker.getUser(), true)) {
+			message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();
+			return;
+		}
 		
 		try {
 			

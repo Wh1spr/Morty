@@ -21,7 +21,10 @@ public class EmojiToUnicodeCommand extends Command {
 
 	@Override
 	public void onCall(JDA jda, Guild guild, TextChannel channel, Member invoker, Message message, List<String> args) {
-		if (!Permission.hasPerm(Permission.ADMIN, invoker.getUser(), false)) return;
+		if (!Permission.hasPerm(Permission.MEMBER, invoker.getUser(), false)) {
+			message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();
+			return;
+		}
 		
 		if (args.size() > 0) {
 			for (int i = 0; i < args.size(); i++) {
@@ -36,5 +39,7 @@ public class EmojiToUnicodeCommand extends Command {
 				
 			}
 		}
+		
+		message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
 	}
 }

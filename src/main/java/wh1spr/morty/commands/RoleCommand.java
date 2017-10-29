@@ -3,6 +3,8 @@ package wh1spr.morty.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.vdurmont.emoji.EmojiManager;
+
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
@@ -23,7 +25,10 @@ public class RoleCommand extends Command {
 
 	@Override
 	public void onCall(JDA jda, Guild guild, TextChannel channel, Member invoker, Message message, List<String> args) {
-		if (!guild.getId().equals(C.GUILD)) return;
+		if (!guild.getId().equals(C.GUILD)) {
+			message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();
+			return;
+		}
 		// Anyone can use the base command.
 		
 		List<Role> roles = invoker.getRoles();
