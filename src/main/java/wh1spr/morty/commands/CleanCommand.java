@@ -43,11 +43,11 @@ public class CleanCommand extends Command {
 		
 		List<Message> messages = new ArrayList<Message>();
 		Set<Message> toDelete = new HashSet<Message>();
-		int toDeleteSize = 0;
+		int deleted = 0;
+		int nr = 0;
 		
 		try {
 			//get number
-			int nr = 0;
 			try {
 				nr = Integer.valueOf(args.get(0));
 			} catch (Exception e) {
@@ -61,62 +61,40 @@ public class CleanCommand extends Command {
 				return;
 			}
 			
-			String lastId = channel.getHistory().retrievePast(1).complete(true).get(0).getId();
-			
 			for (int i = nr; i > 0; i -= 100) {
-				if (i % 50 > 0) {
-					messages.addAll(channel.getHistoryAround(lastId, 100).complete(true).retrievePast(50).complete(true));
-					lastId = messages.get(messages.size() - 1).getId();
+				if (i % 100 > 0 && (i / 100) > 1) {
+					messages.addAll(channel.getHistory().retrievePast(100).complete(true));
 				} else {
-					messages.addAll(channel.getHistoryAround(lastId, 100).complete(true).retrievePast(i).complete(true));
+					messages.addAll(channel.getHistory().retrievePast(i).complete(true));
 				}
-			}
 			
-			if (!message.getMentionedUsers().isEmpty()) {
-				for (User user : message.getMentionedUsers()) {
-					for (Message msg : messages) {
-						if (msg.getAuthor() == user) toDelete.add(msg);
+				if (!message.getMentionedUsers().isEmpty()) {
+					for (User user : message.getMentionedUsers()) {
+						for (Message msg : messages) {
+							if (msg.getAuthor() == user) toDelete.add(msg);
+						}
 					}
+				} else {
+					toDelete.addAll(messages);
 				}
-				toDelete.add(message);
-			} else {
-				toDelete.addAll(messages);
-				toDelete.add(message);
-			}
-			
-			//DELETE MESSAGES
-			toDeleteSize = toDelete.size();
-			
-			if (toDelete.size() <= 100) {
-				channel.deleteMessages(toDelete).queue();
-			} else {
-				Set<Message> nextDelete = new HashSet<Message>();
-				Iterator<Message> toDeleteIter = toDelete.iterator();
 				
-				while (toDeleteIter.hasNext()) {
-					nextDelete.add(toDeleteIter.next());
-					if (nextDelete.size() == 100 || !toDeleteIter.hasNext()) {
-						channel.deleteMessages(nextDelete).queue();
-						toDelete.removeAll(nextDelete);
-						nextDelete.clear();
-					}
-				}
+				//DELETE MESSAGES
+				
+				
+				channel.deleteMessages(toDelete).queue();
+				
 			}
-			
-			message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
 			
 		} catch (Exception e) {
 			//when a message is older than 2 weeks
 			//so now either deleting each message seperately or just stopping
 			if (toDelete.size() > 100) {
-				channel.sendMessage("Removed " + (toDeleteSize - toDelete.size()) + " messages. " + toDelete.size() + " messages still remain. It is not recommended to bulk delete these.").queue();
-				message.addReaction(EmojiManager.getForAlias("warning").getUnicode()).queue();
+				channel.sendMessage("Removed " + deleted + " messages. " + (nr - deleted) + " messages still remain. It is not recommended to bulk delete these.").queue();
 			} else {
 				Iterator<Message> toDeleteIter = toDelete.iterator();
 				while(toDeleteIter.hasNext()) {
 					channel.deleteMessageById(toDeleteIter.next().getId()).queue();
 				}
-				message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
 			}
 			
 		}
