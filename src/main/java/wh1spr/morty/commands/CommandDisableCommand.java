@@ -20,6 +20,7 @@ public class CommandDisableCommand extends Command {
 		this.commandInfo = new CommandInfo(this.name, "Disables a command and it's aliases.", "PREFIXdcmd <cmd1> <cmd2>...", this.aliases);
 	}
 
+	//admins can dcmd in case of abuse, overuse or unnecessary use
 	@Override
 	public void onCall(JDA jda, Guild guild, TextChannel channel, Member invoker, Message message, List<String> args) {
 		if (!Permission.hasPerm(Permission.ADMIN, invoker.getUser(), false)) {

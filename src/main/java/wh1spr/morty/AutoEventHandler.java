@@ -49,8 +49,8 @@ public class AutoEventHandler extends ListenerAdapter {
 			case C.ROLE_GRAD:
 				Permission.givePerm(Permission.GRADUATED, event.getUser());
 				break;
-			case C.ROLE_MOD:
-				Permission.givePerm(Permission.MODERATOR, event.getUser());
+			case C.ROLE_WINA:
+				Permission.givePerm(Permission.WINA, event.getUser());
 				break;
 			case C.ROLE_GUEST:
 				Permission.givePerm(Permission.GUEST, event.getUser());
@@ -83,8 +83,8 @@ public class AutoEventHandler extends ListenerAdapter {
 			case C.ROLE_GRAD:
 				Permission.removePerm(Permission.GRADUATED, event.getUser());
 				break;
-			case C.ROLE_MOD:
-				Permission.removePerm(Permission.MODERATOR, event.getUser());
+			case C.ROLE_WINA:
+				Permission.removePerm(Permission.WINA, event.getUser());
 				break;
 			case C.ROLE_GUEST:
 				Permission.removePerm(Permission.GUEST, event.getUser());

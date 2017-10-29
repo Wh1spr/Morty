@@ -12,8 +12,6 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
-import wh1spr.morty.AutoEventHandler;
-import wh1spr.morty.Database;
 import wh1spr.morty.Permission;
 import wh1spr.morty.command.Command;
 
@@ -23,6 +21,7 @@ public class EvalCommand extends Command {
 		super(name, aliases);
 	}
 	
+	// Owner only because of obvious reasons (it can pretty much do ANYTHING)
 	@Override
 	public void onCall(JDA jda, Guild guild, TextChannel channel, Member invoker, Message message, List<String> args) {
 		if (!Permission.hasPerm(Permission.OWNER, invoker.getUser(), true)) {

@@ -11,7 +11,7 @@ public class Permission {
 	public static final int MEMBER = 2;
 	public static final int GRADUATED = 3;
 	public static final int BOT = 4;
-	public static final int MODERATOR = 5;
+	public static final int WINA = 5;
 	public static final int GOLDEN_BOT = 6;
 	public static final int ADMIN = 7;
 	public static final int OWNER = 9;

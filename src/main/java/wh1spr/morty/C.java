@@ -20,8 +20,10 @@ public class C {
 	public static final String CHANNEL_PROJECTS = "353933042022088704";
 	public static final String CHANNEL_PROJECTS_HELP = "353932863063719947";
 	public static final String CHANNEL_CASUAL = "353933902655520782";
+	public static final String CHANNEL_CASUAL_2 = "374235338354327553";
 	public static final String CHANNEL_GAMING_1 = "353933988273979393";
 	public static final String CHANNEL_GAMING_2 = "353934007227908106";
+	public static final String CHANNEL_GAME_EVENTS = "374234199143612436";
 	public static final String CHANNEL_MUSIC = "354265746173460482";
 	public static final String CHANNEL_MEMES = "353934066103484426";
 	public static final String CHANNEL_SPAM = "353934296559648791";
@@ -30,7 +32,7 @@ public class C {
 	public static final String CHANNEL_ADMIN = "354327641303678987";
 	
 	// Text Channels for bots
-	public static final String CHANNEL_BOT_VOTES = "358237433286098955";
+	public static final String CHANNEL_BOT_VOTES = "374238792682569729";
 	
 	
 	// Voice Channels
@@ -42,6 +44,7 @@ public class C {
 	// Roles
 	public static final String ROLE_GUEST = "353929660352036874";
 	public static final String ROLE_BOTS = "353928919277371392";
+	public static final String ROLE_BOT_CREATOR = "374230683381661697";
 	public static final String ROLE_FIRST = "353928270137524224";
 	public static final String ROLE_SECOND = "353928343671799808";
 	public static final String ROLE_MINOR_VERBREDING = "353930402773204994";
@@ -49,7 +52,7 @@ public class C {
 	public static final String ROLE_THIRD = "353928369202790400";
 	public static final String ROLE_GRAD = "353928368753737728";
 	public static final String ROLE_GOLDEN_BOT = "353929372689891328";
-	public static final String ROLE_MOD = "353928914692866048";
+	public static final String ROLE_WINA = "374225494658514955";
 	public static final String ROLE_ADMIN = "353928517655986177";
 	
 	// Important ones
