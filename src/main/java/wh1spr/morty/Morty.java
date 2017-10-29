@@ -44,18 +44,17 @@ public class Morty {
 		
 		// Image Commands
 //		commandRegistry.registerCommand(new SendImageCommand("C:/Users/VDK/Desktop/morty.jpg", "morty"));
-		commandRegistry.registerCommand(new SendImageCommand("images/bitchHoldON.jpg", "holdon"));
-		commandRegistry.registerCommand(new SendImageCommand("images/blueeyeswhitepepe.jpg", "pepe-2"));
-		commandRegistry.registerCommand(new SendImageCommand("images/BLYATMAN.jpg", "blyatman"));
-		commandRegistry.registerCommand(new SendImageCommand("images/dumbass.jpg", "what"));
-		commandRegistry.registerCommand(new SendImageCommand("images/future.jpg", "future"));
-		commandRegistry.registerCommand(new SendImageCommand("images/gitgud.jpg", "gitgud"));
-		commandRegistry.registerCommand(new SendImageCommand("images/sendnudes.jpg", "sendnudes"));
-		commandRegistry.registerCommand(new SendImageCommand("images/time_to_stop.jpg", "stop"));
-		commandRegistry.registerCommand(new SendImageCommand("images/waitAMin.jpg", "holdup"));
-		commandRegistry.registerCommand(new SendImageCommand("images/what.jpg", "wat"));
-		commandRegistry.registerCommand(new SendImageCommand("images/whyulying.png", "liar"));
-//		commandRegistry.registerCommand(new SendBeautyCommand("images/beauty.jpg", "beauty")); REDUNDANT NOW
+//		commandRegistry.registerCommand(new SendImageCommand("images/bitchHoldON.jpg", "holdon"));
+//		commandRegistry.registerCommand(new SendImageCommand("images/blueeyeswhitepepe.jpg", "pepe-2"));
+//		commandRegistry.registerCommand(new SendImageCommand("images/BLYATMAN.jpg", "blyatman"));
+//		commandRegistry.registerCommand(new SendImageCommand("images/dumbass.jpg", "what"));
+//		commandRegistry.registerCommand(new SendImageCommand("images/future.jpg", "future"));
+//		commandRegistry.registerCommand(new SendImageCommand("images/gitgud.jpg", "gitgud"));
+//		commandRegistry.registerCommand(new SendImageCommand("images/sendnudes.jpg", "sendnudes"));
+//		commandRegistry.registerCommand(new SendImageCommand("images/time_to_stop.jpg", "stop"));
+//		commandRegistry.registerCommand(new SendImageCommand("images/waitAMin.jpg", "holdup"));
+//		commandRegistry.registerCommand(new SendImageCommand("images/what.jpg", "wat"));
+//		commandRegistry.registerCommand(new SendImageCommand("images/whyulying.png", "liar"));
 		
 	}
 	

@@ -17,7 +17,13 @@ public class Permission {
 	public static final int OWNER = 9;
 	
 	public static boolean hasPerm(int perm, User user, boolean specific) {
-//		return true;
+		
+//		//CODE FOR ALL SERVERS, NOT ONLY INFORMATICA
+//		if (!(perm < WINA)) {
+//			return true;
+//		}
+	
+		
 		String sql = "SELECT Perms FROM Users WHERE UserID = " + user.getId();
 		
 		if (!Database.exists(user)) return false;

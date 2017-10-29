@@ -1,19 +1,15 @@
 package wh1spr.morty.commands;
 
-import java.awt.Color;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
 import com.vdurmont.emoji.EmojiManager;
 
-import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 import net.dv8tion.jda.core.entities.TextChannel;
 import wh1spr.morty.Permission;
 import wh1spr.morty.command.Command;
@@ -28,7 +24,7 @@ public class SendImageCommand extends Command {
 	
 	private final String imageUrl;
 	
-	private static final HashMap<String, Long> timer = new HashMap(); //channel ID
+	private static final HashMap<String, Long> timer = new HashMap<String, Long>(); //channel ID
 	public static final int timeout = 5000; // timeout in milliseconds, public so i can dynamically change it with eval
 
 	@Override

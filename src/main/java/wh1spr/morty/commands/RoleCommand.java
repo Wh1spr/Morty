@@ -47,7 +47,7 @@ public class RoleCommand extends Command {
 					} else if (roles.contains(guild.getRoleById(C.ROLE_SECOND)) || roles.contains(guild.getRoleById(C.ROLE_THIRD)) || roles.contains(guild.getRoleById(C.ROLE_GRAD))) {
 						channel.sendMessage(":x: You already have a role higher than this one, "+invoker.getAsMention()+". If you need to change it, please remove it first").queue();
 					} else {
-						message.addReaction("✅").queue();
+						message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
 						toAdd.add(guild.getRoleById(C.ROLE_FIRST));
 						toRemove.add(guild.getRoleById(C.ROLE_GUEST));
 						cont.modifyMemberRoles(invoker, toAdd, toRemove).queue();
@@ -59,7 +59,7 @@ public class RoleCommand extends Command {
 					} else if (roles.contains(guild.getRoleById(C.ROLE_THIRD)) || roles.contains(guild.getRoleById(C.ROLE_GRAD))) {
 						channel.sendMessage(":x: You already have a role higher than this one, "+invoker.getAsMention()+". If you need to change it, please remove it first.").queue();
 					} else {
-						message.addReaction("✅").queue();
+						message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
 						toAdd.add(guild.getRoleById(C.ROLE_SECOND));
 						toRemove.add(guild.getRoleById(C.ROLE_GUEST));
 						toRemove.add(guild.getRoleById(C.ROLE_FIRST));
@@ -72,7 +72,7 @@ public class RoleCommand extends Command {
 					} else if (roles.contains(guild.getRoleById(C.ROLE_GRAD))) {
 						channel.sendMessage(":x: You already have a role higher than this one, "+invoker.getAsMention()+". If you need to change it, please remove it first.").queue();
 					} else {
-						message.addReaction("✅").queue();
+						message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
 						toAdd.add(guild.getRoleById(C.ROLE_THIRD));
 						toRemove.add(guild.getRoleById(C.ROLE_GUEST));
 						toRemove.add(guild.getRoleById(C.ROLE_FIRST));
@@ -84,7 +84,7 @@ public class RoleCommand extends Command {
 					if (roles.contains(guild.getRoleById(C.ROLE_GRAD))) {
 						channel.sendMessage(":x: You already have this role " + invoker.getAsMention() + ".").queue();
 					} else {
-						message.addReaction("✅").queue();
+						message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
 						toAdd.add(guild.getRoleById(C.ROLE_GRAD));
 						toRemove.add(guild.getRoleById(C.ROLE_GUEST));
 						toRemove.add(guild.getRoleById(C.ROLE_FIRST));
@@ -102,7 +102,7 @@ public class RoleCommand extends Command {
 					} else if (roles.contains(guild.getRoleById(C.ROLE_GUEST))) {
 						channel.sendMessage(":x: Please assign a phase first, " + invoker.getAsMention() + ".").queue();
 					} else {
-						message.addReaction("✅").queue();
+						message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
 						toAdd.add(guild.getRoleById(C.ROLE_MINOR_VERBREDING));
 						toRemove.add(guild.getRoleById(C.ROLE_MINOR_BAI));
 						cont.modifyMemberRoles(invoker, toAdd, toRemove).queue();
@@ -114,7 +114,7 @@ public class RoleCommand extends Command {
 					} else if (roles.contains(guild.getRoleById(C.ROLE_GUEST))) {
 						channel.sendMessage(":x: Please assign a phase first, " + invoker.getAsMention() + ".").queue();
 					} else {
-						message.addReaction("✅").queue();
+						message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
 						toAdd.add(guild.getRoleById(C.ROLE_MINOR_BAI));
 						toRemove.add(guild.getRoleById(C.ROLE_MINOR_VERBREDING));
 						cont.modifyMemberRoles(invoker, toAdd, toRemove).queue();
@@ -130,7 +130,7 @@ public class RoleCommand extends Command {
 					if (!roles.contains(guild.getRoleById(C.ROLE_FIRST))) {
 						channel.sendMessage(":x: You don't have this role, " + invoker.getAsMention() + ".").queue();
 					} else {
-						message.addReaction("✅").queue();
+						message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
 						toRemove.add(guild.getRoleById(C.ROLE_MINOR_VERBREDING));
 						toRemove.add(guild.getRoleById(C.ROLE_MINOR_BAI));
 						toRemove.add(guild.getRoleById(C.ROLE_FIRST));
@@ -146,7 +146,7 @@ public class RoleCommand extends Command {
 					if (!roles.contains(guild.getRoleById(C.ROLE_SECOND))) {
 						channel.sendMessage(":x: You don't have this role, " + invoker.getAsMention() + ".").queue();
 					} else {
-						message.addReaction("✅").queue();
+						message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
 						toRemove.add(guild.getRoleById(C.ROLE_MINOR_VERBREDING));
 						toRemove.add(guild.getRoleById(C.ROLE_MINOR_BAI));
 						toRemove.add(guild.getRoleById(C.ROLE_SECOND));
@@ -162,7 +162,7 @@ public class RoleCommand extends Command {
 					if (!roles.contains(guild.getRoleById(C.ROLE_THIRD))) {
 						channel.sendMessage(":x: You don't have this role, " + invoker.getAsMention() + ".").queue();
 					} else {
-						message.addReaction("✅").queue();
+						message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
 						toRemove.add(guild.getRoleById(C.ROLE_MINOR_VERBREDING));
 						toRemove.add(guild.getRoleById(C.ROLE_MINOR_BAI));
 						toRemove.add(guild.getRoleById(C.ROLE_THIRD));
@@ -178,7 +178,7 @@ public class RoleCommand extends Command {
 					if (!roles.contains(guild.getRoleById(C.ROLE_GRAD))) {
 						channel.sendMessage(":x: You don't have this role, " + invoker.getAsMention() + ".").queue();
 					} else {
-						message.addReaction("✅").queue();
+						message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
 						toRemove.add(guild.getRoleById(C.ROLE_GRAD));
 						
 						String highestRoleId = roles.get(0).getId();
@@ -192,7 +192,7 @@ public class RoleCommand extends Command {
 					if (!roles.contains(guild.getRoleById(C.ROLE_MINOR_VERBREDING))) {
 						channel.sendMessage(":x: You don't have this role, " + invoker.getAsMention() + ".").queue();
 					} else {
-						message.addReaction("✅").queue();
+						message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
 						toRemove.add(guild.getRoleById(C.ROLE_MINOR_VERBREDING));
 						cont.modifyMemberRoles(invoker, toAdd, toRemove).queue();
 					}
@@ -201,13 +201,85 @@ public class RoleCommand extends Command {
 					if (!roles.contains(guild.getRoleById(C.ROLE_MINOR_BAI))) {
 						channel.sendMessage(":x: You don't have this role, " + invoker.getAsMention() + ".").queue();
 					} else {
-						message.addReaction("✅").queue();
+						message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
 						toRemove.add(guild.getRoleById(C.ROLE_MINOR_BAI));
 						cont.modifyMemberRoles(invoker, toAdd, toRemove).queue();
 					}
 					break;
 				default:
 					channel.sendMessage(":x: I do not recognize that role, " + invoker.getAsMention() + ". Usage can be found in #info.").queue();
+					break;
+				}
+			} else if (args.get(0).toLowerCase().equals("addphase")) {
+				switch (args.get(1).toLowerCase()) {
+				case "first":
+					if (roles.contains(guild.getRoleById(C.ROLE_FIRST))) {
+						channel.sendMessage(":x: You already have this role, " + invoker.getAsMention() + ".").queue();
+					} else {
+						message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
+						toAdd.add(guild.getRoleById(C.ROLE_FIRST));
+						cont.modifyMemberRoles(invoker, toAdd, toRemove);
+					}
+					break;
+				case "second":
+					if (roles.contains(guild.getRoleById(C.ROLE_SECOND))) {
+						channel.sendMessage(":x: You already have this role, " + invoker.getAsMention() + ".").queue();
+					} else {
+						message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
+						toAdd.add(guild.getRoleById(C.ROLE_SECOND));
+						cont.modifyMemberRoles(invoker, toAdd, toRemove);
+					}
+					break;
+				case "third":
+					if (!roles.contains(guild.getRoleById(C.ROLE_THIRD))) {
+						channel.sendMessage(":x: You already have this role, " + invoker.getAsMention() + ".").queue();
+					} else {
+						message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
+						toAdd.add(guild.getRoleById(C.ROLE_THIRD));
+						cont.modifyMemberRoles(invoker, toAdd, toRemove);
+					}
+					break;
+				default:
+					channel.sendMessage(":x: This can only be used to add a phase.").queue();
+					break;
+				}
+			} else if (args.get(0).toLowerCase().equals("removephase")) {
+				switch (args.get(1).toLowerCase()) {
+				case "first":
+					if (!roles.contains(guild.getRoleById(C.ROLE_FIRST))) {
+						channel.sendMessage(":x: You don't have this role, " + invoker.getAsMention() + ".").queue();
+					} else if (!roles.contains(guild.getRoleById(C.ROLE_SECOND)) && !roles.contains(guild.getRoleById(C.ROLE_THIRD))) {
+						channel.sendMessage(":x: Please use `.role remove first` instead.").queue();
+					} else {
+						message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
+						toAdd.add(guild.getRoleById(C.ROLE_FIRST));
+						cont.modifyMemberRoles(invoker, toAdd, toRemove);
+					}
+					break;
+				case "second":
+					if (!roles.contains(guild.getRoleById(C.ROLE_SECOND))) {
+						channel.sendMessage(":x: You don't have this role, " + invoker.getAsMention() + ".").queue();
+					} else if (!roles.contains(guild.getRoleById(C.ROLE_FIRST)) && !roles.contains(guild.getRoleById(C.ROLE_THIRD))) {
+						channel.sendMessage(":x: Please use `.role remove second` instead.").queue();
+					} else {
+						message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
+						toAdd.add(guild.getRoleById(C.ROLE_SECOND));
+						cont.modifyMemberRoles(invoker, toAdd, toRemove);
+					}
+					break;
+				case "third":
+					if (!roles.contains(guild.getRoleById(C.ROLE_THIRD))) {
+						channel.sendMessage(":x: You don't have this role, " + invoker.getAsMention() + ".").queue();
+					} else if (!roles.contains(guild.getRoleById(C.ROLE_SECOND)) && !roles.contains(guild.getRoleById(C.ROLE_FIRST))) {
+						channel.sendMessage(":x: Please use `.role remove first` instead.").queue();
+					} else {
+						message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
+						toAdd.add(guild.getRoleById(C.ROLE_THIRD));
+						cont.modifyMemberRoles(invoker, toAdd, toRemove);
+					}
+					break;
+				default:
+					channel.sendMessage(":x: This can only be used to remove a phase, when you already have a phase.").queue();
 					break;
 				}
 			}
