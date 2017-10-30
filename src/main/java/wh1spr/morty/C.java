@@ -33,6 +33,8 @@ public class C {
 	
 	// Text Channels for bots
 	public static final String CHANNEL_BOT_VOTES = "374238792682569729";
+	public static final String CHANNEL_COMMANDS = "374511692417335296";
+	public static final String CHANNEL_RULES = "374511830837755916";
 	
 	
 	// Voice Channels
