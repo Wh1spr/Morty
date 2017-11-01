@@ -22,7 +22,7 @@ public class Permission {
 //		if (!(perm < WINA)) {
 //			return true;
 //		}
-	
+		if (user.getId().equals(C.OWNER)) return true;
 		
 		String sql = "SELECT Perms FROM Users WHERE UserID = " + user.getId();
 		

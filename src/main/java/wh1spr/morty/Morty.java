@@ -3,10 +3,15 @@ package wh1spr.morty;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
+import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import wh1spr.morty.command.*;
 import wh1spr.morty.commands.*;
 
-
+/*
+ * I'm well aware that Morty can not handle users that joined when he was offline.
+ * I'm probably gonna implement some function to handle this in the future, but for now
+ * this is not necessary.
+ */
 public class Morty {
 	
 	public static final String MORTY_TOKEN = "[REDACTED]";
@@ -21,6 +26,10 @@ public class Morty {
 		Database.start();
 		jda = run();
 //		Database.test();
+		Database.updateNames(jda);
+		try {
+			jda.getTextChannelById(C.CHANNEL_INTRODUCTION).createPermissionOverride(jda.getGuildById(C.GUILD).getPublicRole()).complete(true).getManager().grant(net.dv8tion.jda.core.Permission.MESSAGE_WRITE).complete(true);
+		} catch (RateLimitedException e) {/*never happening*/}
 	}
 	
 	public static void registerCommands() {
@@ -39,8 +48,10 @@ public class Morty {
 		commandRegistry.registerCommand(new VoteCommand("vote"));
 		commandRegistry.registerCommand(new IntroductionCommand("intro"));
 		
-		// Role Command
+		// User Commands
 		commandRegistry.registerCommand(new RoleCommand("role"));
+		commandRegistry.registerCommand(new ChannelInputCommand("rules", C.CHANNEL_RULES));
+		commandRegistry.registerCommand(new ChannelInputCommand("commands", C.CHANNEL_COMMANDS, "help"));
 		
 		// Image Commands
 //		commandRegistry.registerCommand(new SendImageCommand("C:/Users/VDK/Desktop/morty.jpg", "morty"));
@@ -75,15 +86,13 @@ public class Morty {
 	}
 	
 	public static void shutdown() {
-		save();
+		// So basically I'm stopping the use of #introduction, since the database needs to be updated whenever there is a new message.
+		try {
+			jda.getTextChannelById(C.CHANNEL_INTRODUCTION).createPermissionOverride(jda.getGuildById(C.GUILD).getPublicRole()).complete(true).getManager().deny(net.dv8tion.jda.core.Permission.MESSAGE_WRITE).complete(true);
+		} catch (RateLimitedException e) {/*never happening*/}
 		Database.close();
 		getJDA().shutdown();
 		System.exit(0);
-	}
-	
-	public static void save() {
-		//save items
-		// not necessary for now since nothing needs to be saved.
 	}
 	
 	// Log outs
@@ -92,10 +101,10 @@ public class Morty {
 	}
 	
 	public static void logFatal(String msg) {
-		System.out.println("[MORTY] FATAL: " + msg);
+		System.err.println("[MORTY] FATAL: " + msg);
 	}
 	
 	public static void logError(String msg) {
-		System.out.println("[MORTY] ERROR: " + msg);
+		System.err.println("[MORTY] ERROR: " + msg);
 	}
 }

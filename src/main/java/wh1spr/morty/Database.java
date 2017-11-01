@@ -1,11 +1,15 @@
 package wh1spr.morty;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 
 public class Database {
@@ -15,10 +19,14 @@ public class Database {
 	public static void start() {
 		String url = "jdbc:sqlite:Morty.db";
 		try {
+			if(!Files.exists(Paths.get("Morty.db"))) { 
+			    System.err.println("[MORTY] ERROR: Database is not present. Exiting...");
+			    System.exit(0);
+			}
 			conn = DriverManager.getConnection(url);
 			System.out.println("[MORTY] INFO: Connection to Database has been established");
 		} catch (SQLException e) {
-			System.out.println("[MORTY] ERROR: Could not establish connection to the Database. Exiting...");
+			System.err.println("[MORTY] ERROR: Could not establish connection to the Database. Exiting...");
 			e.printStackTrace();
 			System.exit(0);
 		}
@@ -75,8 +83,8 @@ public class Database {
 		}
 	}
 	
-	public static void putIntroduction(User user, String messageId) {
-		String sql = "UPDATE Users SET Intro = " + messageId + " WHERE UserID = " + user.getId();
+	public static void putIntroduction(User user, Message message) {
+		String sql = "UPDATE Users SET Intro = " + message.getId() + " WHERE UserID = " + user.getId();
 		try {
 			Statement stmt = Database.conn.createStatement();
 			stmt.executeUpdate(sql);
@@ -119,7 +127,8 @@ public class Database {
 	}
 	
 	public static String getUserIdByIntroMsgId(String introMsgId) {
-String sql = "SELECT UserID FROM Users WHERE Intro = " + introMsgId;
+		if (introMsgId.contains(" ")) return null;
+		String sql = "SELECT UserID FROM Users WHERE Intro = " + introMsgId;
 		
 		try (Statement stmt  = Database.conn.createStatement();
 		     ResultSet rs    = stmt.executeQuery(sql)){
@@ -131,6 +140,55 @@ String sql = "SELECT UserID FROM Users WHERE Intro = " + introMsgId;
 			
 		} catch (Exception e) {
 			return "0";
+		}
+	}
+	
+	public static String getNameByUser(User user) {
+		String sql = "SELECT Name FROM Users WHERE UserID = " + user.getId();
+		
+		try (Statement stmt  = Database.conn.createStatement();
+		     ResultSet rs    = stmt.executeQuery(sql)){
+			rs.next();
+			String name = rs.getString("Name");
+			stmt.close();
+			
+			return name;
+			
+		} catch (Exception e) {
+			return "NOTFOUND";
+		}
+	}
+	
+	public static void updateNameFromUser(User user) {
+		String sql = "UPDATE Users SET Name = '" + user.getName() + "' WHERE UserID = " + user.getId();
+		try {
+			Statement stmt = Database.conn.createStatement();
+			stmt.executeUpdate(sql);
+			stmt.close();
+		} catch (Exception e) {
+			System.out.println("[MORTY] ERROR: Could not update Name for user with ID " + user.getId());
+			e.printStackTrace();
+		}
+	}
+	
+	public static void updateNames(JDA jda) {
+		String sql = "SELECT UserID FROM Users";
+		
+		try (Statement stmt  = Database.conn.createStatement();
+			 Statement stmtUpd = Database.conn.createStatement();
+		     ResultSet rs    = stmt.executeQuery(sql)){
+			while (rs.next()) {
+				String id = rs.getString("UserID");
+				User user = jda.getUserById(id);
+				if (jda.getGuildById(C.GUILD).getMember(user) == null) {
+					remove(user);
+				} else {
+					stmtUpd.execute("UPDATE Users SET Name = '" + user.getName() + "' WHERE UserID = " + id);
+				}	
+			}
+			stmt.close();
+		} catch (Exception e) { //Shouldnt happen...
+			e.printStackTrace();
 		}
 	}
 	
@@ -153,7 +211,7 @@ String sql = "SELECT UserID FROM Users WHERE Intro = " + introMsgId;
 		Morty.logInfo("Has permission, specific: Bot - " + hasPermSpecificBot);
 		Morty.logInfo("Has permission, non-specific: Bot - " + hasPermNonSpecificBot);
 		Morty.logInfo("Introduction ID - " + introId);
-		Morty.logInfo("Setting IntroductionId to '0'..."); Database.putIntroduction(Owner, "0");
+		Morty.logInfo("Setting IntroductionId to '0'..."); Database.removeIntroduction(Owner);
 		Morty.logInfo("Introduction ID - " + Database.getIntroductionId(Owner));
 		Morty.logInfo("Setting IntroductionId to '" + introId + "'...");
 		Morty.logInfo("Has introduction, owner: " + Database.hasIntroduction(Owner));

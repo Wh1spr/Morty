@@ -10,6 +10,7 @@ import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.guild.member.*;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageDeleteEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.core.events.user.UserNameUpdateEvent;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 
 //Handles all automatic events, such as updating the database when someone joins
@@ -147,6 +148,11 @@ public class AutoEventHandler extends ListenerAdapter {
 			Database.removeIntroduction(author);
 			author.openPrivateChannel().complete().sendMessage(":x: Your introduction has been removed.").queue();
 		}
+	}
+	
+	@Override
+	public void onUserNameUpdate(UserNameUpdateEvent event) {
+		Database.updateNameFromUser(event.getUser());
 	}
 	
 }
