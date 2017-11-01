@@ -257,7 +257,7 @@ public class RoleCommand extends Command {
 						channel.sendMessage(":x: Please use `.role remove first` instead.").queue();
 					} else {
 						message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
-						toAdd.add(guild.getRoleById(C.ROLE_FIRST));
+						toRemove.add(guild.getRoleById(C.ROLE_FIRST));
 						cont.modifyMemberRoles(invoker, toAdd, toRemove).queue();
 					}
 					break;
@@ -268,7 +268,7 @@ public class RoleCommand extends Command {
 						channel.sendMessage(":x: Please use `.role remove second` instead.").queue();
 					} else {
 						message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
-						toAdd.add(guild.getRoleById(C.ROLE_SECOND));
+						toRemove.add(guild.getRoleById(C.ROLE_SECOND));
 						cont.modifyMemberRoles(invoker, toAdd, toRemove).queue();
 					}
 					break;
@@ -279,7 +279,7 @@ public class RoleCommand extends Command {
 						channel.sendMessage(":x: Please use `.role remove first` instead.").queue();
 					} else {
 						message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
-						toAdd.add(guild.getRoleById(C.ROLE_THIRD));
+						toRemove.add(guild.getRoleById(C.ROLE_THIRD));
 						cont.modifyMemberRoles(invoker, toAdd, toRemove).queue();
 					}
 					break;
