@@ -10,6 +10,7 @@ import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.guild.member.*;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageDeleteEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.core.exceptions.RateLimitedException;
 
 //Handles all automatic events, such as updating the database when someone joins
 public class AutoEventHandler extends ListenerAdapter {
@@ -105,25 +106,33 @@ public class AutoEventHandler extends ListenerAdapter {
 	
 	@Override
 	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-		// Will be for introduction channel...
 		if (!event.getGuild().getId().equals(C.GUILD)) return;
 		
 		if (event.getChannel().getId().equals(C.CHANNEL_INTRODUCTION)) {
 			if (!Database.hasIntroduction(event.getAuthor())) {
-				Database.putIntroduction(event.getAuthor(), event.getMessageId());
+				Database.putIntroduction(event.getAuthor(), event.getMessage());
 			} else {
-				PrivateChannel channel = event.getAuthor().openPrivateChannel().complete();
-				channel.sendMessage(":x: You can not have more than one message in introduction.").queue();
-				
-				String origMsgId = Database.getIntroductionId(event.getAuthor());
-				
-				channel.sendMessage("Here is your original message: \n```" + event.getJDA().getTextChannelById(C.CHANNEL_INTRODUCTION).getMessageById(origMsgId).complete().getContent() + "```").queue();
-				channel.sendMessage("Here is your new message: \n```" + event.getMessage().getContent() + "```").queue();
-				channel.sendMessage("Your original message has been deleted.").queue();
-				
-				event.getChannel().deleteMessageById(origMsgId).queue();
-				Database.putIntroduction(event.getAuthor(), event.getMessageId());
-				
+				PrivateChannel channel;
+				try {
+					if (event.getAuthor().isBot()) {
+						String origMsgId = Database.getIntroductionId(event.getAuthor());
+						event.getChannel().deleteMessageById(origMsgId).queue();
+						Database.putIntroduction(event.getAuthor(), event.getMessage());
+					} else {
+						channel = event.getAuthor().openPrivateChannel().complete(true);
+						
+						channel.sendMessage(":x: You can not have more than one message in introduction.").queue();
+						
+						String origMsgId = Database.getIntroductionId(event.getAuthor());
+						
+						channel.sendMessage("Here is your original message: \n```" + event.getJDA().getTextChannelById(C.CHANNEL_INTRODUCTION).getMessageById(origMsgId).complete().getContent() + "```").queue();
+						channel.sendMessage("Here is your new message: \n```" + event.getMessage().getContent() + "```").queue();
+						channel.sendMessage("Your original message has been deleted.").queue();
+						
+						event.getChannel().deleteMessageById(origMsgId).queue();
+						Database.putIntroduction(event.getAuthor(), event.getMessage());
+					}
+				} catch (RateLimitedException e) {/*can't happen*/}
 			}
 		}
 	}
