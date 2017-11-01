@@ -37,7 +37,7 @@ public class IntroductionCommand extends Command {
 				channel.sendMessage(":x: This user does not have an introduction.").queue();
 			} else {
 				Message targetMsg = jda.getTextChannelById(C.CHANNEL_INTRODUCTION).getMessageById(msgId).complete();
-				channel.sendMessage(":white_check_mark: Introduction for " + target.getName() + ": \n" + targetMsg.getContent()).queue();
+				channel.sendMessage(":white_check_mark: **Introduction for " + target.getName() + ":** \n\n" + targetMsg.getRawContent()).queue();
 			}
 		}
 	}

@@ -37,7 +37,7 @@ public class EvalCommand extends Command {
         
         try
         {
-            channel.sendMessage("Evaluated Successfully:\n```\n"+se.eval(message.getStrippedContent().split(" ",2)[1])+" ```").queue();
+            channel.sendMessage("Evaluated Successfully:\n```\n"+se.eval(message.getRawContent().split(" ",2)[1])+" ```").queue();
             message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
         } 
         catch(Exception e)
