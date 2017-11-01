@@ -30,7 +30,7 @@ public class AddImageCommand extends Command {
 		if (args.size() != 2) {
 			message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();
 		} else {
-			if (!args.get(1).contains("imgur.com")) {
+			if (!args.get(1).contains("https://i.imgur.com/")) {
 				message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();
 				channel.sendMessage("The image has to be uploaded on Imgur.").queue();
 				return;
