@@ -1,15 +1,18 @@
 package wh1spr.morty.commands;
 
+import java.awt.Color;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
 import com.vdurmont.emoji.EmojiManager;
 
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.TextChannel;
 import wh1spr.morty.Permission;
 import wh1spr.morty.command.Command;
@@ -33,20 +36,20 @@ public class SendImageCommand extends Command {
 			return;
 		}
 		
+		//the color is the same color as the bot's role
+		MessageEmbed msg = new EmbedBuilder().setImage(this.imageUrl).setColor(new Color(16763904)).build();
+		
 		File image = new File(imageUrl);
 		
 		if (Permission.hasPerm(Permission.ADMIN, invoker.getUser(), false)) {
-			channel.sendFile(image, null).queue();
+			channel.sendMessage(msg).queue();
 			message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
 		} else if (canUse(channel)) {
-			channel.sendFile(image, null).queue();
+			channel.sendMessage(msg).queue();
 			message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
 			timer.put(channel.getId(), System.currentTimeMillis());
 		} else {
-			Double outputTime = Math.ceil((timeout - (System.currentTimeMillis() - timer.get(channel.getId()))) / 1000);
-			int out = outputTime.intValue() + 1;
-			message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();
-			channel.sendMessage(":x: This command is on cooldown for " + out + " seconds.").queue();
+			message.addReaction(EmojiManager.getForAlias("warning").getUnicode()).queue();
 		}
 		
 	}

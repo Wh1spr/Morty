@@ -192,6 +192,52 @@ public class Database {
 		}
 	}
 	
+	public static boolean removeImage(String URLorName) {
+		String sql = "DELETE FROM Images WHERE Name = '" + URLorName + "' OR URL = '" + URLorName + "'";
+		
+		try {
+			Statement stmt = Database.conn.createStatement();
+			stmt.executeUpdate(sql);
+			stmt.close();
+			return true;
+		} catch (Exception e) {
+			System.out.println("[MORTY] ERROR: Could not remove Image.");
+			Morty.logError(e.getMessage());
+			return false;
+		}
+	}
+	
+	// True if it worked, false if there already is one with this name
+	public static boolean putImage(String URL, String name) {
+		if (existsImage(name)) return false; //In this way, it IS possible to have aliases
+		
+		String sql = "INSERT INTO Images(URL, Name) VALUES('" + URL + "','" + name + "')";
+		
+		try {
+			Statement stmt = Database.conn.createStatement();
+			stmt.executeUpdate(sql);
+			stmt.close();
+			return true;
+		} catch (Exception e) {
+			System.out.println("[MORTY] ERROR: Could not insert new Image");
+			Morty.logError(e.getMessage());
+			return false;
+		}
+	}
+	
+	public static boolean existsImage(String name) {
+		String sql = "SELECT COUNT(*) AS total FROM Images WHERE Name = '" + name + "'";
+		try (Statement stmt  = Database.conn.createStatement();
+		     ResultSet rs    = stmt.executeQuery(sql)){
+			rs.next();
+			boolean result = rs.getInt("total") != 0;
+			stmt.close();
+			return result;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
 	// All tests are executed using C.OWNER id, since it's always in the database.
 	public static void test() {
 		Morty.logInfo("Testing Database...");

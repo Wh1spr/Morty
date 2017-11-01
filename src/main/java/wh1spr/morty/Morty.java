@@ -1,10 +1,17 @@
 package wh1spr.morty;
 
+import java.util.List;
+
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import wh1spr.morty.command.*;
+import wh1spr.morty.command.CommandRegistry.CommandEntry;
 import wh1spr.morty.commands.*;
 
 /*
@@ -18,6 +25,7 @@ public class Morty {
 	public static final String PREFIX = ".";
 	
 	public static final CommandRegistry commandRegistry = new CommandRegistry();
+	public static final ImageRegistry imageRegistry = new ImageRegistry();
 	
 	public static JDA jda = null;
 
@@ -54,18 +62,9 @@ public class Morty {
 		commandRegistry.registerCommand(new ChannelInputCommand("commands", C.CHANNEL_COMMANDS, "help"));
 		
 		// Image Commands
-//		commandRegistry.registerCommand(new SendImageCommand("C:/Users/VDK/Desktop/morty.jpg", "morty"));
-//		commandRegistry.registerCommand(new SendImageCommand("images/bitchHoldON.jpg", "holdon"));
-//		commandRegistry.registerCommand(new SendImageCommand("images/blueeyeswhitepepe.jpg", "pepe-2"));
-//		commandRegistry.registerCommand(new SendImageCommand("images/BLYATMAN.jpg", "blyatman"));
-//		commandRegistry.registerCommand(new SendImageCommand("images/dumbass.jpg", "what"));
-//		commandRegistry.registerCommand(new SendImageCommand("images/future.jpg", "future"));
-//		commandRegistry.registerCommand(new SendImageCommand("images/gitgud.jpg", "gitgud"));
-//		commandRegistry.registerCommand(new SendImageCommand("images/sendnudes.jpg", "sendnudes"));
-//		commandRegistry.registerCommand(new SendImageCommand("images/time_to_stop.jpg", "stop"));
-//		commandRegistry.registerCommand(new SendImageCommand("images/waitAMin.jpg", "holdup"));
-//		commandRegistry.registerCommand(new SendImageCommand("images/what.jpg", "wat"));
-//		commandRegistry.registerCommand(new SendImageCommand("images/whyulying.png", "liar"));
+		commandRegistry.registerCommand(new AddImageCommand("addimage"));
+		commandRegistry.registerCommand(new RemoveImageCommand("removeimage"));
+		imageRegistry.registerAllCommands();
 		
 	}
 	
@@ -73,7 +72,7 @@ public class Morty {
 		JDA jda = null;
 		try {
 			jda = new JDABuilder(AccountType.BOT)
-			        .setToken(MORTY_TOKEN).addEventListener(new CommandHandler(PREFIX, commandRegistry), new AutoEventHandler())
+			        .setToken(MORTY_TOKEN).addEventListener(new CommandHandler(PREFIX, commandRegistry), new CommandHandler(PREFIX, imageRegistry), new AutoEventHandler())
 			        .buildBlocking();
 		} catch (Exception e) {
 			System.out.println("[MORTY] ERROR: Morty could not be initialized. " + e.getClass().getSimpleName());
