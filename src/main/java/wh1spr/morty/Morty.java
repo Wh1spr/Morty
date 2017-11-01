@@ -28,7 +28,7 @@ public class Morty {
 //		Database.test();
 		Database.updateNames(jda);
 		try {
-			jda.getTextChannelById(C.CHANNEL_INTRODUCTION).createPermissionOverride(jda.getGuildById(C.GUILD).getPublicRole()).complete(true).getManager().grant(net.dv8tion.jda.core.Permission.MESSAGE_WRITE).complete(true);
+			jda.getTextChannelById(C.CHANNEL_INTRODUCTION).getPermissionOverride(jda.getGuildById(C.GUILD).getPublicRole()).getManager().grant(net.dv8tion.jda.core.Permission.MESSAGE_WRITE).complete(true);
 		} catch (RateLimitedException e) {/*never happening*/}
 	}
 	
@@ -88,7 +88,7 @@ public class Morty {
 	public static void shutdown() {
 		// So basically I'm stopping the use of #introduction, since the database needs to be updated whenever there is a new message.
 		try {
-			jda.getTextChannelById(C.CHANNEL_INTRODUCTION).createPermissionOverride(jda.getGuildById(C.GUILD).getPublicRole()).complete(true).getManager().deny(net.dv8tion.jda.core.Permission.MESSAGE_WRITE).complete(true);
+			jda.getTextChannelById(C.CHANNEL_INTRODUCTION).getPermissionOverride(jda.getGuildById(C.GUILD).getPublicRole()).getManager().deny(net.dv8tion.jda.core.Permission.MESSAGE_WRITE).complete(true);
 		} catch (RateLimitedException e) {/*never happening*/}
 		Database.close();
 		getJDA().shutdown();
