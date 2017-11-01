@@ -85,7 +85,7 @@ public class ChannelInputCommand extends Command {
 			while (privateMsg.length() > 2) { //just in case, should be 1 anyways
 				nextPart = privateMsg.substring(0, privateMsg.indexOf("@@@"));
 				if (nextMsg.length() + nextPart.length() < 1990) {
-					nextMsg += "\n" + nextPart;
+					nextMsg += nextPart;
 					privateMsg = privateMsg.substring(privateMsg.indexOf("@@@") + 3);
 				} else {
 					pChan.sendMessage(nextMsg).queue();
