@@ -234,7 +234,7 @@ public class RoleCommand extends Command {
 					}
 					break;
 				case "third":
-					if (!roles.contains(guild.getRoleById(C.ROLE_THIRD))) {
+					if (roles.contains(guild.getRoleById(C.ROLE_THIRD))) {
 						channel.sendMessage(":x: You already have this role, " + invoker.getAsMention() + ".").queue();
 					} else if (!roles.contains(guild.getRoleById(C.ROLE_SECOND)) && !roles.contains(guild.getRoleById(C.ROLE_FIRST)) && !roles.contains(guild.getRoleById(C.ROLE_GRAD))) {
 						channel.sendMessage(":x: Please use `.role add third` instead.").queue();
