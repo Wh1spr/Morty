@@ -9,6 +9,7 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
+import wh1spr.morty.C;
 import wh1spr.morty.Morty;
 import wh1spr.morty.Permission;
 import wh1spr.morty.command.Command;
@@ -29,6 +30,10 @@ public class CommandDisableCommand extends Command {
 		
 		if (args.size() > 0) {
 			for (String cmd : args) {
+				if ((cmd.equals("shutdown") || cmd.equals("eval")) 
+						&& !Permission.hasPerm(Permission.OWNER, invoker.getUser(), false)) {
+					continue;
+				}
 				Morty.commandRegistry.removeCommand(cmd);
 			}
 		}

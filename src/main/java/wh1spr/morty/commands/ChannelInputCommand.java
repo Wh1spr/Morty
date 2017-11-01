@@ -34,7 +34,6 @@ public class ChannelInputCommand extends Command {
 			return;
 		}
 		
-		String perms = Permission.getPerms(invoker.getUser());
 		List<Message> channelMsg = null;
 		try {
 			channelMsg = guild.getTextChannelById(channelId).getHistory().retrievePast(100).complete(true);
@@ -87,14 +86,15 @@ public class ChannelInputCommand extends Command {
 				nextPart = privateMsg.substring(0, privateMsg.indexOf("@@@"));
 				if (nextMsg.length() + nextPart.length() < 1990) {
 					nextMsg += "\n" + nextPart;
-					privateMsg = privateMsg.substring(privateMsg.indexOf("@@@") + 2);
+					privateMsg = privateMsg.substring(privateMsg.indexOf("@@@") + 3);
 				} else {
 					pChan.sendMessage(nextMsg).queue();
 					nextMsg = "";
 				}
 			}
+			if (nextMsg.length() > 2) {
+				pChan.sendMessage(".\n" + nextMsg).queue();
+			}
 		}
-		
 	}
-
 }

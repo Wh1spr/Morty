@@ -22,13 +22,9 @@ public class CleanCommand extends Command {
 	public CleanCommand(String name, String... aliases) {
 		super(name, aliases);
 	}
-
-	// This code has been copied from another bot of mine that I made a while back, that's why it's so messy
-	// I'll update it someday, that day I'll also correctly implement it so the command itself gets removed as well
 	
 	//Possibilities for this command are:
 	// .clean <int> 					Removes <int> past messages.
-	// .clean @user1 @user2...			Removes messages by these users in the past 99 messages. >> WILL BE REMOVED
 	// .clean <int> @user1 @user2...	Removes messages by these users int he past <int> messages.
 	
 	// I'm making it so that, if the toDelete is <= 100, I remove them 1 by 1 if an error is thrown.
