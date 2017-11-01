@@ -76,14 +76,6 @@ public class AutoEventHandler extends ListenerAdapter {
 		List<Role> roles = event.getRoles();
 		for (Role role : roles) {
 			switch (role.getId()) {
-			case C.ROLE_FIRST:
-			case C.ROLE_SECOND:
-			case C.ROLE_THIRD:
-				if (!(roles.contains(event.getGuild().getRoleById(C.ROLE_FIRST)) && roles.contains(event.getGuild().getRoleById(C.ROLE_SECOND)))
-						&& !(roles.contains(event.getGuild().getRoleById(C.ROLE_THIRD)) && roles.contains(event.getGuild().getRoleById(C.ROLE_SECOND)))
-						&& !(roles.contains(event.getGuild().getRoleById(C.ROLE_FIRST)) && roles.contains(event.getGuild().getRoleById(C.ROLE_THIRD))))
-					Permission.removePerm(Permission.MEMBER, event.getUser());
-				break;
 			case C.ROLE_GRAD:
 				Permission.removePerm(Permission.GRADUATED, event.getUser());
 				break;
