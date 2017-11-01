@@ -25,7 +25,7 @@ public class C {
 	public static final String CHANNEL_GAMING_2 = "353934007227908106";
 	public static final String CHANNEL_GAME_EVENTS = "374234199143612436";
 	public static final String CHANNEL_MUSIC = "354265746173460482";
-	public static final String CHANNEL_MEMES = "353934066103484426";
+	public static final String CHANNEL_MEMES = "375337795461316618";
 	public static final String CHANNEL_SPAM = "353934296559648791";
 	public static final String CHANNEL_WELCOME = "354331050144432128";
 	

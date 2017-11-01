@@ -214,7 +214,7 @@ public class RoleCommand extends Command {
 				case "first":
 					if (roles.contains(guild.getRoleById(C.ROLE_FIRST))) {
 						channel.sendMessage(":x: You already have this role, " + invoker.getAsMention() + ".").queue();
-					} else if (!roles.contains(guild.getRoleById(C.ROLE_SECOND)) && !roles.contains(guild.getRoleById(C.ROLE_THIRD))) {
+					} else if (!roles.contains(guild.getRoleById(C.ROLE_SECOND)) && !roles.contains(guild.getRoleById(C.ROLE_THIRD)) && !roles.contains(guild.getRoleById(C.ROLE_GRAD))) {
 						channel.sendMessage(":x: Please use `.role add first` instead.").queue();
 					} else {
 						message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
@@ -225,7 +225,7 @@ public class RoleCommand extends Command {
 				case "second":
 					if (roles.contains(guild.getRoleById(C.ROLE_SECOND))) {
 						channel.sendMessage(":x: You already have this role, " + invoker.getAsMention() + ".").queue();
-					} else if (!roles.contains(guild.getRoleById(C.ROLE_FIRST)) && !roles.contains(guild.getRoleById(C.ROLE_THIRD))) {
+					} else if (!roles.contains(guild.getRoleById(C.ROLE_FIRST)) && !roles.contains(guild.getRoleById(C.ROLE_THIRD)) && !roles.contains(guild.getRoleById(C.ROLE_GRAD))) {
 						channel.sendMessage(":x: Please use `.role add second` instead.").queue();
 					} else {
 						message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
@@ -236,7 +236,7 @@ public class RoleCommand extends Command {
 				case "third":
 					if (!roles.contains(guild.getRoleById(C.ROLE_THIRD))) {
 						channel.sendMessage(":x: You already have this role, " + invoker.getAsMention() + ".").queue();
-					} else if (!roles.contains(guild.getRoleById(C.ROLE_SECOND)) && !roles.contains(guild.getRoleById(C.ROLE_FIRST))) {
+					} else if (!roles.contains(guild.getRoleById(C.ROLE_SECOND)) && !roles.contains(guild.getRoleById(C.ROLE_FIRST)) && !roles.contains(guild.getRoleById(C.ROLE_GRAD))) {
 						channel.sendMessage(":x: Please use `.role add third` instead.").queue();
 					} else {
 						message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
@@ -253,7 +253,7 @@ public class RoleCommand extends Command {
 				case "first":
 					if (!roles.contains(guild.getRoleById(C.ROLE_FIRST))) {
 						channel.sendMessage(":x: You don't have this role, " + invoker.getAsMention() + ".").queue();
-					} else if (!roles.contains(guild.getRoleById(C.ROLE_SECOND)) && !roles.contains(guild.getRoleById(C.ROLE_THIRD))) {
+					} else if (!roles.contains(guild.getRoleById(C.ROLE_SECOND)) && !roles.contains(guild.getRoleById(C.ROLE_THIRD)) && !roles.contains(guild.getRoleById(C.ROLE_GRAD))) {
 						channel.sendMessage(":x: Please use `.role remove first` instead.").queue();
 					} else {
 						message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
@@ -264,7 +264,7 @@ public class RoleCommand extends Command {
 				case "second":
 					if (!roles.contains(guild.getRoleById(C.ROLE_SECOND))) {
 						channel.sendMessage(":x: You don't have this role, " + invoker.getAsMention() + ".").queue();
-					} else if (!roles.contains(guild.getRoleById(C.ROLE_FIRST)) && !roles.contains(guild.getRoleById(C.ROLE_THIRD))) {
+					} else if (!roles.contains(guild.getRoleById(C.ROLE_FIRST)) && !roles.contains(guild.getRoleById(C.ROLE_THIRD)) && !roles.contains(guild.getRoleById(C.ROLE_GRAD))) {
 						channel.sendMessage(":x: Please use `.role remove second` instead.").queue();
 					} else {
 						message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
@@ -275,7 +275,7 @@ public class RoleCommand extends Command {
 				case "third":
 					if (!roles.contains(guild.getRoleById(C.ROLE_THIRD))) {
 						channel.sendMessage(":x: You don't have this role, " + invoker.getAsMention() + ".").queue();
-					} else if (!roles.contains(guild.getRoleById(C.ROLE_SECOND)) && !roles.contains(guild.getRoleById(C.ROLE_FIRST))) {
+					} else if (!roles.contains(guild.getRoleById(C.ROLE_SECOND)) && !roles.contains(guild.getRoleById(C.ROLE_FIRST)) && !roles.contains(guild.getRoleById(C.ROLE_GRAD))) {
 						channel.sendMessage(":x: Please use `.role remove first` instead.").queue();
 					} else {
 						message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
