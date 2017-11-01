@@ -35,8 +35,8 @@ public class AddImageCommand extends Command {
 				channel.sendMessage("The image has to be uploaded on Imgur.").queue();
 				return;
 			}
-			if (args.get(0).length() > 30) {
-				channel.sendMessage("Maximum name lenght for a command is 30 characters.").queue();
+			if (args.get(0).length() > 35) {
+				channel.sendMessage("Maximum name lenght for a command is 35 characters.").queue();
 				message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();
 				return;
 			}

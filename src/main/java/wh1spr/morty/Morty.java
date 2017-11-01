@@ -1,17 +1,10 @@
 package wh1spr.morty;
 
-import java.util.List;
-
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import wh1spr.morty.command.*;
-import wh1spr.morty.command.CommandRegistry.CommandEntry;
 import wh1spr.morty.commands.*;
 
 /*
@@ -30,8 +23,8 @@ public class Morty {
 	public static JDA jda = null;
 
 	public static void main(String[] args) {
-		registerCommands();
 		Database.start();
+		registerCommands();
 		jda = run();
 //		Database.test();
 		Database.updateNames(jda);

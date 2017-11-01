@@ -30,7 +30,7 @@ public class RemoveImageCommand extends Command {
 		if (args.size() != 1) {
 			message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();
 		} else {
-			if (args.get(0).length() > 30) {
+			if (args.get(0).length() > 35) {
 				message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();
 				channel.sendMessage("Name or Imgur URL can not be longer than 30 characters.").queue();
 				return;

@@ -23,7 +23,7 @@ public class ImageRegistry extends CommandRegistry {
 	
 	public void registerAllCommands() {
 		Connection conn = Database.conn;
-		String sql = "SELECT (Name, URL) FROM Images";
+		String sql = "SELECT Name, URL FROM Images";
 		
 		try (Statement stmt  = Database.conn.createStatement();
 		     ResultSet rs    = stmt.executeQuery(sql)){
@@ -33,6 +33,7 @@ public class ImageRegistry extends CommandRegistry {
 			
 		} catch (Exception e) {
 			Morty.logFatal("Could not load images. Exiting...");
+			e.printStackTrace();
 			System.exit(0);
 		}
 	}
