@@ -28,6 +28,7 @@ public class C {
 	public static final String CHANNEL_MEMES = "375337795461316618";
 	public static final String CHANNEL_SPAM = "353934296559648791";
 	public static final String CHANNEL_WELCOME = "354331050144432128";
+	public static final String CHANNEL_USER_BOTS = "375653028935499786";
 	
 	public static final String CHANNEL_ADMIN = "354327641303678987";
 	
