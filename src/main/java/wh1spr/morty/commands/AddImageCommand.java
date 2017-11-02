@@ -26,7 +26,6 @@ public class AddImageCommand extends Command {
 			message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();
 			return;
 		}
-		
 		if (args.size() != 2) {
 			message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();
 		} else {

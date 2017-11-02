@@ -75,7 +75,7 @@ public class CleanCommand extends Command {
 				//DELETE MESSAGES
 				
 				
-				channel.deleteMessages(toDelete).queue();
+				channel.deleteMessages(toDelete).complete(true);
 				
 			}
 			

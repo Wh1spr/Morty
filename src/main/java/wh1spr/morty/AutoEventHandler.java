@@ -31,7 +31,9 @@ public class AutoEventHandler extends ListenerAdapter {
 	public void onGuildMemberLeave(GuildMemberLeaveEvent event) {
 		//remove from database
 		if (!event.getGuild().getId().equals(C.GUILD)) return;
-		event.getGuild().getTextChannelById(C.CHANNEL_INTRODUCTION).deleteMessageById(Database.getIntroductionId(event.getUser())).complete();
+		String introductionId = Database.getIntroductionId(event.getUser());
+		if (!introductionId.equals("0"))
+			event.getGuild().getTextChannelById(C.CHANNEL_INTRODUCTION).deleteMessageById(introductionId).queue();
 		Database.remove(event.getUser());
 		event.getGuild().getTextChannelById(C.CHANNEL_WELCOME).sendMessage("**Goodbye, " + event.getUser().getAsMention() + "**").queue();
 	}

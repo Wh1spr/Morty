@@ -180,10 +180,12 @@ public class Database {
 			while (rs.next()) {
 				String id = rs.getString("UserID");
 				User user = jda.getUserById(id);
-				if (jda.getGuildById(C.GUILD).getMember(user) == null) {
+				if (user == null) {
+					stmtUpd.executeUpdate("DELETE FROM Users WHERE UserID = '" + id + "'");
+				} else if (jda.getGuildById(C.GUILD).getMember(user) == null) {
 					remove(user);
 				} else {
-					stmtUpd.execute("UPDATE Users SET Name = '" + user.getName() + "' WHERE UserID = " + id);
+					stmtUpd.executeUpdate("UPDATE Users SET Name = '" + user.getName() + "' WHERE UserID = " + id);
 				}	
 			}
 			stmt.close();
