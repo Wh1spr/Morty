@@ -39,6 +39,7 @@ public class CleanCommand extends Command {
 		Set<Message> toDelete = new HashSet<Message>();
 		int deleted = 0;
 		int nr = 0;
+		int total = 0;
 		
 		try {
 			//get number
@@ -55,11 +56,14 @@ public class CleanCommand extends Command {
 				return;
 			}
 			
+			total = nr;
+			
 			for (int i = nr; i > 0; i -= 100) {
-				if (i % 100 > 0 && (i / 100) > 1) {
+				if (i % 100 > 0 && (i / 100) >= 1) {
 					messages.addAll(channel.getHistory().retrievePast(100).complete(true));
+					nr -= 100;
 				} else {
-					messages.addAll(channel.getHistory().retrievePast(i).complete(true));
+					messages.addAll(channel.getHistory().retrievePast(nr).complete(true));
 				}
 			
 				if (!message.getMentionedUsers().isEmpty()) {
@@ -83,7 +87,7 @@ public class CleanCommand extends Command {
 			//when a message is older than 2 weeks
 			//so now either deleting each message seperately or just stopping
 			if (toDelete.size() > 100) {
-				channel.sendMessage("Removed " + deleted + " messages. " + (nr - deleted) + " messages still remain. It is not recommended to bulk delete these.").queue();
+				channel.sendMessage("Removed " + deleted + " messages. " + (total - deleted) + " messages still remain. It is not recommended to bulk delete these.").queue();
 			} else {
 				Iterator<Message> toDeleteIter = toDelete.iterator();
 				while(toDeleteIter.hasNext()) {
