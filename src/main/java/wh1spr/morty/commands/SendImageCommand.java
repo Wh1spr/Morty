@@ -14,6 +14,7 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.TextChannel;
+import wh1spr.morty.C;
 import wh1spr.morty.Permission;
 import wh1spr.morty.command.Command;
 
@@ -31,9 +32,11 @@ public class SendImageCommand extends Command {
 
 	@Override
 	public void onCall(JDA jda, Guild guild, TextChannel channel, Member invoker, Message message, List<String> args) {
-		if (!Permission.hasPerm(Permission.MEMBER, invoker.getUser(), false)) {
-			message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();
-			return;
+		if (guild.getId().equals(C.GUILD)) {
+			if (!Permission.hasPerm(Permission.MEMBER, invoker.getUser(), false)) {
+				message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();
+				return;
+			}
 		}
 		
 		//the color is the same color as the bot's role

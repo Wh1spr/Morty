@@ -30,7 +30,7 @@ public class Morty {
 		Database.updateNames(jda);
 		try {
 			jda.getTextChannelById(C.CHANNEL_INTRODUCTION).getPermissionOverride(jda.getGuildById(C.GUILD).getPublicRole()).getManager().grant(net.dv8tion.jda.core.Permission.MESSAGE_WRITE).complete(true);
-		} catch (RateLimitedException e) {/*never happening*/}
+		} catch (RateLimitedException e) {/*never happening in like ever*/}
 	}
 	
 	public static void registerCommands() {
@@ -39,6 +39,7 @@ public class Morty {
 		commandRegistry.registerCommand(new ChangeNameCommand("changename", "cn"));
 		commandRegistry.registerCommand(new ShutdownCommand("shutdown"));
 		commandRegistry.registerCommand(new CommandDisableCommand("disablecommand", "dcmd"));
+		commandRegistry.registerCommand(new SendFromMortyCommand("send"));
 		
 		// Dev Commands
 		commandRegistry.registerCommand(new EvalCommand("eval"));
