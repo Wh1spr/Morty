@@ -6,6 +6,8 @@ import java.sql.Statement;
 import net.dv8tion.jda.core.entities.User;
 
 public class Permission {
+	// TO BE REDONE
+	// this needs to be a more general thing, so it can be used in multiple servers.
 
 	public static final int GUEST = 1;
 	public static final int MEMBER = 2;

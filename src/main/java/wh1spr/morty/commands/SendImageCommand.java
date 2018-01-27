@@ -17,7 +17,7 @@ import net.dv8tion.jda.core.entities.TextChannel;
 import wh1spr.morty.C;
 import wh1spr.morty.Permission;
 import wh1spr.morty.command.Command;
-
+// Remove c.guild related items.
 public class SendImageCommand extends Command {
 
 	public SendImageCommand(String imageUrl, String name, String... aliases) {

@@ -14,7 +14,7 @@ import wh1spr.morty.C;
 import wh1spr.morty.Database;
 import wh1spr.morty.Permission;
 import wh1spr.morty.command.Command;
-
+// TO BE REDONE
 public class IntroductionCommand extends Command {
 
 	public IntroductionCommand(String name, String... aliases) {

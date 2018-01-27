@@ -28,9 +28,6 @@ public class Morty {
 		jda = run();
 //		Database.test();
 		Database.updateNames(jda);
-		try {
-			jda.getTextChannelById(C.CHANNEL_INTRODUCTION).getPermissionOverride(jda.getGuildById(C.GUILD).getPublicRole()).getManager().grant(net.dv8tion.jda.core.Permission.MESSAGE_WRITE).complete(true);
-		} catch (RateLimitedException e) {/*never happening in like ever*/}
 	}
 	
 	public static void registerCommands() {
@@ -48,12 +45,10 @@ public class Morty {
 		// Channel Commands
 		commandRegistry.registerCommand(new CleanCommand("clean"));
 		commandRegistry.registerCommand(new VoteCommand("vote"));
-		commandRegistry.registerCommand(new IntroductionCommand("intro"));
+//		commandRegistry.registerCommand(new IntroductionCommand("intro")); // I'm gonna redo this
 		
 		// User Commands
-		commandRegistry.registerCommand(new RoleCommand("role"));
-		commandRegistry.registerCommand(new ChannelInputCommand("rules", C.CHANNEL_RULES));
-		commandRegistry.registerCommand(new ChannelInputCommand("commands", C.CHANNEL_COMMANDS, "help"));
+//		commandRegistry.registerCommand(new RoleCommand("role")); // Might remake this for custom roles, not sure.
 		
 		// Image Commands
 		commandRegistry.registerCommand(new AddImageCommand("addimage"));
@@ -69,7 +64,7 @@ public class Morty {
 			        .setToken(MORTY_TOKEN).addEventListener(new CommandHandler(PREFIX, commandRegistry), new CommandHandler(PREFIX, imageRegistry), new AutoEventHandler())
 			        .buildBlocking();
 		} catch (Exception e) {
-			System.out.println("[MORTY] ERROR: Morty could not be initialized. " + e.getClass().getSimpleName());
+			logFatal("JDA instance could not be initialized.", e);
 		}
 		return jda;
 	}
@@ -79,10 +74,6 @@ public class Morty {
 	}
 	
 	public static void shutdown() {
-		// So basically I'm stopping the use of #introduction, since the database needs to be updated whenever there is a new message.
-		try {
-			jda.getTextChannelById(C.CHANNEL_INTRODUCTION).getPermissionOverride(jda.getGuildById(C.GUILD).getPublicRole()).getManager().deny(net.dv8tion.jda.core.Permission.MESSAGE_WRITE).complete(true);
-		} catch (RateLimitedException e) {/*never happening*/}
 		Database.close();
 		getJDA().shutdown();
 		System.exit(0);
@@ -95,6 +86,13 @@ public class Morty {
 	
 	public static void logFatal(String msg) {
 		System.err.println("[MORTY] FATAL: " + msg);
+		System.exit(0);
+	}
+	
+	public static void logFatal(String msg, Exception e) {
+		System.err.println("[MORTY] FATAL: " + msg);
+		e.printStackTrace();
+		System.exit(0);
 	}
 	
 	public static void logError(String msg) {

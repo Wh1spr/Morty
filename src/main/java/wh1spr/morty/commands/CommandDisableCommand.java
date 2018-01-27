@@ -29,8 +29,10 @@ public class CommandDisableCommand extends Command {
 		
 		if (args.size() > 0) {
 			for (String cmd : args) {
-				if ((cmd.equals("shutdown") || cmd.equals("eval")) 
-						&& !Permission.hasPerm(Permission.OWNER, invoker.getUser(), false)) {
+				if (cmd.equals("shutdown")) {
+					channel.sendMessage("`shutdown` can not be disabled.");
+					continue;
+				} else if (cmd.equals("eval") && !Permission.hasPerm(Permission.OWNER, invoker.getUser(), false)) {
 					continue;
 				}
 				Morty.commandRegistry.removeCommand(cmd);

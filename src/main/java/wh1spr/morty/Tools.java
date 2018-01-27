@@ -57,7 +57,7 @@ public class Tools {
 	}
 	
 	public static boolean removeLineFromFile(String filename, String lineToRemove) {
-		// The traps any possible read/write exceptions which might occur
+		// The "try" traps any possible read/write exceptions which might occur
 		try {
 		    File inputFile = new File(filename);
 		    File outputFile = new File("replacement.txt");

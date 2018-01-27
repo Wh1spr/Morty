@@ -30,7 +30,6 @@ public class SendFromMortyCommand extends Command {
 		if (args.size() > 1) {
 			TextChannel channelTo = guild.getTextChannelById(args.get(0));
 			if (channelTo == null) {message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();return;}
-			if (channelTo.getGuild() != guild) {message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();return;}
 			channelTo.sendMessage(message.getRawContent().replaceFirst(Morty.PREFIX + this.name, "").replaceFirst(args.get(0), "").trim()).queue();
 			message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
 			return;

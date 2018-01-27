@@ -12,6 +12,7 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 
+// TO BE REDONE
 public class Database {
 	
 	public static Connection conn = null;
@@ -19,16 +20,14 @@ public class Database {
 	public static void start() {
 		String url = "jdbc:sqlite:Morty.db";
 		try {
-			if(!Files.exists(Paths.get("Morty.db"))) { 
-			    System.err.println("[MORTY] ERROR: Database is not present. Exiting...");
-			    System.exit(0);
+			Class.forName("org.sqlite.JDBC");
+			if(!Files.exists(Paths.get("Morty.db"))) {
+				Morty.logFatal("Database is not present. Exiting...");
 			}
 			conn = DriverManager.getConnection(url);
-			System.out.println("[MORTY] INFO: Connection to Database has been established");
-		} catch (SQLException e) {
-			System.err.println("[MORTY] ERROR: Could not establish connection to the Database. Exiting...");
-			e.printStackTrace();
-			System.exit(0);
+			Morty.logInfo("Connection to Database has been established");
+		} catch (Exception e) {
+			Morty.logFatal("Could not establish connection to the Database. Exiting...", e);
 		}
 	}
 	
