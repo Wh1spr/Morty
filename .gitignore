@@ -8,5 +8,6 @@ build/
 .settings/
 gradle/
 Morty.db
+data/
 libs/
 
