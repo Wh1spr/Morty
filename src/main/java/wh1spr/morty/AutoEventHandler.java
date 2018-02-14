@@ -121,8 +121,8 @@ public class AutoEventHandler extends ListenerAdapter {
 						
 						String origMsgId = Database.getIntroductionId(event.getAuthor());
 						
-						channel.sendMessage("Here is your original message: \n```" + event.getJDA().getTextChannelById(C.CHANNEL_INTRODUCTION).getMessageById(origMsgId).complete().getContent() + "```").queue();
-						channel.sendMessage("Here is your new message: \n```" + event.getMessage().getContent() + "```").queue();
+						channel.sendMessage("Here is your original message: \n```" + event.getJDA().getTextChannelById(C.CHANNEL_INTRODUCTION).getMessageById(origMsgId).complete().getContentDisplay() + "```").queue();
+						channel.sendMessage("Here is your new message: \n```" + event.getMessage().getContentDisplay() + "```").queue();
 						channel.sendMessage("Your original message has been deleted.").queue();
 						
 						event.getChannel().deleteMessageById(origMsgId).queue();

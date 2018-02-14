@@ -44,7 +44,7 @@ public class VoteCommand extends Command {
 			
 			ArrayList<Emoji> emoticons = new ArrayList<Emoji>();
 			
-			String[] arguments = message.getContent().replaceFirst(Morty.PREFIX + this.name, "").replaceAll("\n", "").trim().split("\\[");
+			String[] arguments = message.getContentDisplay().replaceFirst(Morty.PREFIX + this.name, "").replaceAll("\n", "").trim().split("\\[");
 			
 			String newMessage = "**VOTE** - *" + arguments[0].split(" ", 2)[1].trim() + "*\n";
 			
@@ -71,7 +71,7 @@ public class VoteCommand extends Command {
 					channel.deleteMessageById(msg.getId()).queue();
 				} else {
 					jda.getTextChannelById(C.CHANNEL_BOT_VOTES).sendMessage(":white_check_mark: New succesful vote creation. Creation command:").queue();
-					jda.getTextChannelById(C.CHANNEL_BOT_VOTES).sendMessage(message.getContent()).queue();
+					jda.getTextChannelById(C.CHANNEL_BOT_VOTES).sendMessage(message.getContentDisplay()).queue();
 					for (Emoji emo : emoticons) {
 						msg.addReaction(emo.getUnicode()).queue();
 					}
@@ -111,7 +111,8 @@ public class VoteCommand extends Command {
 	    	
 	    	HashMap<Emoji, Integer> count = new HashMap<Emoji, Integer>();
 	    	
-	    	msg.getReactions().forEach(react->{try{count.put(EmojiManager.getByUnicode(react.getEmote().getName()), react.getCount());} catch (Exception e) {/* nothing */}});
+	    	msg.getReactions().forEach(react->{
+	    		try{count.put(EmojiManager.getByUnicode(react.getReactionEmote().getName()), react.getCount());} catch (Exception e) {/* nothing */}});
 	    	
 	    	for (Emoji key : count.keySet()) {
 	    		if (!emoticons.contains(key)) {
@@ -135,9 +136,9 @@ public class VoteCommand extends Command {
 	    	
 	    	String winnerMessage;
 	    	try {
-	    		winnerMessage = msg.getContent().substring(msg.getContent().indexOf(winner.getUnicode()), msg.getContent().indexOf("\n", msg.getContent().indexOf(winner.getUnicode())));
+	    		winnerMessage = msg.getContentDisplay().substring(msg.getContentDisplay().indexOf(winner.getUnicode()), msg.getContentDisplay().indexOf("\n", msg.getContentDisplay().indexOf(winner.getUnicode())));
 	    	} catch (IndexOutOfBoundsException e) {
-	    		winnerMessage = msg.getContent().substring(msg.getContent().indexOf(winner.getUnicode()));
+	    		winnerMessage = msg.getContentDisplay().substring(msg.getContentDisplay().indexOf(winner.getUnicode()));
 	    	}
 	    	try {
 	    		channel.sendMessage("**Vote \"*"+ title.trim() + "*\" has ended. **\n**WINNER:** *" + winnerMessage + "*").queue();
@@ -151,9 +152,9 @@ public class VoteCommand extends Command {
 	    	String next;
 	    	for (Emoji result : emoticons) {
 	    		try {
-		    		next = msg.getContent().substring(msg.getContent().indexOf(result.getUnicode()), msg.getContent().indexOf("\n", msg.getContent().indexOf(result.getUnicode())));
+		    		next = msg.getContentDisplay().substring(msg.getContentDisplay().indexOf(result.getUnicode()), msg.getContentDisplay().indexOf("\n", msg.getContentDisplay().indexOf(result.getUnicode())));
 		    	} catch (IndexOutOfBoundsException e) {
-		    		next = msg.getContent().substring(msg.getContent().indexOf(result.getUnicode()));
+		    		next = msg.getContentDisplay().substring(msg.getContentDisplay().indexOf(result.getUnicode()));
 		    	}
 	    		results += "\n" + next + " **with " + count.get(result) + " votes.**";
 	    	}

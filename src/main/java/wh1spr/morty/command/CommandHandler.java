@@ -22,14 +22,14 @@ public class CommandHandler extends ListenerAdapter {
 		if (event.getAuthor().isBot()) return; //no response on bots
 		
 		//no response on something that doesnt start with the right prefix
-		if (!event.getMessage().getStrippedContent().startsWith(PREFIX)) return; 
+		if (!event.getMessage().getContentStripped().startsWith(PREFIX)) return; 
 		
 		//if this command exists
-		String cmdName = event.getMessage().getStrippedContent().split(" ")[0].replaceFirst(PREFIX, "").toLowerCase();
+		String cmdName = event.getMessage().getContentStripped().split(" ")[0].replaceFirst(PREFIX, "").toLowerCase();
 		if (registry.getRegisteredCommandsAndAliases().contains(cmdName)) {
 			Command cmd = registry.getCommand(cmdName).command;
 			List<String> args = new ArrayList<String>();
-			args.addAll(Arrays.asList(event.getMessage().getContent().split(" ")));
+			args.addAll(Arrays.asList(event.getMessage().getContentDisplay().split(" ")));
 			args.remove(0);
 			cmd.onCall(event.getJDA(), event.getGuild(), event.getChannel(), event.getMember(), event.getMessage(), args);
 		}

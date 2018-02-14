@@ -1,11 +1,10 @@
 package wh1spr.morty.command;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
+
+import com.vdurmont.emoji.EmojiManager;
 
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
@@ -42,7 +41,7 @@ public  class CommandRegistry {
         CommandEntry entry = new CommandEntry(new Command(name) {
             @Override
             public void onCall(JDA jda, Guild guild, TextChannel channel, Member invoker, Message message, List<String> args ) {
-                channel.sendMessage("This command is temporarily disabled").queue();
+                message.addReaction(EmojiManager.getForAlias("warning").getUnicode()).queue();
             }
         });
         

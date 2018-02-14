@@ -26,7 +26,7 @@ public class ChangeNameCommand extends Command {
 		}
 		
 		if (args.size() > 0) {
-			guild.getController().setNickname(guild.getMember(jda.getSelfUser()), message.getStrippedContent().split(" ",2)[1]).queue();
+			guild.getController().setNickname(guild.getMember(jda.getSelfUser()), message.getContentStripped().split(" ",2)[1]).queue();
 		} else {
 			guild.getController().setNickname(guild.getMember(jda.getSelfUser()), null).queue();
 		}
