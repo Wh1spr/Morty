@@ -1,6 +1,6 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
-version = '0.1.0_2'
+version = '0.1.0_3'
 
 
 repositories {
@@ -17,11 +17,11 @@ dependencies {
 
 task makeJar(type: Jar) {
 	manifest {
-        attributes 'Implementation-Title': 'Morty',
+        attributes 'Implementation-Title': 'DiscordBots',
         	'Implementation-Version': version,
-        	'Main-Class': 'wh1spr.morty.Morty'
+        	'Main-Class': 'wh1spr.bot.Main'
     }
-    baseName = 'Morty'
+    baseName = 'DiscordBots'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 }
@@ -29,10 +29,10 @@ task makeJar(type: Jar) {
 task makeJarNoVersion(type: Jar) {
 	version = null
 	manifest {
-        attributes 'Implementation-Title': 'Morty',
-        	'Main-Class': 'wh1spr.morty.Morty'
+        attributes 'Implementation-Title': 'DiscordBots',
+        	'Main-Class': 'wh1spr.bot.Main'
     }
-    baseName = 'Morty'
+    baseName = 'DiscordBots'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 }
