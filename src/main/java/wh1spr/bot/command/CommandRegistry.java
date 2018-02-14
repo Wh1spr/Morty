@@ -1,4 +1,4 @@
-package wh1spr.morty.command;
+package wh1spr.bot.command;
 
 import java.util.HashMap;
 import java.util.List;
@@ -11,9 +11,14 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
-import wh1spr.morty.Morty;
+import wh1spr.bot.morty.Morty;
 
 public  class CommandRegistry {
+	
+	public CommandRegistry() {
+		// this would receive a "bot" object, of which Morty.java extends, so it's not a static reference
+		// and also of course to have multiple bots.
+	}
 	
 	protected HashMap<String, CommandEntry> registry = new HashMap<>();
 

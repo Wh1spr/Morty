@@ -1,4 +1,4 @@
-package wh1spr.morty;
+package wh1spr.bot.morty;
 
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 

@@ -1,4 +1,4 @@
-package wh1spr.morty;
+package wh1spr.bot.morty;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;

@@ -1,4 +1,4 @@
-package wh1spr.morty.command;
+package wh1spr.bot.command;
 
 import java.util.ArrayList;
 import java.util.Arrays;

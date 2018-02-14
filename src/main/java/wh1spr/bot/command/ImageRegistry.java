@@ -1,12 +1,12 @@
-package wh1spr.morty.command;
+package wh1spr.bot.command;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-import wh1spr.morty.Database;
-import wh1spr.morty.Morty;
-import wh1spr.morty.commands.SendImageCommand;
+import wh1spr.bot.commands.SendImageCommand;
+import wh1spr.bot.morty.Database;
+import wh1spr.bot.morty.Morty;
 
 public class ImageRegistry extends CommandRegistry {
 	

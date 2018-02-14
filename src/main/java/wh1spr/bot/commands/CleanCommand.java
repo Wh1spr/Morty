@@ -1,4 +1,4 @@
-package wh1spr.morty.commands;
+package wh1spr.bot.commands;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -14,8 +14,8 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
-import wh1spr.morty.Permission;
-import wh1spr.morty.command.Command;
+import wh1spr.bot.command.Command;
+import wh1spr.bot.morty.Permission;
 
 public class CleanCommand extends Command {
 

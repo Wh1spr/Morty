@@ -1,4 +1,4 @@
-package wh1spr.morty.commands;
+package wh1spr.bot.commands;
 
 import java.util.List;
 
@@ -9,10 +9,11 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
-import wh1spr.morty.Morty;
-import wh1spr.morty.Permission;
-import wh1spr.morty.command.Command;
+import wh1spr.bot.command.Command;
+import wh1spr.bot.morty.Morty;
+import wh1spr.bot.morty.Permission;
 
+// add in non static reference as bot object
 public class CommandDisableCommand extends Command {
 
 	public CommandDisableCommand(String name, String... aliases) {
