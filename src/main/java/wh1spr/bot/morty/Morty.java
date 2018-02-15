@@ -3,9 +3,9 @@ package wh1spr.bot.morty;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
-import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import wh1spr.bot.command.*;
 import wh1spr.bot.commands.*;
+import wh1spr.bot.dummy.Bot;
 
 /*
  * I'm well aware that Morty can not handle users that joined when he was offline.
@@ -20,41 +20,23 @@ import wh1spr.bot.commands.*;
  * a .properties file. This is handy dandy if a friend would want his/her own bot instead of Morty, with
  * the same functions.
  */
-public class Morty {
-	
-	public final String MORTY_TOKEN;
-	public final String PREFIX;
-	
-	public final CommandRegistry commandRegistry = new CommandRegistry();
-	public final ImageRegistry imageRegistry = new ImageRegistry();
-	
-	public static JDA jda = null;
-
-//	public static void main(String[] args) {
-//		Database.start();
-//		registerCommands();
-//		jda = run();
-////		Database.test();
-//		Database.updateNames(jda);
-//	}
+public class Morty extends Bot {
 	
 	public Morty(String key, String dataPath, String prefix) {
-		PREFIX = prefix;
-		MORTY_TOKEN = key;
-		
+		super(key, dataPath, prefix);
 		Database.start();
 		registerCommands();
 		jda = run();
-//		Database.test();
 		Database.updateNames(jda);
 	}
 	
 	public void registerCommands() {
+		CommandRegistry commandRegistry = this.getCommandRegistry();
 		// Bot Commands
 		commandRegistry.registerCommand(new ChangeGameCommand("changegame", "cg"));
 		commandRegistry.registerCommand(new ChangeNameCommand("changename", "cn"));
-		commandRegistry.registerCommand(new ShutdownCommand("shutdown"));
-		commandRegistry.registerCommand(new CommandDisableCommand("disablecommand", "dcmd"));
+		commandRegistry.registerCommand(new ShutdownCommand("shutdown", this));
+		commandRegistry.registerCommand(new CommandDisableCommand("disablecommand", this.getCommandRegistry(), "dcmd"));
 		commandRegistry.registerCommand(new SendFromMortyCommand("send"));
 		
 		// Dev Commands
@@ -63,16 +45,16 @@ public class Morty {
 		
 		// Channel Commands
 		commandRegistry.registerCommand(new CleanCommand("clean"));
-		commandRegistry.registerCommand(new VoteCommand("vote"));
+		commandRegistry.registerCommand(new VoteCommand("vote",this));
 //		commandRegistry.registerCommand(new IntroductionCommand("intro")); // I'm gonna redo this
 		
 		// User Commands
 //		commandRegistry.registerCommand(new RoleCommand("role")); // Might remake this for custom roles, not sure.
 		
 		// Image Commands
-		commandRegistry.registerCommand(new AddImageCommand("addimage"));
-		commandRegistry.registerCommand(new RemoveImageCommand("removeimage"));
-		imageRegistry.registerAllCommands();
+		commandRegistry.registerCommand(new AddImageCommand("addimage", this.getImageRegistry()));
+		commandRegistry.registerCommand(new RemoveImageCommand("removeimage", this.getImageRegistry()));
+		this.getImageRegistry().registerAllCommands();
 		
 	}
 	
@@ -80,9 +62,9 @@ public class Morty {
 		JDA jda = null;
 		try {
 			jda = new JDABuilder(AccountType.BOT)
-			        .setToken(MORTY_TOKEN).addEventListener(
-			        		new CommandHandler(PREFIX, commandRegistry),
-			        		new CommandHandler(PREFIX, imageRegistry),
+			        .setToken(this.getToken()).addEventListener(
+			        		new CommandHandler(this.getPrefix(), this.getCommandRegistry()),
+			        		new CommandHandler(this.getPrefix(), this.getImageRegistry()),
 			        		new AutoEventHandler())
 			        .buildBlocking();
 		} catch (Exception e) {
@@ -90,12 +72,8 @@ public class Morty {
 		}
 		return jda;
 	}
-
-	public static JDA getJDA() {
-		return jda;
-	}
 	
-	public static void shutdown() {
+	public void shutdown() {
 		Database.close();
 		getJDA().shutdown();
 		System.exit(0);

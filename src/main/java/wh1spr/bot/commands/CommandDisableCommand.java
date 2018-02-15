@@ -10,16 +10,19 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import wh1spr.bot.command.Command;
-import wh1spr.bot.morty.Morty;
+import wh1spr.bot.command.CommandRegistry;
 import wh1spr.bot.morty.Permission;
 
 // add in non static reference as bot object
 public class CommandDisableCommand extends Command {
 
-	public CommandDisableCommand(String name, String... aliases) {
+	public CommandDisableCommand(String name, CommandRegistry registry, String... aliases) {
 		super(name, aliases);
+		this.registry = registry;
 	}
 
+	private CommandRegistry registry = null;
+	
 	//admins can dcmd in case of abuse, overuse or unnecessary use
 	@Override
 	public void onCall(JDA jda, Guild guild, TextChannel channel, Member invoker, Message message, List<String> args) {
@@ -36,7 +39,7 @@ public class CommandDisableCommand extends Command {
 				} else if (cmd.equals("eval") && !Permission.hasPerm(Permission.OWNER, invoker.getUser(), false)) {
 					continue;
 				}
-				Morty.commandRegistry.removeCommand(cmd);
+				registry.removeCommand(cmd);
 			}
 		}
 		message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();

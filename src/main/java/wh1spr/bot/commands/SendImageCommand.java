@@ -1,7 +1,6 @@
 package wh1spr.bot.commands;
 
 import java.awt.Color;
-import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
@@ -41,8 +40,6 @@ public class SendImageCommand extends Command {
 		
 		//the color is the same color as the bot's role
 		MessageEmbed msg = new EmbedBuilder().setImage(this.imageUrl).setColor(new Color(16763904)).build();
-		
-		File image = new File(imageUrl);
 		
 		if (Permission.hasPerm(Permission.ADMIN, invoker.getUser(), false)) {
 			channel.sendMessage(msg).queue();

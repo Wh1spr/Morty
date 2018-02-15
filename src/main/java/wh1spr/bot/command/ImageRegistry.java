@@ -1,15 +1,21 @@
 package wh1spr.bot.command;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
 import wh1spr.bot.commands.SendImageCommand;
+import wh1spr.bot.dummy.Bot;
 import wh1spr.bot.morty.Database;
 import wh1spr.bot.morty.Morty;
 
 public class ImageRegistry extends CommandRegistry {
 	
+	
+	
+	public ImageRegistry(Bot bot) {
+		super(bot);
+	}
+
 	@Override
 	public void removeCommand(String URLorName) {
         if (registry.containsKey(URLorName)) {
@@ -22,7 +28,6 @@ public class ImageRegistry extends CommandRegistry {
     }
 	
 	public void registerAllCommands() {
-		Connection conn = Database.conn;
 		String sql = "SELECT Name, URL FROM Images";
 		
 		try (Statement stmt  = Database.conn.createStatement();

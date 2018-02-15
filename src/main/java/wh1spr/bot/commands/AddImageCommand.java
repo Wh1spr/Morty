@@ -10,16 +10,20 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import wh1spr.bot.command.Command;
+import wh1spr.bot.command.ImageRegistry;
 import wh1spr.bot.morty.Database;
-import wh1spr.bot.morty.Morty;
 import wh1spr.bot.morty.Permission;
 
 public class AddImageCommand extends Command {
 
-	public AddImageCommand(String name, String... aliases) {
+	public AddImageCommand(String name, ImageRegistry registry, String... aliases) {
 		//add in bot object.
 		super(name, aliases);
+		this.registry = registry;
+		
 	}
+	
+	private ImageRegistry registry = null;
 
 	@Override
 	public void onCall(JDA jda, Guild guild, TextChannel channel, Member invoker, Message message, List<String> args) {
@@ -48,7 +52,7 @@ public class AddImageCommand extends Command {
 			
 			if (Database.putImage(args.get(1), args.get(0))) {
 				message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
-				Morty.imageRegistry.registerCommand(new SendImageCommand(args.get(1), args.get(0)));
+				registry.registerCommand(new SendImageCommand(args.get(1), args.get(0)));
 			} else {
 				message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();
 				if (Database.existsImage(args.get(0))) {

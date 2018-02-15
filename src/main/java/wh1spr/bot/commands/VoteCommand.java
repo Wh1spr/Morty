@@ -22,17 +22,20 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import wh1spr.bot.command.Command;
+import wh1spr.bot.dummy.Bot;
 import wh1spr.bot.morty.C;
-import wh1spr.bot.morty.Morty;
 import wh1spr.bot.morty.Permission;
 
 //add in non static reference as bot object
 public class VoteCommand extends Command {
 
-	public VoteCommand(String name) {
+	public VoteCommand(String name, Bot bot) {
 		super(name);
+		this.bot = bot;
 	}
 
+	private Bot bot;
+	
 	// If wrongly formatted, it just doesnt care
 	@Override
 	public void onCall(JDA jda, Guild guild, TextChannel channel, Member invoker, Message message, List<String> args) {
@@ -45,7 +48,7 @@ public class VoteCommand extends Command {
 			
 			ArrayList<Emoji> emoticons = new ArrayList<Emoji>();
 			
-			String[] arguments = message.getContentDisplay().replaceFirst(Morty.PREFIX + this.name, "").replaceAll("\n", "").trim().split("\\[");
+			String[] arguments = message.getContentDisplay().replaceFirst(bot.getPrefix() + this.name, "").replaceAll("\n", "").trim().split("\\[");
 			
 			String newMessage = "**VOTE** - *" + arguments[0].split(" ", 2)[1].trim() + "*\n";
 			

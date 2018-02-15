@@ -10,17 +10,20 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import wh1spr.bot.command.Command;
+import wh1spr.bot.command.ImageRegistry;
 import wh1spr.bot.morty.Database;
-import wh1spr.bot.morty.Morty;
 import wh1spr.bot.morty.Permission;
 
 //add in non static reference as bot object
 public class RemoveImageCommand extends Command {
 
-	public RemoveImageCommand(String name, String... aliases) {
+	public RemoveImageCommand(String name, ImageRegistry registry, String... aliases) {
 		super(name, aliases);
+		this.registry = registry;
 	}
 
+	private ImageRegistry registry = null;
+	
 	@Override
 	public void onCall(JDA jda, Guild guild, TextChannel channel, Member invoker, Message message, List<String> args) {
 		if (!Permission.hasPerm(Permission.ADMIN, invoker.getUser(), false)) {
@@ -38,7 +41,7 @@ public class RemoveImageCommand extends Command {
 			}
 			
 			Database.removeImage(args.get(0));
-			Morty.imageRegistry.removeCommand(args.get(0));
+			registry.removeCommand(args.get(0));
 			message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
 		}
 		

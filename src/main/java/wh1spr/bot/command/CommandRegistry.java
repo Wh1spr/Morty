@@ -11,13 +11,14 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
-import wh1spr.bot.morty.Morty;
+import wh1spr.bot.dummy.Bot;
 
 public  class CommandRegistry {
 	
-	public CommandRegistry() {
-		// this would receive a "bot" object, of which Morty.java extends, so it's not a static reference
-		// and also of course to have multiple bots.
+	protected final Bot bot;
+	
+	public CommandRegistry(Bot bot) {
+		this.bot = bot;
 	}
 	
 	protected HashMap<String, CommandEntry> registry = new HashMap<>();
@@ -55,8 +56,8 @@ public  class CommandRegistry {
         List<String> aliases = old.getAliases();
         String cmdname = old.getName();
         
-        Morty.commandRegistry.registry.put(cmdname, entry);
-        aliases.forEach(e->Morty.commandRegistry.registry.put(e, entry));
+        bot.getCommandRegistry().registry.put(cmdname, entry);
+        aliases.forEach(e->bot.getCommandRegistry().registry.put(e, entry));
     }
 
     public class CommandEntry {
@@ -80,6 +81,7 @@ public  class CommandRegistry {
 	
 }
 
+// I'm using a very similar method to this guy here, and I found it so useful I put this in here as well
 /*
  * MIT License
  *
