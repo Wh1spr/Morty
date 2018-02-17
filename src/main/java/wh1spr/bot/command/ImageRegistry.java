@@ -10,8 +10,6 @@ import wh1spr.bot.morty.Morty;
 
 public class ImageRegistry extends CommandRegistry {
 	
-	
-	
 	public ImageRegistry(Bot bot) {
 		super(bot);
 	}
@@ -21,10 +19,7 @@ public class ImageRegistry extends CommandRegistry {
         if (registry.containsKey(URLorName)) {
         	//string is name
         	registry.remove(URLorName);
-        } else if (registry.containsValue(URLorName)) {
-        	//string is imgur URL
-        	registry.forEach((name,url)->{if (URLorName.equals(url)) registry.remove(name);});
-        }
+        } 
     }
 	
 	public void registerAllCommands() {

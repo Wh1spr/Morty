@@ -36,6 +36,8 @@ public class CleanCommand extends Command {
 			return;
 		}
 		
+		TextChannel tchannel = (TextChannel) channel;
+		
 		List<Message> messages = new ArrayList<Message>();
 		Set<Message> toDelete = new HashSet<Message>();
 		int deleted = 0;
@@ -80,7 +82,7 @@ public class CleanCommand extends Command {
 				//DELETE MESSAGES
 				
 				
-				channel.deleteMessages(toDelete).complete(true);
+				tchannel.deleteMessages(toDelete).complete(true);
 				
 			}
 			
