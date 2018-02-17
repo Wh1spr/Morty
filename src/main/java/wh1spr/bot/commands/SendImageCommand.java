@@ -11,8 +11,8 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.TextChannel;
 import wh1spr.bot.command.Command;
 import wh1spr.bot.morty.C;
 import wh1spr.bot.morty.Permission;
@@ -30,7 +30,7 @@ public class SendImageCommand extends Command {
 	public static final int timeout = 5000; // timeout in milliseconds, public so i can dynamically change it with eval
 
 	@Override
-	public void onCall(JDA jda, Guild guild, TextChannel channel, Member invoker, Message message, List<String> args) {
+	public void onCall(JDA jda, Guild guild, MessageChannel channel, Member invoker, Message message, List<String> args) {
 		if (guild.getId().equals(C.GUILD)) {
 			if (!Permission.hasPerm(Permission.MEMBER, invoker.getUser(), false)) {
 				message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();
@@ -54,7 +54,7 @@ public class SendImageCommand extends Command {
 		
 	}
 
-	private static boolean canUse(TextChannel channel) {
+	private static boolean canUse(MessageChannel channel) {
 		
 		long current = System.currentTimeMillis();
 		Long last = timer.get(channel.getId());

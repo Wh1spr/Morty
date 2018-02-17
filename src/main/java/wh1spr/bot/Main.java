@@ -4,9 +4,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Properties;
 
+import wh1spr.bot.dummy.Bot;
 import wh1spr.bot.morty.Morty;
 import wh1spr.logger.Logger;
 
@@ -18,7 +19,7 @@ public class Main {
 	private static Properties properties = null;
 	private static Logger log = new Logger("data/startup.log");
 	
-	private static ArrayList<Object> bots = new ArrayList<Object>();
+	private static HashMap<String, Bot> bots = new HashMap<String, Bot>();
 
 	public static void main(String[] args) {
 		if(!Files.exists(Paths.get(propertiesPath))) {
@@ -53,8 +54,12 @@ public class Main {
 			}
 			
 			log.info("Running MORTY...");
-			bots.add(new Morty(key, dataPath, prefix)); // This will also run Morty
+			bots.put("MORTY", new Morty(key, dataPath, prefix)); // This will also run Morty
 			
 		}
+	}
+	
+	public static Bot getBot(String name) {
+		return bots.get(name);
 	}
 }

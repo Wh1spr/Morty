@@ -8,7 +8,7 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.entities.MessageChannel;
 import wh1spr.bot.command.Command;
 import wh1spr.bot.command.CommandRegistry;
 import wh1spr.bot.morty.Permission;
@@ -25,7 +25,7 @@ public class CommandDisableCommand extends Command {
 	
 	//admins can dcmd in case of abuse, overuse or unnecessary use
 	@Override
-	public void onCall(JDA jda, Guild guild, TextChannel channel, Member invoker, Message message, List<String> args) {
+	public void onCall(JDA jda, Guild guild, MessageChannel channel, Member invoker, Message message, List<String> args) {
 		if (!Permission.hasPerm(Permission.ADMIN, invoker.getUser(), false)) {
 			message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();
 			return;

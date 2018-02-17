@@ -8,13 +8,14 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.command.Command;
 import wh1spr.bot.morty.C;
 import wh1spr.bot.morty.Database;
 import wh1spr.bot.morty.Permission;
 // TO BE REDONE
+@Deprecated
 public class IntroductionCommand extends Command {
 
 	public IntroductionCommand(String name, String... aliases) {
@@ -22,8 +23,8 @@ public class IntroductionCommand extends Command {
 	}
 
 	@Override
-	public void onCall(JDA jda, Guild guild, TextChannel channel, Member invoker, Message message, List<String> args) {
-		if (!Permission.hasPerm(Permission.MEMBER, invoker.getUser(), false) || !guild.getId().equals(C.GUILD)) {
+	public void onCall(JDA jda, Guild guild, MessageChannel channel, Member invoker, Message message, List<String> args) {
+		if (!Permission.hasPerm(Permission.MEMBER, invoker.getUser(), false) || guild == null || !guild.getId().equals(C.GUILD)) {
 			message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();
 			return;
 		}

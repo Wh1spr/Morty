@@ -19,7 +19,7 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import wh1spr.bot.command.Command;
 import wh1spr.bot.dummy.Bot;
@@ -38,8 +38,8 @@ public class VoteCommand extends Command {
 	
 	// If wrongly formatted, it just doesnt care
 	@Override
-	public void onCall(JDA jda, Guild guild, TextChannel channel, Member invoker, Message message, List<String> args) {
-		if (!Permission.hasPerm(Permission.WINA, invoker.getUser(), true)) {
+	public void onCall(JDA jda, Guild guild, MessageChannel channel, Member invoker, Message message, List<String> args) {
+		if (!Permission.hasPerm(Permission.WINA, invoker.getUser(), true) || guild == null) {
 			message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();
 			return;
 		}
@@ -96,9 +96,9 @@ public class VoteCommand extends Command {
 	//The task which you want to execute
 	private class TimedTask extends TimerTask
 	{
-		public TextChannel channel;
+		public MessageChannel channel;
 		
-		public TimedTask(String id, TextChannel channel, String title, ArrayList<Emoji> emoticons) {
+		public TimedTask(String id, MessageChannel channel, String title, ArrayList<Emoji> emoticons) {
 			this.id = id;
 			this.channel = channel;
 			this.title = title;
@@ -167,7 +167,7 @@ public class VoteCommand extends Command {
 	    }
 	}
 
-	private boolean startVote(String id, String time, TextChannel channel, String title, ArrayList<Emoji> emoticons) {
+	private boolean startVote(String id, String time, MessageChannel channel, String title, ArrayList<Emoji> emoticons) {
 
 	    //the Date and time at which you want to execute
 	    DateFormat dateFormatter = new SimpleDateFormat("dd:HH:mm:ss");
@@ -192,5 +192,4 @@ public class VoteCommand extends Command {
 	    timer.schedule(new TimedTask(id, channel, title, emoticons), c.getTime());
 	    return true;
 	}
-
 }

@@ -8,12 +8,13 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.entities.MessageChannel;
 import wh1spr.bot.command.Command;
 import wh1spr.bot.command.ImageRegistry;
 import wh1spr.bot.morty.Database;
 import wh1spr.bot.morty.Permission;
 
+//Images gonna be individual per guild, with all images still on imgur for safety of the database
 public class AddImageCommand extends Command {
 
 	public AddImageCommand(String name, ImageRegistry registry, String... aliases) {
@@ -26,7 +27,7 @@ public class AddImageCommand extends Command {
 	private ImageRegistry registry = null;
 
 	@Override
-	public void onCall(JDA jda, Guild guild, TextChannel channel, Member invoker, Message message, List<String> args) {
+	public void onCall(JDA jda, Guild guild, MessageChannel channel, Member invoker, Message message, List<String> args) {
 		if (!Permission.hasPerm(Permission.ADMIN, invoker.getUser(), false)) {
 			message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();
 			return;
