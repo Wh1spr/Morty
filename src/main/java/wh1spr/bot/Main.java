@@ -10,6 +10,7 @@ import java.util.Properties;
 import wh1spr.bot.dummy.Bot;
 import wh1spr.bot.morty.Morty;
 import wh1spr.logger.Logger;
+import wh1spr.logger.LoggerCache;
 
 // TODO
 // - start a logger here or straight to console?
@@ -17,7 +18,7 @@ public class Main {
 	
 	private static final String propertiesPath = "data/main.properties";
 	private static Properties properties = null;
-	private static Logger log = new Logger("data/startup.log");
+	private static Logger log = LoggerCache.newLogger("MAIN", "data/main.log");
 	
 	private static HashMap<String, Bot> bots = new HashMap<String, Bot>();
 
@@ -40,13 +41,17 @@ public class Main {
 	}
 	
 	private static void morty() {
-		if(properties.getProperty("MORTY-START") == "True")  {
+		if(properties.getProperty("MORTY-START").equals("True"))  {
 			log.info("Trying to start MORTY...");
 			String key = properties.getProperty("MORTY-KEY");
 			String dataPath = properties.getProperty("MORTY-DATA", "data/morty/");
 			String prefix = properties.getProperty("MORTY-PREFIX");
+			log.debug("[Morty] Token - " + key);
+			log.debug("[Morty] DataPath - " + dataPath);
+			log.debug("[Morty] Prefix - '" + prefix + "'");
 			if (prefix == null) {
 				log.warning("Prefix for MORTY could not be found in main.properties. Falling back to default '!'.");
+				prefix = "!";
 			}
 			if (key == null) {
 				log.error("Key for MORTY could not be found in main.properties. Morty has not started.");

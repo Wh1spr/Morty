@@ -40,6 +40,7 @@ public class CommandHandler extends ListenerAdapter {
 	
 	@Override
 	public void onMessageReceived(MessageReceivedEvent event) {
+		// For private messages
 		if (event.getChannelType().equals(ChannelType.PRIVATE)) {
 			//no response one something that doesnt start with the right prefix
 			if (!event.getMessage().getContentStripped().startsWith(PREFIX)) return;
