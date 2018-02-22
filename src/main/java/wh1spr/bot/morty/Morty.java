@@ -6,6 +6,8 @@ import net.dv8tion.jda.core.JDABuilder;
 import wh1spr.bot.command.*;
 import wh1spr.bot.commands.*;
 import wh1spr.bot.dummy.Bot;
+import wh1spr.logger.Logger;
+import wh1spr.logger.LoggerCache;
 
 /*
  * I'm well aware that Morty can not handle users that joined when he was offline.
@@ -22,12 +24,16 @@ import wh1spr.bot.dummy.Bot;
  */
 public class Morty extends Bot {
 	
+	private final Logger log;
+	
 	public Morty(String key, String dataPath, String prefix) {
 		super(key, dataPath, prefix);
 		Database.start();
+		log = LoggerCache.newLogger("MORTY", dataPath + "morty.log");
+		log.info("Registering commands for Morty.");
 		registerCommands();
+		log.info("Starting JDA instance.");
 		jda = run();
-		Database.updateNames(jda);
 	}
 	
 	public void registerCommands() {
@@ -47,14 +53,12 @@ public class Morty extends Bot {
 		commandRegistry.registerCommand(new CleanCommand("clean"));
 		commandRegistry.registerCommand(new VoteCommand("vote",this));
 //		commandRegistry.registerCommand(new IntroductionCommand("intro")); // I'm gonna redo this
-		
-		// User Commands
-//		commandRegistry.registerCommand(new RoleCommand("role")); // Might remake this for custom roles, not sure.
-		
+			
 		// Image Commands
 		commandRegistry.registerCommand(new AddImageCommand("addimage", this.getImageRegistry()));
 		commandRegistry.registerCommand(new RemoveImageCommand("removeimage", this.getImageRegistry()));
 		this.getImageRegistry().registerAllCommands();
+		log.info("All commands registered.");
 		
 	}
 	
@@ -68,33 +72,39 @@ public class Morty extends Bot {
 			        		new AutoEventHandler())
 			        .buildBlocking();
 		} catch (Exception e) {
-			logFatal("JDA instance could not be initialized.", e);
+			log.fatal(e, "JDA instance could not be initialized.");
+			shutdown();
 		}
 		return jda;
 	}
 	
 	public void shutdown() {
-		Database.close();
+		log.info("Shutting down Morty.");
 		getJDA().shutdown();
+		LoggerCache.shutdown();
 		System.exit(0);
 	}
 	
 	// Log outs
+	@Deprecated
 	public static void logInfo(String msg) {
 		System.out.println("[MORTY] INFO: " + msg);
 	}
 	
+	@Deprecated
 	public static void logFatal(String msg) {
 		System.err.println("[MORTY] FATAL: " + msg);
 		System.exit(0);
 	}
 	
+	@Deprecated
 	public static void logFatal(String msg, Exception e) {
 		System.err.println("[MORTY] FATAL: " + msg);
 		e.printStackTrace();
 		System.exit(0);
 	}
 	
+	@Deprecated
 	public static void logError(String msg) {
 		System.err.println("[MORTY] ERROR: " + msg);
 	}

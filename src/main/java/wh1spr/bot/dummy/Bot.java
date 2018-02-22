@@ -6,6 +6,7 @@ import wh1spr.bot.command.ImageRegistry;
 
 public abstract class Bot {
 	
+	public static final String OWNER = "204529799912226816";
 	private final String LOGIN_TOKEN;
 	private final String PREFIX;
 	private final String DATA_PATH;

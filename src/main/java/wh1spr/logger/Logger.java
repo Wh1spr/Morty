@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 
+//Change this so it appends and has closedown/startup message + sets some whitespace in between
 
 public class Logger {
 
@@ -15,9 +16,9 @@ public class Logger {
 	private LocalDateTime time = LocalDateTime.now();
 	
 	Logger(String name, String url) {
-		this.name = name;
+		this.name = name.toUpperCase();
 		try {
-			this.out = new PrintWriter(new BufferedWriter (new FileWriter(url)));
+			this.out = new PrintWriter(new BufferedWriter (new FileWriter(url, true)));
 		} catch (IOException e) {
 			if (name.equals("MAIN")) {
 				System.err.println("FATAL - Logger startup failed. Shutting down application.");
@@ -28,38 +29,47 @@ public class Logger {
 			}
 		}
 		
-		info("Logger startup - Hello!");
+		info("");
+		info("LOGGER STARTUP - " + getDateTime());
+		info("");
+		out.flush();
 	}
 	
 	public void error(Exception e, String msg) {
 		String time = "[" + getTime() + "]";
-		out.println(time + " ERROR - " + msg);
+		out.println(time + "[ERROR] " + msg);
 		e.printStackTrace(out);
-		out.flush();
 	}
 	
 	public void error(String msg) {
 		String time = "[" + getTime() + "]";
-		out.println(time + " ERROR - " + msg);
-		out.flush();
+		out.println(time + "[ERROR] " + msg);
+	}
+	
+	public void fatal(Exception e, String msg) {
+		String time = "[" + getTime() + "]";
+		out.println(time + "[FATAL] " + msg);
+		e.printStackTrace(out);
+	}
+	
+	public void fatal(String msg) {
+		String time = "[" + getTime() + "]";
+		out.println(time + "[FATAL] " + msg);
 	}
 	
 	public void info(String msg) {
 		String time = "[" + getTime() + "]";
-		out.println(time + " INFO - " + msg);
-		out.flush();
+		out.println(time + "[INFO] " + msg);
 	}
 	
 	public void debug(String msg) {
 		String time = "[" + getTime() + "]";
-		out.println(time + " DEBUG - " + msg);
-		out.flush();
+		out.println(time + "[DEBUG] " + msg);
 	}
 	
 	public void warning(String msg) {
 		String time = "[" + getTime() + "]";
-		out.println(time + " WARNING - " + msg);
-		out.flush();
+		out.println(time + "[WARNING] " + msg);
 	}
 	
 	public String getTime() {
@@ -74,6 +84,8 @@ public class Logger {
 	}
 	
 	public boolean shutdown() {
+		LoggerCache.getLogger("MAIN").info("Logger " + name + " shutting down.");
+		info("Logger has been shutdown.");
 		out.flush();
 		out.close();
 		isClosed = true;

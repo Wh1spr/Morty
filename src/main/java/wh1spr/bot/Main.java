@@ -12,8 +12,6 @@ import wh1spr.bot.morty.Morty;
 import wh1spr.logger.Logger;
 import wh1spr.logger.LoggerCache;
 
-// TODO
-// - start a logger here or straight to console?
 public class Main {
 	
 	private static final String propertiesPath = "data/main.properties";
