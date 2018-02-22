@@ -1,6 +1,7 @@
 package wh1spr.bot.morty;
 
 //C for constants
+@Deprecated
 public class C {
 	
 	// Text Channels

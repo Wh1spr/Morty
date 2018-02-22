@@ -13,6 +13,7 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 
 // TO BE REDONE
+@Deprecated
 public class Database {
 	
 	public static Connection conn = null;
@@ -69,6 +70,7 @@ public class Database {
 		}
 	}
 	
+	@Deprecated
 	public static void removeIntroduction(User user) {
 		String sql = "UPDATE Users SET Intro = 0 WHERE UserID = " + user.getId();
 		try {
@@ -82,6 +84,7 @@ public class Database {
 		}
 	}
 	
+	@Deprecated
 	public static void putIntroduction(User user, Message message) {
 		String sql = "UPDATE Users SET Intro = " + message.getId() + " WHERE UserID = " + user.getId();
 		try {
@@ -94,6 +97,7 @@ public class Database {
 		}
 	}
 	
+	@Deprecated
 	public static boolean hasIntroduction(User user) {
 		String sql = "SELECT Intro FROM Users WHERE UserID = " + user.getId();
 		
@@ -109,6 +113,7 @@ public class Database {
 		}
 	}
 	
+	@Deprecated
 	public static String getIntroductionId(User user) {
 		String sql = "SELECT Intro FROM Users WHERE UserID = " + user.getId();
 		
@@ -125,6 +130,7 @@ public class Database {
 		}
 	}
 	
+	@Deprecated
 	public static String getUserIdByIntroMsgId(String introMsgId) {
 		if (introMsgId.contains(" ")) return null;
 		String sql = "SELECT UserID FROM Users WHERE Intro = " + introMsgId;
@@ -170,6 +176,7 @@ public class Database {
 		}
 	}
 	
+	@Deprecated
 	public static void updateNames(JDA jda) {
 		String sql = "SELECT UserID FROM Users";
 		
