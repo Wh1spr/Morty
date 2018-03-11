@@ -28,7 +28,6 @@ public class Morty extends Bot {
 	
 	public Morty(String key, String dataPath, String prefix) {
 		super(key, dataPath, prefix);
-		Database.start();
 		log = LoggerCache.newLogger("MORTY", dataPath + "morty.log");
 		log.info("Registering commands for Morty.");
 		registerCommands();
@@ -43,6 +42,7 @@ public class Morty extends Bot {
 		commandRegistry.registerCommand(new ChangeNameCommand("changename", "cn"));
 		commandRegistry.registerCommand(new ShutdownCommand("shutdown", this));
 		commandRegistry.registerCommand(new CommandDisableCommand("disablecommand", this.getCommandRegistry(), "dcmd"));
+		commandRegistry.registerCommand(new CommandDisableCommand("disablecommand", this.getImageRegistry(), "dcmd"));
 		commandRegistry.registerCommand(new SendFromMortyCommand("send"));
 		
 		// Dev Commands

@@ -39,10 +39,10 @@ public class Main {
 	}
 	
 	private static void morty() {
-		if(properties.getProperty("MORTY-START").equals("True"))  {
+		if(properties.getProperty("MORTY-START", "False").equals("True"))  {
 			log.info("Trying to start MORTY...");
 			String key = properties.getProperty("MORTY-KEY");
-			String dataPath = properties.getProperty("MORTY-DATA", "data/morty/");
+			String dataPath = properties.getProperty("MORTY-DATA", "data/Morty/");
 			String prefix = properties.getProperty("MORTY-PREFIX");
 			log.debug("[Morty] Token - " + key);
 			log.debug("[Morty] DataPath - " + dataPath);
