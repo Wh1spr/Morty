@@ -11,6 +11,7 @@ import java.sql.Statement;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
+import wh1spr.logger.LoggerCache;
 
 // TO BE REDONE
 @Deprecated
@@ -23,12 +24,15 @@ public class Database {
 		try {
 			Class.forName("org.sqlite.JDBC");
 			if(!Files.exists(Paths.get("Morty.db"))) {
-				Morty.logFatal("Database is not present. Exiting...");
+				System.out.println("Database is not present. Exiting...");
+				System.exit(0);
 			}
 			conn = DriverManager.getConnection(url);
-			Morty.logInfo("Connection to Database has been established");
+			System.out.println("Connection to Database has been established");
 		} catch (Exception e) {
-			Morty.logFatal("Could not establish connection to the Database. Exiting...", e);
+			System.out.println("Could not establish connection to the Database. Exiting...");
+			e.printStackTrace();
+			System.exit(0);
 		}
 	}
 	
@@ -209,8 +213,7 @@ public class Database {
 			stmt.close();
 			return true;
 		} catch (Exception e) {
-			System.out.println("[MORTY] ERROR: Could not remove Image.");
-			Morty.logError(e.getMessage());
+			LoggerCache.getLogger("MORTY").error(e,"Could not remove Image");
 			return false;
 		}
 	}
@@ -227,8 +230,7 @@ public class Database {
 			stmt.close();
 			return true;
 		} catch (Exception e) {
-			System.out.println("[MORTY] ERROR: Could not insert new Image");
-			Morty.logError(e.getMessage());
+			LoggerCache.getLogger("MORTY").error(e,"Could not insert new Image");
 			return false;
 		}
 	}

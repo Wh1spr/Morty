@@ -32,7 +32,7 @@ public class ImageRegistry extends CommandRegistry {
 			}
 			
 		} catch (Exception e) {
-			Morty.logFatal("Could not load images. Exiting...");
+			System.out.println("Could not load images. Exiting...");
 			e.printStackTrace();
 			System.exit(0);
 		}

@@ -84,28 +84,4 @@ public class Morty extends Bot {
 		LoggerCache.shutdown();
 		System.exit(0);
 	}
-	
-	// Log outs
-	@Deprecated
-	public static void logInfo(String msg) {
-		System.out.println("[MORTY] INFO: " + msg);
-	}
-	
-	@Deprecated
-	public static void logFatal(String msg) {
-		System.err.println("[MORTY] FATAL: " + msg);
-		System.exit(0);
-	}
-	
-	@Deprecated
-	public static void logFatal(String msg, Exception e) {
-		System.err.println("[MORTY] FATAL: " + msg);
-		e.printStackTrace();
-		System.exit(0);
-	}
-	
-	@Deprecated
-	public static void logError(String msg) {
-		System.err.println("[MORTY] ERROR: " + msg);
-	}
 }

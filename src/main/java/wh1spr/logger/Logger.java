@@ -73,7 +73,7 @@ public class Logger {
 	}
 	
 	public String getTime() {
-		return time.getHour() + ":" + time.getMinute() + ":" + String.format("%2d", time.getSecond());
+		return time.getHour() + ":" + String.format("%2d", time.getMinute()).replace(' ', '0') + ":" + String.format("%2d", time.getSecond()).replace(' ', '0');
 	}
 	public String getDateTime() {
 		return time.getYear() + "/" + time.getMonthValue() + "/" + time.getDayOfMonth() + " - " + getTime();
