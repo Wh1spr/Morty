@@ -3,28 +3,19 @@ package wh1spr.bot.morty;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
+import wh1spr.bot.Main;
 import wh1spr.bot.command.*;
 import wh1spr.bot.commands.*;
 import wh1spr.bot.dummy.Bot;
 import wh1spr.logger.Logger;
 import wh1spr.logger.LoggerCache;
 
-/*
- * I'm well aware that Morty can not handle users that joined when he was offline.
- * I'm probably gonna implement some function to handle this in the future, but for now
- * this is not necessary.
- * 
- * So the rest of the project is not ready yet for a non-static version of a Bot.
- * I'll need Main.java to have some way to get these objects and on full shutdown (only allowed by Morty btw)
- * it needs to call all the shutdown functions of all the running bots (if there are multiple)
- * 
+/* 
  * Basically I'm redoing a lot of stuff so I can make multiple bots from a single jar file, controlled by 
  * a .properties file. This is handy dandy if a friend would want his/her own bot instead of Morty, with
  * the same functions.
  */
 public class Morty extends Bot {
-	
-	private final Logger log;
 	
 	public Morty(String key, String dataPath, String prefix) {
 		super(key, dataPath, prefix);
@@ -77,11 +68,13 @@ public class Morty extends Bot {
 		}
 		return jda;
 	}
-	
-	public void shutdown() {
+
+	@Override
+	public void shutdownBot() {
 		log.info("Shutting down Morty.");
 		getJDA().shutdown();
-		LoggerCache.shutdown();
-		System.exit(0);
+		
+		log.shutdown();
+		Main.removeBot("MORTY");
 	}
 }

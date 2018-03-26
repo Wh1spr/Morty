@@ -65,4 +65,12 @@ public class Main {
 	public static Bot getBot(String name) {
 		return bots.get(name);
 	}
+	
+	public static int getNrOfBots() {
+		return bots.values().size();
+	}
+	
+	public static void removeBot(String name) {
+		bots.remove(name);
+	}
 }

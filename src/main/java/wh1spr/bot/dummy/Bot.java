@@ -1,10 +1,15 @@
 package wh1spr.bot.dummy;
 
 import net.dv8tion.jda.core.JDA;
+import wh1spr.bot.Main;
 import wh1spr.bot.command.CommandRegistry;
 import wh1spr.bot.command.ImageRegistry;
+import wh1spr.logger.Logger;
+import wh1spr.logger.LoggerCache;
 
 public abstract class Bot {
+	
+	protected Logger log;
 	
 	public static final String OWNER = "204529799912226816";
 	private final String LOGIN_TOKEN;
@@ -52,5 +57,22 @@ public abstract class Bot {
 		return this.imageRegistry;
 	}
 	
-	public abstract void shutdown();
+	public Logger getLog() {
+		return this.log;
+	}
+	
+	public void shutdown() {
+		shutdownBot();
+		if (Main.getNrOfBots() <= 0) {
+			shutdownLast();
+		}
+	}
+	
+	public void shutdownLast() {
+		LoggerCache.getLogger("MAIN").info("Last bot shut down. Shutting down application.");
+		LoggerCache.shutdown();
+		System.exit(0);
+	}
+	
+	public abstract void shutdownBot();
 }
