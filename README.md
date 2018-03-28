@@ -6,6 +6,7 @@ The Morty Discord bot. An allrounder for server management, testing things in Di
 
 ## Built with
 * **[JDA](https://github.com/DV8FromTheWorld/JDA)** - *Java Discord Api*
+* **[LavaPlayer](https://github.com/sedmelluq/lavaplayer)** - *Audio player library for Discord*
 * **[Gradle](https://gradle.org)** - *Dependency Management*
 
 ## Contributing
@@ -22,6 +23,6 @@ Thank you!
 ## Notes
 - The `.zip` file `Morty_1.0.zip` is all the source code of an older version of Morty, which was linked to one Discord server. It contains some commands that are now not used anymore, since the server closed down.
 
-- There are some hardcoded ID's in the code. I think I've already put them all in `C.java`, but I could be wrong.
+- Some items don't get used at this moment, others are yet to be removed. The code you see might not be the code that is executed.
 
 If you have any questions, send me an email.
