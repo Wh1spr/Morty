@@ -9,9 +9,9 @@ import com.vdurmont.emoji.EmojiManager;
 
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.command.Command;
 import wh1spr.bot.morty.Permission;
 
@@ -23,8 +23,8 @@ public class EvalCommand extends Command {
 	
 	// Owner only because of obvious reasons (it can pretty much do ANYTHING)
 	@Override
-	public void onCall(JDA jda, Guild guild, MessageChannel channel, Member invoker, Message message, List<String> args) {
-		if (!Permission.hasPerm(Permission.OWNER, invoker.getUser(), true)) {
+	public void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args) {
+		if (!Permission.hasPerm(Permission.OWNER, invoker, true)) {
 			message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();
 			return;
 		}

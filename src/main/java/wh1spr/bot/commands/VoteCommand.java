@@ -17,9 +17,9 @@ import com.vdurmont.emoji.EmojiManager;
 
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import wh1spr.bot.command.Command;
 import wh1spr.bot.dummy.Bot;
@@ -38,8 +38,8 @@ public class VoteCommand extends Command {
 	
 	// If wrongly formatted, it just doesnt care
 	@Override
-	public void onCall(JDA jda, Guild guild, MessageChannel channel, Member invoker, Message message, List<String> args) {
-		if (!Permission.hasPerm(Permission.WINA, invoker.getUser(), true) || guild == null) {
+	public void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args) {
+		if (!Permission.hasPerm(Permission.WINA, invoker, true) || guild == null) {
 			message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();
 			return;
 		}

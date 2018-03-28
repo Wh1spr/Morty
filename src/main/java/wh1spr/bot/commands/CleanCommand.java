@@ -10,7 +10,6 @@ import com.vdurmont.emoji.EmojiManager;
 
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -30,8 +29,8 @@ public class CleanCommand extends Command {
 	
 	// I'm making it so that, if the toDelete is <= 100, I remove them 1 by 1 if an error is thrown.
 	@Override
-	public void onCall(JDA jda, Guild guild, MessageChannel channel, Member invoker, Message message, List<String> args) {
-		if (!Permission.hasPerm(Permission.ADMIN, invoker.getUser(), false) || guild == null) {
+	public void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args) {
+		if (!Permission.hasPerm(Permission.ADMIN, invoker, false) || guild == null) {
 			message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();
 			return;
 		}

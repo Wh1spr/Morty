@@ -6,7 +6,6 @@ import com.vdurmont.emoji.EmojiManager;
 
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
@@ -23,8 +22,8 @@ public class IntroductionCommand extends Command {
 	}
 
 	@Override
-	public void onCall(JDA jda, Guild guild, MessageChannel channel, Member invoker, Message message, List<String> args) {
-		if (!Permission.hasPerm(Permission.MEMBER, invoker.getUser(), false) || guild == null || !guild.getId().equals(C.GUILD)) {
+	public void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args) {
+		if (!Permission.hasPerm(Permission.MEMBER, invoker, false) || guild == null || !guild.getId().equals(C.GUILD)) {
 			message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();
 			return;
 		}

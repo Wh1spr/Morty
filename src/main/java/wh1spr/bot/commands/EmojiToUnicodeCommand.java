@@ -7,9 +7,9 @@ import com.vdurmont.emoji.EmojiManager;
 
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.command.Command;
 import wh1spr.bot.morty.Permission;
 
@@ -20,8 +20,8 @@ public class EmojiToUnicodeCommand extends Command {
 	}
 
 	@Override
-	public void onCall(JDA jda, Guild guild, MessageChannel channel, Member invoker, Message message, List<String> args) {
-		if (!Permission.hasPerm(Permission.MEMBER, invoker.getUser(), false)) {
+	public void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args) {
+		if (!Permission.hasPerm(Permission.MEMBER, invoker, false)) {
 			message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();
 			return;
 		}

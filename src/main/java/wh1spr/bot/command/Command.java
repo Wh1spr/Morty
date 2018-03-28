@@ -5,9 +5,9 @@ import java.util.List;
 
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.User;
 
 public abstract class Command {
 
@@ -29,6 +29,6 @@ public abstract class Command {
 	protected String name = null;
 	protected ArrayList<String> aliases = new ArrayList<String>();
 	
-	public abstract void onCall(JDA jda, Guild guild, MessageChannel channel, Member invoker, Message message, List<String> args);
+	public abstract void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args);
 
 }

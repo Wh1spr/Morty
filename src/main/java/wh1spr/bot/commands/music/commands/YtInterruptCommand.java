@@ -11,9 +11,9 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.commands.music.GuildMusicManager;
 import wh1spr.bot.commands.music.Music;
 
@@ -27,7 +27,7 @@ public class YtInterruptCommand extends AudioCommand {
 	}
 
 	@Override
-	public void onCall(JDA jda, Guild guild, MessageChannel channel, Member invoker, Message message, List<String> args) {
+	public void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args) {
 		GuildMusicManager mng = getMusic().getGuildM(guild);
 		loadAndPlay(mng, channel, URL, false);
 	}
