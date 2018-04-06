@@ -72,9 +72,7 @@ public class Morty extends Bot {
 	public void shutdownBot() {
 		if (log == null) log = LoggerCache.getLogger("MORTY");
 		log.info("Shutting down Morty.");
-		getJDA().shutdown();
 		if (jda!=null) getJDA().shutdown();
-		
 		log.shutdown();
 		Main.removeBot("MORTY");
 	}
