@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -69,6 +70,10 @@ public class Main {
 	
 	public static int getNrOfBots() {
 		return bots.values().size();
+	}
+	
+	public static Collection<Bot> getBots() {
+		return bots.values();
 	}
 	
 	public static void removeBot(String name) {

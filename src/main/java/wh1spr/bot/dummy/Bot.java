@@ -4,6 +4,7 @@ import net.dv8tion.jda.core.JDA;
 import wh1spr.bot.Main;
 import wh1spr.bot.command.CommandRegistry;
 import wh1spr.bot.command.ImageRegistry;
+import wh1spr.bot.dummy.database.DatabaseDummy;
 import wh1spr.logger.Logger;
 import wh1spr.logger.LoggerCache;
 
@@ -19,6 +20,8 @@ public abstract class Bot {
 	private final CommandRegistry commandRegistry;
 	private final ImageRegistry imageRegistry;
 	
+	private DatabaseDummy db;
+	
 	protected Bot(String token, String dataPath, String prefix) {
 		this.LOGIN_TOKEN = token;
 		this.PREFIX = prefix;
@@ -26,6 +29,7 @@ public abstract class Bot {
 		
 		this.commandRegistry = new CommandRegistry(this);
 		this.imageRegistry = new ImageRegistry(this);
+		this.db = new DatabaseDummy(this); // Database can be overridden with protected setDb(x)
 	}
 	
 	public JDA jda = null;
@@ -55,6 +59,14 @@ public abstract class Bot {
 	
 	public ImageRegistry getImageRegistry() {
 		return this.imageRegistry;
+	}
+	
+	public DatabaseDummy getDb() {
+		return this.db;
+	}
+	
+	protected void setDb(DatabaseDummy db) {
+		this.db = db;
 	}
 	
 	public Logger getLog() {

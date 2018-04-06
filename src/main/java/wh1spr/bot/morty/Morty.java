@@ -7,7 +7,6 @@ import wh1spr.bot.Main;
 import wh1spr.bot.command.*;
 import wh1spr.bot.commands.*;
 import wh1spr.bot.dummy.Bot;
-import wh1spr.logger.Logger;
 import wh1spr.logger.LoggerCache;
 
 /* 
@@ -19,7 +18,6 @@ public class Morty extends Bot {
 	
 	public Morty(String key, String dataPath, String prefix) {
 		super(key, dataPath, prefix);
-		log = LoggerCache.newLogger("MORTY", dataPath + "morty.log");
 		log = LoggerCache.getLogger("MORTY");
 		log.info("Registering commands for Morty.");
 		registerCommands();
