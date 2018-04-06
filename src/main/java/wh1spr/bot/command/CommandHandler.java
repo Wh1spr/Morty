@@ -39,7 +39,6 @@ public class CommandHandler extends ListenerAdapter {
 	
 	@Override
 	public void onPrivateMessageReceived(PrivateMessageReceivedEvent event) {
-	
 		//no response one something that doesnt start with the right prefix
 		if (!event.getMessage().getContentStripped().startsWith(PREFIX)) return;
 		
@@ -50,7 +49,7 @@ public class CommandHandler extends ListenerAdapter {
 			List<String> args = new ArrayList<String>();
 			args.addAll(Arrays.asList(event.getMessage().getContentDisplay().split(" ")));
 			args.remove(0);
-			cmd.onCall(event.getJDA(), null, event.getChannel(), event.getAuthor(), event.getMessage(), args);
+			cmd.onCallPrivate(event.getJDA(), event.getChannel(), event.getAuthor(), event.getMessage(), args);
 		}
 		
 	}

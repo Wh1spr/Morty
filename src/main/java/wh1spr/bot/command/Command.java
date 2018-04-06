@@ -31,4 +31,8 @@ public abstract class Command {
 	
 	public abstract void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args);
 
+	public void onCallPrivate(JDA jda, MessageChannel channel, User invoker, Message message, List<String> args) {
+		onCall(jda, null, channel, invoker, message, args);
+	}
+
 }

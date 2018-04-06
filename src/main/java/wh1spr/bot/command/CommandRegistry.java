@@ -8,9 +8,9 @@ import com.vdurmont.emoji.EmojiManager;
 
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.dummy.Bot;
 
 public  class CommandRegistry {
@@ -46,8 +46,12 @@ public  class CommandRegistry {
     public void removeCommand(String name) {
         CommandEntry entry = new CommandEntry(new Command(name) {
             @Override
-            public void onCall(JDA jda, Guild guild, MessageChannel channel, Member invoker, Message message, List<String> args ) {
+            public void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args ) {
                 message.addReaction(EmojiManager.getForAlias("warning").getUnicode()).queue();
+            }
+            @Override
+            public void onCallPrivate(JDA jda, MessageChannel channel, User invoker, Message message, List<String> args ) {
+            	message.addReaction(EmojiManager.getForAlias("warning").getUnicode()).queue();
             }
         });
         
