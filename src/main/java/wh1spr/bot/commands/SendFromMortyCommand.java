@@ -28,7 +28,7 @@ public class SendFromMortyCommand extends Command {
 		}
 		
 		if (args.size() > 1) {
-			MessageChannel channelTo = guild.getTextChannelById(args.get(0));
+			MessageChannel channelTo = jda.getTextChannelById(args.get(0));
 			if (channelTo == null) {message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();return;}
 			
 			Bot morty = Main.getBot("MORTY");

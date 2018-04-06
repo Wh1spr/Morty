@@ -20,6 +20,7 @@ public class Morty extends Bot {
 	public Morty(String key, String dataPath, String prefix) {
 		super(key, dataPath, prefix);
 		log = LoggerCache.newLogger("MORTY", dataPath + "morty.log");
+		log = LoggerCache.getLogger("MORTY");
 		log.info("Registering commands for Morty.");
 		registerCommands();
 		log.info("Starting JDA instance.");
@@ -71,8 +72,10 @@ public class Morty extends Bot {
 
 	@Override
 	public void shutdownBot() {
+		if (log == null) log = LoggerCache.getLogger("MORTY");
 		log.info("Shutting down Morty.");
 		getJDA().shutdown();
+		if (jda!=null) getJDA().shutdown();
 		
 		log.shutdown();
 		Main.removeBot("MORTY");

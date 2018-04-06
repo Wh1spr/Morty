@@ -44,6 +44,7 @@ public class Main {
 			String key = properties.getProperty("MORTY-KEY");
 			String dataPath = properties.getProperty("MORTY-DATA", "data/Morty/");
 			String prefix = properties.getProperty("MORTY-PREFIX");
+			LoggerCache.newLogger("MORTY", dataPath + "morty.log");
 			log.debug("[Morty] Token - " + key);
 			log.debug("[Morty] DataPath - " + dataPath);
 			log.debug("[Morty] Prefix - '" + prefix + "'");
