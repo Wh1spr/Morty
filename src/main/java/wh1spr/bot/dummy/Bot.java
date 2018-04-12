@@ -21,6 +21,7 @@ public abstract class Bot {
 	private final ImageRegistry imageRegistry;
 	
 	private DatabaseDummy db;
+	private AutoEventHandlerDummy autoEvents;
 	
 	protected Bot(String token, String dataPath, String prefix) {
 		this.LOGIN_TOKEN = token;
@@ -29,10 +30,12 @@ public abstract class Bot {
 		
 		this.commandRegistry = new CommandRegistry(this);
 		this.imageRegistry = new ImageRegistry(this);
+		
 		this.db = new DatabaseDummy(this); // Database can be overridden with protected setDb(x)
+		this.autoEvents = new AutoEventHandlerDummy(this);
 	}
 	
-	public JDA jda = null;
+	protected JDA jda = null;
 	
 	public abstract void registerCommands();
 	public abstract JDA run();
@@ -67,6 +70,14 @@ public abstract class Bot {
 	
 	protected void setDb(DatabaseDummy db) {
 		this.db = db;
+	}
+	
+	public AutoEventHandlerDummy getAutoEvents() {
+		return this.autoEvents;
+	}
+	
+	protected void setAutoEvents(AutoEventHandlerDummy auto) {
+		this.autoEvents = auto;
 	}
 	
 	public Logger getLog() {
