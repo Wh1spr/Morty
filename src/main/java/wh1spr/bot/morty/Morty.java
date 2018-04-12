@@ -19,10 +19,13 @@ public class Morty extends Bot {
 	public Morty(String key, String dataPath, String prefix) {
 		super(key, dataPath, prefix);
 		log = LoggerCache.getLogger("MORTY");
+		this.log = LoggerCache.getLogger("MORTY");
 		log.info("Registering commands for Morty.");
 		registerCommands();
+		this.registerCommands();
 		log.info("Starting JDA instance.");
 		jda = run();
+		this.jda = run();
 	}
 	
 	public void registerCommands() {
@@ -55,17 +58,20 @@ public class Morty extends Bot {
 	public JDA run() {
 		JDA jda = null;
 		try {
-			jda = new JDABuilder(AccountType.BOT)
+			this.jda = new JDABuilder(AccountType.BOT)
 			        .setToken(this.getToken()).addEventListener(
 			        		new CommandHandler(this.getPrefix(), this.getCommandRegistry()),
 			        		new CommandHandler(this.getPrefix(), this.getImageRegistry()),
-			        		new AutoEventHandler())
-			        .buildBlocking();
+			        		new MessageLogger(),
+			        		new AutoEventHandler(),
+			        		this.getAutoEvents())
+			        .buildAsync();
 		} catch (Exception e) {
 			log.fatal(e, "JDA instance could not be initialized.");
 			shutdown();
 		}
-		return jda;
+		return this.jda; // I know, you don't have to tell me.
+		
 	}
 
 	@Override

@@ -11,6 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.Main;
@@ -29,10 +30,10 @@ public class DatabaseDummy {
 			try {
 				guildAddStmt = conn.prepareStatement(guildAddSql);
 				guildDelStmt = conn.prepareStatement(guildDelSql);
-				userAddStmt = conn.prepareStatement(userAddSql);
+				userAddStmt  = conn.prepareStatement(userAddSql);
 				userAddStmt2 = conn.prepareStatement(userAddSql2);
 				userAddStmt3 = conn.prepareStatement(userAddSql3);
-				userDelStmt = conn.prepareStatement(userDelSql);
+				userDelStmt  = conn.prepareStatement(userDelSql);
 			} catch (SQLException e) {
 				//Shouldnt happen
 				bot.getLog().error(e, "Couldn't prepare statements in Database, shutting down...");
@@ -154,19 +155,20 @@ public class DatabaseDummy {
 			+ "DELETE FROM InGuild WHERE UserId = ?; DELETE FROM Introduction WHERE UserId = ?;";
 	public void addUsers(List<User> users) {
 		try {
-			conn.setAutoCommit(false);
-			
 			for (User el : users) {
+				if(el.isBot()) continue;
 				userAddStmt.setString(1, el.getId());
 				userAddStmt.setString(2, el.getName());
 				userAddStmt.executeUpdate();
 				for (Bot b : Main.getBots()) {
-					for (Guild g : b.getJDA().getMutualGuilds(el)) {
+					JDA jda = b.getJDA();
+					if (jda == null) jda = el.getJDA();
+					for (Guild g : jda.getMutualGuilds(el)) {
 						userAddStmt2.setString(1, el.getId());
 						userAddStmt2.setString(2, g.getId());
 						userAddStmt2.executeUpdate();
 						
-						ResultSet rs = executeQuery("SELECT (GuildId, EcoStartBal) FROM Economy_Settings WHERE GuildId = " + g.getId());
+						ResultSet rs = executeQuery("SELECT GuildId, EcoStartBal FROM Economy_Settings WHERE GuildId = '" + g.getId() + "'");
 						if (rs.getFetchSize() > 0) {
 							while (rs.next()) {
 								double bal = rs.getDouble("EcoStartBal");
@@ -179,28 +181,26 @@ public class DatabaseDummy {
 					}
 				}
 			}
-			
-			
-			
-			conn.commit();
-			conn.setAutoCommit(true);
 		} catch (SQLException e) {
 			bot.getLog().error(e, "Couldn't insert list of users into db.");
 		}
 	}
 	public void addUser(User user) {
+		if (user.isBot()) return;
 		try {
 			userAddStmt.setString(1, user.getId());
 			userAddStmt.setString(2, user.getName());
 			userAddStmt.executeUpdate();
 			
 			for (Bot b : Main.getBots()) {
-				for (Guild g : b.getJDA().getMutualGuilds(user)) {
+				JDA jda = b.getJDA();
+				if (jda == null) jda = user.getJDA();
+				for (Guild g : jda.getMutualGuilds(user)) {
 					userAddStmt2.setString(1, user.getId());
 					userAddStmt2.setString(2, g.getId());
 					userAddStmt2.executeUpdate();
 					
-					ResultSet rs = executeQuery("SELECT (GuildId, EcoStartBal) FROM Economy_Settings WHERE GuildId = " + g.getId());
+					ResultSet rs = executeQuery("SELECT GuildId, EcoStartBal FROM Economy_Settings WHERE GuildId = '" + g.getId() + "'");
 					if (rs.getFetchSize() > 0) {
 						while (rs.next()) {
 							double bal = rs.getDouble("EcoStartBal");
@@ -218,7 +218,7 @@ public class DatabaseDummy {
 	}
 	/*
 	 * If the provided user is also an owner of a guild one of our bots is in, also delete that guild.
-	 * ! AutoEventHandlers will take care of other active bots leaving that server, inactive bots might readd it.
+	 * ! AutoEventHandlers will take care of other active bots leaving that server, inactive bots might read it.
 	 */
 	public void deleteUser(User user) {
 		if (user.getId().equals(Bot.OWNER)) return; //cant delete myself now can I?
@@ -231,7 +231,7 @@ public class DatabaseDummy {
 			userDelStmt.executeUpdate();
 			
 			try {
-				String checkOwner = "SELECT GuildId FROM Guilds WHERE OwnerId = " + user.getId();
+				String checkOwner = "SELECT GuildId FROM Guilds WHERE OwnerId = '" + user.getId() + "'";
 				ResultSet rs = executeQuery(checkOwner);
 				if (rs.getFetchSize() > 0) {
 					while(rs.next()) {
@@ -248,6 +248,11 @@ public class DatabaseDummy {
 		} catch (Exception e) {
 			bot.getLog().error(e, "Could not delete user with ID = " + user.getId() + ".");
 		}
+	}
+	
+	public void purgeDatabase() {
+		//purges everything that shouldn't be in the database anymore
+		//This method shouldn't be called often, just once in a while
 	}
 	
 }
