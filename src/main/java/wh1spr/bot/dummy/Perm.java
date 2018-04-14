@@ -1,9 +1,11 @@
 package wh1spr.bot.dummy;
 
 import java.util.HashMap;
+import java.util.Iterator;
 
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.Role;
 
 public enum Perm {
 	OWNER, // Wh1spr - ID 204529799912226816
@@ -43,9 +45,31 @@ public enum Perm {
 			if (m.hasPermission(Permission.ADMINISTRATOR)) return ADMIN;
 			else return MEMBER;
 		} else {
-			return MEMBER;
-			//maelstrom
+			Iterator<Role> iter = m.getRoles().iterator();
+			while(iter.hasNext()) {
+				Role n = iter.next();
+				switch(n.getId()) {
+				case MRoles.ADMIN:
+					return SERVER;
+				case MRoles.BOTS:
+					return BOT;
+				case MRoles.STAFF:
+					return STAFF;
+				case MRoles.PROGRAMMER:
+					return PROGRAMMER;
+				case MRoles.CONTENT_CREATOR:
+					return CONTENT;
+				case MRoles.MEMBER:
+					return MEMBER;
+				case MRoles.TRIAL:
+					return TRIAL;
+				case MRoles.GUEST:
+					return NEWB;
+				}
+			}
+			return NEWB;
 		}
+		
 	}
 	
 	private static HashMap<Member, Perm> override = new HashMap<Member, Perm>();
