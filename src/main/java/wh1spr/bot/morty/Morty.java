@@ -18,13 +18,11 @@ public class Morty extends Bot {
 	
 	public Morty(String key, String dataPath, String prefix) {
 		super(key, dataPath, prefix);
-		log = LoggerCache.getLogger("MORTY");
 		this.log = LoggerCache.getLogger("MORTY");
 		log.info("Registering commands for Morty.");
 		registerCommands();
 		this.registerCommands();
 		log.info("Starting JDA instance.");
-		jda = run();
 		this.jda = run();
 	}
 	
@@ -62,7 +60,6 @@ public class Morty extends Bot {
 			        .setToken(this.getToken()).addEventListener(
 			        		new CommandHandler(this.getPrefix(), this.getCommandRegistry()),
 			        		new CommandHandler(this.getPrefix(), this.getImageRegistry()),
-			        		new MessageLogger(),
 			        		new AutoEventHandler(),
 			        		this.getAutoEvents())
 			        .buildAsync();
