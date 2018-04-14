@@ -1,4 +1,4 @@
-package wh1spr.bot.commands;
+package wh1spr.bot.commands.mod;
 
 import java.util.ArrayList;
 import java.util.HashSet;

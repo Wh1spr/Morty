@@ -6,6 +6,8 @@ import net.dv8tion.jda.core.JDABuilder;
 import wh1spr.bot.Main;
 import wh1spr.bot.command.*;
 import wh1spr.bot.commands.*;
+import wh1spr.bot.commands.dev.*;
+import wh1spr.bot.commands.mod.*;
 import wh1spr.bot.dummy.Bot;
 import wh1spr.logger.LoggerCache;
 
@@ -54,7 +56,6 @@ public class Morty extends Bot {
 	}
 	
 	public JDA run() {
-		JDA jda = null;
 		try {
 			this.jda = new JDABuilder(AccountType.BOT)
 			        .setToken(this.getToken()).addEventListener(

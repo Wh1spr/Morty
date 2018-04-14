@@ -29,6 +29,15 @@ public abstract class Command {
 	protected String name = null;
 	protected ArrayList<String> aliases = new ArrayList<String>();
 	
+	private boolean mOnly = true;
+	protected void setMaelstromOnly(boolean toggle) {
+		this.mOnly = toggle;
+	}
+	
+	public boolean isMaelstromOnly() {
+		return this.mOnly;
+	}
+	
 	public abstract void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args);
 
 	public void onCallPrivate(JDA jda, MessageChannel channel, User invoker, Message message, List<String> args) {

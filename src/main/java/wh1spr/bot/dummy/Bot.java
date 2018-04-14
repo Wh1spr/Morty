@@ -13,6 +13,8 @@ public abstract class Bot {
 	protected Logger log;
 	
 	public static final String OWNER = "204529799912226816";
+	public static final String MAELSTROM = "433693780571586580";
+	
 	private final String LOGIN_TOKEN;
 	private final String PREFIX;
 	private final String DATA_PATH;

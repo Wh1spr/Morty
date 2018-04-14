@@ -1,4 +1,4 @@
-package wh1spr.bot.commands;
+package wh1spr.bot.commands.dev;
 
 import java.util.List;
 
@@ -13,6 +13,7 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.command.Command;
+import wh1spr.bot.commands.SendImageCommand;
 import wh1spr.bot.morty.Permission;
 
 public class EvalCommand extends Command {

@@ -1,4 +1,4 @@
-package wh1spr.bot.commands;
+package wh1spr.bot.commands.dev;
 
 import java.util.List;
 
