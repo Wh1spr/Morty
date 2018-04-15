@@ -18,12 +18,12 @@ import wh1spr.bot.Main;
 import wh1spr.bot.dummy.Bot;
 import wh1spr.logger.LoggerCache;
 
-public class DatabaseDummy {
+public class Database2 {
 
 	private static Connection conn = null;
 	private Bot bot;
 	
-	public DatabaseDummy(Bot bot) {
+	public Database2(Bot bot) {
 		this.bot = bot;
 		if(conn == null) conn = getConn();
 		if(newConn) {
@@ -70,7 +70,7 @@ public class DatabaseDummy {
 			return null;
 		}
 		
-		Statement stmt  = DatabaseDummy.conn.createStatement();
+		Statement stmt  = Database2.conn.createStatement();
 		ResultSet rs    = stmt.executeQuery(sql);
 		return rs;
 	}
@@ -81,7 +81,7 @@ public class DatabaseDummy {
 		}
 		
 		int rs = -1;
-		Statement stmt  = DatabaseDummy.conn.createStatement();
+		Statement stmt  = Database2.conn.createStatement();
 		rs = stmt.executeUpdate(sql);
 		if (rs >= 0) return true;
 		return false;
@@ -148,7 +148,7 @@ public class DatabaseDummy {
 	private static PreparedStatement userAddStmt2 = null; // InGuild
 	private static PreparedStatement userAddStmt3 = null; // economy init balance
 	private static PreparedStatement userDelStmt = null;
-	private static final String userAddSql = "INSERT OR REPLACE INTO Users Values(?,?)";
+	private static final String userAddSql = "INSERT OR REPLACE INTO Users Values(?,?,?)";
 	private static final String userAddSql2 = "INSERT OR REPLACE INTO InGuild Values(?,?)";
 	private static final String userAddSql3 = "INSERT OR REPLACE INTO Economy Values(?,?,?)";
 	private static final String userDelSql = "DELETE FROM Users WHERE UserId = ?; DELETE FROM Economy WHERE UserId = ?;"
@@ -159,6 +159,7 @@ public class DatabaseDummy {
 				if(el.isBot()) continue;
 				userAddStmt.setString(1, el.getId());
 				userAddStmt.setString(2, el.getName());
+				userAddStmt.setString(3, el.getName()+'#'+el.getDiscriminator());
 				userAddStmt.executeUpdate();
 				for (Bot b : Main.getBots()) {
 					JDA jda = b.getJDA();
@@ -190,6 +191,7 @@ public class DatabaseDummy {
 		try {
 			userAddStmt.setString(1, user.getId());
 			userAddStmt.setString(2, user.getName());
+			userAddStmt.setString(3, user.getName()+'#'+user.getDiscriminator());
 			userAddStmt.executeUpdate();
 			
 			for (Bot b : Main.getBots()) {

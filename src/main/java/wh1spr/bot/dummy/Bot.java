@@ -4,7 +4,7 @@ import net.dv8tion.jda.core.JDA;
 import wh1spr.bot.Main;
 import wh1spr.bot.command.CommandRegistry;
 import wh1spr.bot.command.ImageRegistry;
-import wh1spr.bot.dummy.database.DatabaseDummy;
+import wh1spr.bot.dummy.database.Database2;
 import wh1spr.logger.Logger;
 import wh1spr.logger.LoggerCache;
 
@@ -22,7 +22,7 @@ public abstract class Bot {
 	private final CommandRegistry commandRegistry;
 	private final ImageRegistry imageRegistry;
 	
-	private DatabaseDummy db;
+	private Database2 db;
 	private AutoEventHandlerDummy autoEvents;
 	
 	protected Bot(String token, String dataPath, String prefix) {
@@ -33,7 +33,7 @@ public abstract class Bot {
 		this.commandRegistry = new CommandRegistry(this);
 		this.imageRegistry = new ImageRegistry(this);
 		
-		this.db = new DatabaseDummy(this); // Database can be overridden with protected setDb(x)
+		this.db = new Database2(this); // Database can be overridden with protected setDb(x)
 		this.autoEvents = new AutoEventHandlerDummy(this);
 	}
 	
@@ -66,11 +66,11 @@ public abstract class Bot {
 		return this.imageRegistry;
 	}
 	
-	public DatabaseDummy getDb() {
+	public Database2 getDb() {
 		return this.db;
 	}
 	
-	protected void setDb(DatabaseDummy db) {
+	protected void setDb(Database2 db) {
 		this.db = db;
 	}
 	

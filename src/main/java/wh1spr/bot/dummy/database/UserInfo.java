@@ -19,12 +19,12 @@ public final class UserInfo {
 	private final Bot bot;
 	private final User user;
 	
-	private final DatabaseDummy db;
+	private final Database2 db;
 	
 	public UserInfo(User user, Bot bot) {
 		this.bot = bot;
 		this.user = user;
-		this.db = new DatabaseDummy(bot);
+		this.db = new Database2(bot);
 		this.updating = true;
 	}
 	

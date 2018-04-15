@@ -21,8 +21,9 @@ public class Morty extends Bot {
 	public Morty(String key, String dataPath, String prefix) {
 		super(key, dataPath, prefix);
 		this.log = LoggerCache.getLogger("MORTY");
+		log.info("Setting AutoEventHandler to custom.");
+		this.setAutoEvents(new AutoEventHandlerMorty(this));
 		log.info("Registering commands for Morty.");
-		registerCommands();
 		this.registerCommands();
 		log.info("Starting JDA instance.");
 		this.jda = run();

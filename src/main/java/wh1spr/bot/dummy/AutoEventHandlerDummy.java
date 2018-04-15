@@ -3,7 +3,7 @@ package wh1spr.bot.dummy;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
-import wh1spr.bot.dummy.database.DatabaseDummy;
+import wh1spr.bot.dummy.database.Database2;
 
 /*
  * This eventhandler takes care of the 'standard' queries that each bot should execute
@@ -28,7 +28,7 @@ public class AutoEventHandlerDummy extends ListenerAdapter {
 	@Override
 	public void onReady(ReadyEvent event) {
 		// UPDATE THE DB WITH EVERYTHING
-		DatabaseDummy db = getBot().getDb();
+		Database2 db = getBot().getDb();
 		
 		// we don't use getBot().getJDA() here because at this point
 		// the jda variable hasn't been set yet, it happens right after.
