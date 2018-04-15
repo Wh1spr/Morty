@@ -24,7 +24,6 @@ import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import wh1spr.bot.command.Command;
 import wh1spr.bot.dummy.Bot;
 import wh1spr.bot.dummy.Perm;
-import wh1spr.bot.morty.C;
 
 public class VoteCommand extends Command {
 
@@ -34,6 +33,7 @@ public class VoteCommand extends Command {
 	}
 
 	private Bot bot;
+	private final String channelId = "435105055931236367";
 	
 	// If wrongly formatted, it just doesnt care
 	@Override
@@ -70,8 +70,8 @@ public class VoteCommand extends Command {
 				if (!startVote(msg.getId(), arguments[0], channel, arguments[0].split(" ", 2)[1], emoticons)) {
 					channel.deleteMessageById(msg.getId()).queue();
 				} else {
-					jda.getTextChannelById(C.CHANNEL_BOT_VOTES).sendMessage(":white_check_mark: New succesful vote creation. Creation command:").queue();
-					jda.getTextChannelById(C.CHANNEL_BOT_VOTES).sendMessage(message.getContentDisplay()).queue();
+					jda.getTextChannelById(channelId).sendMessage(":white_check_mark: New succesful vote creation. Creation command:").queue();
+					jda.getTextChannelById(channelId).sendMessage(message.getContentDisplay()).queue();
 					for (Emoji emo : emoticons) {
 						msg.addReaction(emo.getUnicode()).queue();
 					}
@@ -159,7 +159,7 @@ public class VoteCommand extends Command {
 	    		results += "\n" + next + " **with " + count.get(result) + " votes.**";
 	    	}
 	    	msg.delete().queue();
-	        channel.getJDA().getTextChannelById(C.CHANNEL_BOT_VOTES).sendMessage(results).queue();
+	        channel.getJDA().getTextChannelById(channelId).sendMessage(results).queue();
 	    }
 	}
 
