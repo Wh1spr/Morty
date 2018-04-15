@@ -6,6 +6,7 @@ import java.util.Iterator;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.core.entities.User;
 
 public enum Perm {
 	OWNER, // Wh1spr - ID 204529799912226816
@@ -27,13 +28,33 @@ public enum Perm {
 		return (compareTo(p) <= 0);
 	}
 	
+	public static boolean has(Perm p, User u) {
+		Member m = u.getJDA().getGuildById(Bot.MAELSTROM).getMember(u);
+		if (m!=null) return has(p,m);
+		else {
+			if (override.get(u) != null) return p.isAbove(override.get(u));
+			else if (u.getId().equals(Bot.OWNER)) return true;
+			else return p.isAbove(MEMBER);
+		}
+	}
+	
+	public static boolean hasSpec(Perm p, User u) {
+		Member m = u.getJDA().getGuildById(Bot.MAELSTROM).getMember(u);
+		if (m!=null) return hasSpec(p,u);
+		else {
+			if (override.get(u) != null) return p.isAbove(override.get(u));
+			else if (u.getId().equals(Bot.OWNER)) return OWNER == p;
+			else return p == MEMBER;
+		}
+	}
+	
 	public static boolean has(Perm p, Member m) {
-		if (override.get(m) != null) return override.get(m).isAbove(p);
+		if (override.get(m.getUser()) != null) return override.get(m.getUser()).isAbove(p);
 		return p.isAbove(getPerm(m));
 	}
 	
 	public static boolean hasSpec(Perm p, Member m) {
-		if (override.get(m) != null) return override.get(m) == p;
+		if (override.get(m.getUser()) != null) return override.get(m.getUser()) == p;
 		return p == getPerm(m);
 	}
 	
@@ -67,17 +88,17 @@ public enum Perm {
 					return NEWB;
 				}
 			}
-			return NEWB;
+			return MEMBER;
 		}
 		
 	}
 	
-	private static HashMap<Member, Perm> override = new HashMap<Member, Perm>();
-	public static void override(Member mem, Perm p) { 
-		override.put(mem, p);
+	private static HashMap<User, Perm> override = new HashMap<User, Perm>();
+	public static void override(User u, Perm p) { 
+		override.put(u, p);
 	}
-	public static void clearOverride(Member m) {
-		override.remove(m);
+	public static void clearOverride(User u) {
+		override.remove(u);
 	}
 	public static void clearAllOverrides() {
 		override.clear();

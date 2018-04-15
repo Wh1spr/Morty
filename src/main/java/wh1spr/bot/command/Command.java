@@ -3,6 +3,8 @@ package wh1spr.bot.command;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.vdurmont.emoji.EmojiManager;
+
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
@@ -43,5 +45,17 @@ public abstract class Command {
 	public void onCallPrivate(JDA jda, MessageChannel channel, User invoker, Message message, List<String> args) {
 		onCall(jda, null, channel, invoker, message, args);
 	}
+	
+	public static void failure(Message message) {
+		message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();
+	}
+	public static void warning(Message message) {
+		message.addReaction(EmojiManager.getForAlias("warning").getUnicode()).queue();
+	}
+	public static void success(Message message) {
+		message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
+	}
+
+
 
 }

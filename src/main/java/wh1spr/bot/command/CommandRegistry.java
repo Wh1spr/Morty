@@ -47,11 +47,11 @@ public  class CommandRegistry {
         CommandEntry entry = new CommandEntry(new Command(name) {
             @Override
             public void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args ) {
-                message.addReaction(EmojiManager.getForAlias("warning").getUnicode()).queue();
+            	warning(message);
             }
             @Override
             public void onCallPrivate(JDA jda, MessageChannel channel, User invoker, Message message, List<String> args ) {
-            	message.addReaction(EmojiManager.getForAlias("warning").getUnicode()).queue();
+            	warning(message);
             }
         });
         

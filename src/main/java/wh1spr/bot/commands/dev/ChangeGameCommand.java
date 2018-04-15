@@ -2,8 +2,6 @@ package wh1spr.bot.commands.dev;
 
 import java.util.List;
 
-import com.vdurmont.emoji.EmojiManager;
-
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Game.GameType;
@@ -12,18 +10,18 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.command.Command;
-import wh1spr.bot.morty.Permission;
+import wh1spr.bot.dummy.Perm;
 
 public class ChangeGameCommand extends Command {
 
 	public ChangeGameCommand(String name, String... aliases) {
 		super(name, aliases);
+		this.setMaelstromOnly(false);
 	}
 
 	@Override
 	public void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args) {
-		if (!Permission.hasPerm(Permission.OWNER, invoker, true)) {
-			message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();
+		if (!Perm.hasSpec(Perm.OWNER, invoker)) {
 			return;
 		}
 		
@@ -33,8 +31,7 @@ public class ChangeGameCommand extends Command {
 			jda.getPresence().setGame(null);
 		}
 		
-		message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
-		
+		success(message);
 	}
 
 }

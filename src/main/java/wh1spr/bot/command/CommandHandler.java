@@ -7,6 +7,7 @@ import java.util.List;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import wh1spr.bot.dummy.Bot;
 
 public class CommandHandler extends ListenerAdapter {
 
@@ -23,12 +24,14 @@ public class CommandHandler extends ListenerAdapter {
 		if (event.getAuthor().isBot()) return; //no response on bots
 		
 		//no response on something that doesnt start with the right prefix
-		if (!event.getMessage().getContentStripped().startsWith(PREFIX)) return; 
+		if (!event.getMessage().getContentStripped().startsWith(PREFIX)) return;
 		
 		//if this command exists
 		String cmdName = event.getMessage().getContentStripped().split(" ")[0].replaceFirst(PREFIX, "").toLowerCase();
 		if (registry.getRegisteredCommandsAndAliases().contains(cmdName)) {
 			Command cmd = registry.getCommand(cmdName).command;
+			//no response if not in maelstrom and only maelstrom has been set
+			if (cmd.isMaelstromOnly() && !event.getGuild().getId().equals(Bot.MAELSTROM)) return;
 			List<String> args = new ArrayList<String>();
 			args.addAll(Arrays.asList(event.getMessage().getContentDisplay().split(" ")));
 			args.remove(0);
@@ -46,6 +49,8 @@ public class CommandHandler extends ListenerAdapter {
 		String cmdName = event.getMessage().getContentStripped().split(" ")[0].replaceFirst(PREFIX, "").toLowerCase();
 		if (registry.getRegisteredCommandsAndAliases().contains(cmdName)) {
 			Command cmd = registry.getCommand(cmdName).command;
+			//no response if not in maelstrom and only maelstrom has been set
+			if (cmd.isMaelstromOnly()) return;
 			List<String> args = new ArrayList<String>();
 			args.addAll(Arrays.asList(event.getMessage().getContentDisplay().split(" ")));
 			args.remove(0);
