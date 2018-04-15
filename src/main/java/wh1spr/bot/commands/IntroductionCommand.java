@@ -9,7 +9,6 @@ import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.command.Command;
 import wh1spr.bot.dummy.Perm;
-import wh1spr.bot.morty.C;
 import wh1spr.bot.morty.Database;
 // TO BE REDONE
 @Deprecated
@@ -23,7 +22,7 @@ public class IntroductionCommand extends Command {
 	public void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args) {
 		if (!Perm.has(Perm.MEMBER, invoker)) return;
 		
-		if (!guild.getId().equals(C.GUILD)) return;
+		if (!guild.getId().equals(""/*PLACEHOLDER*/)) return;
 		
 		if (message.getMentionedUsers().size() == 1) {
 			User target = message.getMentionedUsers().get(0);
@@ -31,7 +30,7 @@ public class IntroductionCommand extends Command {
 			if (msgId.equals("0")) {
 				channel.sendMessage(":x: This user does not have an introduction.").queue();
 			} else {
-				Message targetMsg = jda.getTextChannelById(C.CHANNEL_INTRODUCTION).getMessageById(msgId).complete();
+				Message targetMsg = jda.getTextChannelById(""/*PLACEHOLDER*/).getMessageById(msgId).complete();
 				channel.sendMessage(":white_check_mark: **Introduction for " + target.getName() + ":** \n\n" + targetMsg.getContentRaw()).queue();
 			}
 		}

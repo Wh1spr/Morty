@@ -83,6 +83,7 @@ public abstract class Bot {
 	}
 	
 	public Logger getLog() {
+		if (this.log == null) return LoggerCache.getLogger("MAIN");
 		return this.log;
 	}
 	

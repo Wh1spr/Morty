@@ -192,7 +192,7 @@ public class Database {
 				User user = jda.getUserById(id);
 				if (user == null) {
 					stmtUpd.executeUpdate("DELETE FROM Users WHERE UserID = '" + id + "'");
-				} else if (jda.getGuildById(C.GUILD).getMember(user) == null) {
+				} else if (jda.getGuildById(""/*PLACEHOLDER*/).getMember(user) == null) {
 					remove(user);
 				} else {
 					stmtUpd.executeUpdate("UPDATE Users SET Name = '" + user.getName() + "' WHERE UserID = " + id);

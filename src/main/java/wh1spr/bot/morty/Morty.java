@@ -62,7 +62,6 @@ public class Morty extends Bot {
 			        .setToken(this.getToken()).addEventListener(
 			        		new CommandHandler(this.getPrefix(), this.getCommandRegistry()),
 			        		new CommandHandler(this.getPrefix(), this.getImageRegistry()),
-			        		new AutoEventHandler(),
 			        		this.getAutoEvents())
 			        .buildAsync();
 		} catch (Exception e) {

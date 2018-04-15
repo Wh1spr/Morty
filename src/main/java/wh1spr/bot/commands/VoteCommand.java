@@ -188,4 +188,7 @@ public class VoteCommand extends Command {
 	    timer.schedule(new TimedTask(id, channel, title, emoticons), c.getTime());
 	    return true;
 	}
+	
+	@Override
+	public void onCallPrivate(JDA jda, MessageChannel channel, User invoker, Message message, List<String> args) {}
 }

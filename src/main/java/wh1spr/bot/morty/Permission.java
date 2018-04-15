@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import net.dv8tion.jda.core.entities.User;
+import wh1spr.bot.dummy.Bot;
 
 public class Permission {
 	// TO BE REDONE
@@ -24,7 +25,7 @@ public class Permission {
 //		if (!(perm < WINA)) {
 //			return true;
 //		}
-		if (user.getId().equals(C.OWNER)) return true;
+		if (user.getId().equals(Bot.OWNER)) return true;
 		
 		String sql = "SELECT Perms FROM Users WHERE UserID = " + user.getId();
 		

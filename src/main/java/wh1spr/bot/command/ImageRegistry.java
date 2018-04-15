@@ -6,7 +6,6 @@ import java.sql.Statement;
 import wh1spr.bot.commands.SendImageCommand;
 import wh1spr.bot.dummy.Bot;
 import wh1spr.bot.morty.Database;
-import wh1spr.bot.morty.Morty;
 
 public class ImageRegistry extends CommandRegistry {
 	

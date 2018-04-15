@@ -2,6 +2,7 @@ package wh1spr.bot.dummy;
 
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.ReadyEvent;
+import net.dv8tion.jda.core.events.user.UserNameUpdateEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import wh1spr.bot.dummy.database.Database2;
 
@@ -38,5 +39,9 @@ public class AutoEventHandlerDummy extends ListenerAdapter {
 		}
 	}
 	
+	@Override
+	public void onUserNameUpdate(UserNameUpdateEvent event) {
+		//Database.updateNameFromUser(event.getUser());
+	}
 	
 }
