@@ -53,16 +53,16 @@ public enum Rank { // These ranks give access to functions and lift/soften limit
 	}
 	
 	public static boolean has(Rank p, Member m) {
-		if (override.get(m) != null) return override.get(m).isAbove(p);
+		if (override.get(m.getUser()) != null) return override.get(m.getUser()).isAbove(p);
 		return p.isAbove(getRank(m));
 	}
 	
 	public static boolean hasSpec(Rank p, Member m) {
-		if (override.get(m) != null) return override.get(m) == p;
+		if (override.get(m.getUser()) != null) return override.get(m.getUser()) == p;
 		return p == getRank(m);
 	}
 	
-	private static Rank getRank(Member m) {
+	public static Rank getRank(Member m) {
 		if (!m.getGuild().getId().equals(Bot.MAELSTROM)) {
 			return OUTOFSERVER;
 		} else { // Maelstrom

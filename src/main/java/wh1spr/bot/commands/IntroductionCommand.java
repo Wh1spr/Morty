@@ -2,17 +2,15 @@ package wh1spr.bot.commands;
 
 import java.util.List;
 
-import com.vdurmont.emoji.EmojiManager;
-
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.command.Command;
+import wh1spr.bot.dummy.Perm;
 import wh1spr.bot.morty.C;
 import wh1spr.bot.morty.Database;
-import wh1spr.bot.morty.Permission;
 // TO BE REDONE
 @Deprecated
 public class IntroductionCommand extends Command {
@@ -23,10 +21,7 @@ public class IntroductionCommand extends Command {
 
 	@Override
 	public void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args) {
-		if (!Permission.hasPerm(Permission.MEMBER, invoker, false) || guild == null || !guild.getId().equals(C.GUILD)) {
-			message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();
-			return;
-		}
+		if (!Perm.has(Perm.MEMBER, invoker)) return;
 		
 		if (!guild.getId().equals(C.GUILD)) return;
 		
@@ -41,5 +36,8 @@ public class IntroductionCommand extends Command {
 			}
 		}
 	}
+	
+	@Override
+	public void onCallPrivate(JDA jda, MessageChannel channel, User invoker, Message message, List<String> args) {}
 
 }

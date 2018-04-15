@@ -10,6 +10,7 @@ import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.commands.music.AudioScheduler;
 import wh1spr.bot.commands.music.GuildMusicManager;
 import wh1spr.bot.commands.music.Music;
+import wh1spr.bot.dummy.Perm;
 
 public class ShuffleCommand extends AudioCommand {
 
@@ -19,6 +20,8 @@ public class ShuffleCommand extends AudioCommand {
 
 	@Override
 	public void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args) {
+		if (!Perm.has(Perm.MEMBER, guild.getMember(invoker))) {return;}
+		
 		GuildMusicManager mng = getMusic().getGuildM(guild);
 		
 	    AudioScheduler scheduler = mng.scheduler;

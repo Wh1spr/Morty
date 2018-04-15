@@ -23,10 +23,9 @@ import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import wh1spr.bot.command.Command;
 import wh1spr.bot.dummy.Bot;
+import wh1spr.bot.dummy.Perm;
 import wh1spr.bot.morty.C;
-import wh1spr.bot.morty.Permission;
 
-//add in non static reference as bot object
 public class VoteCommand extends Command {
 
 	public VoteCommand(String name, Bot bot) {
@@ -39,10 +38,7 @@ public class VoteCommand extends Command {
 	// If wrongly formatted, it just doesnt care
 	@Override
 	public void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args) {
-		if (!Permission.hasPerm(Permission.WINA, invoker, true) || guild == null) {
-			message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();
-			return;
-		}
+		if (!Perm.has(Perm.CONTENT, invoker)) return;
 		
 		try {
 			

@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.util.HashMap;
 import java.util.List;
 
-import com.vdurmont.emoji.EmojiManager;
-
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
@@ -14,7 +12,7 @@ import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.command.Command;
-import wh1spr.bot.morty.Permission;
+import wh1spr.bot.dummy.Perm;
 
 public class SendImageCommand extends Command {
 
@@ -30,23 +28,20 @@ public class SendImageCommand extends Command {
 
 	@Override
 	public void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args) {
-		if (!Permission.hasPerm(Permission.MEMBER, invoker, false)) {
-			message.addReaction(EmojiManager.getForAlias("x").getUnicode()).queue();
-			return;
-		}
+		if (!Perm.has(Perm.TRIAL, invoker)) return;
 		
 		//the color is the same color as the bot's role
 		MessageEmbed msg = new EmbedBuilder().setImage(this.imageUrl).setColor(new Color(16763904)).build();
 		
-		if (Permission.hasPerm(Permission.ADMIN, invoker, false)) {
+		if (Perm.has(Perm.ADMIN, invoker)) {
 			channel.sendMessage(msg).queue();
-			message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
+			success(message);
 		} else if (canUse(channel)) {
 			channel.sendMessage(msg).queue();
-			message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
+			success(message);
 			timer.put(channel.getId(), System.currentTimeMillis());
 		} else {
-			message.addReaction(EmojiManager.getForAlias("warning").getUnicode()).queue();
+			warning(message);
 		}
 		
 	}

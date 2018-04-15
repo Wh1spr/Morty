@@ -58,7 +58,7 @@ public enum Perm {
 		return p == getPerm(m);
 	}
 	
-	private static Perm getPerm(Member m) {
+	public static Perm getPerm(Member m) {
 		if (m.getUser().getId().equals(Bot.OWNER)) return OWNER;
 		if (!m.getGuild().getId().equals(Bot.MAELSTROM)) {
 			// standard

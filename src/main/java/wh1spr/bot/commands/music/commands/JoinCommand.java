@@ -10,6 +10,7 @@ import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import wh1spr.bot.commands.music.GuildMusicManager;
 import wh1spr.bot.commands.music.Music;
+import wh1spr.bot.dummy.Perm;
 
 public class JoinCommand extends AudioCommand {
 
@@ -19,6 +20,8 @@ public class JoinCommand extends AudioCommand {
 
 	@Override
 	public void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args) {
+		if (!Perm.has(Perm.MEMBER, guild.getMember(invoker))) {return;}
+		
 		VoiceChannel vchannel;
 		
 		GuildMusicManager mng = getMusic().getGuildM(guild);
