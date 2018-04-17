@@ -1,4 +1,4 @@
-package wh1spr.bot.dummy.database;
+package wh1spr.bot.database;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;

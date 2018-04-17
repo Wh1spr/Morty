@@ -4,7 +4,7 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.events.ReadyEvent;
 import net.dv8tion.jda.core.events.user.UserNameUpdateEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
-import wh1spr.bot.dummy.database.Database2;
+import wh1spr.bot.database.Database2;
 
 /*
  * This eventhandler takes care of the 'standard' queries that each bot should execute

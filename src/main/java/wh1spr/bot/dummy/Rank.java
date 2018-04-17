@@ -6,6 +6,7 @@ import java.util.Iterator;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
+import wh1spr.bot.morty.MRoles;
 
 public enum Rank { // These ranks give access to functions and lift/soften limitations on commands
 	CELESTIAL,

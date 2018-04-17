@@ -7,6 +7,7 @@ import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
+import wh1spr.bot.morty.MRoles;
 
 public enum Perm {
 	OWNER, // Wh1spr - ID 204529799912226816

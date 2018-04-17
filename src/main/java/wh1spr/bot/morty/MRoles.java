@@ -1,4 +1,4 @@
-package wh1spr.bot.dummy;
+package wh1spr.bot.morty;
 
 public final class MRoles {
 

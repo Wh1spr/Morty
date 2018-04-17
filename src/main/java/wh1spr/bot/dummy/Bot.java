@@ -4,7 +4,7 @@ import net.dv8tion.jda.core.JDA;
 import wh1spr.bot.Main;
 import wh1spr.bot.command.CommandRegistry;
 import wh1spr.bot.command.ImageRegistry;
-import wh1spr.bot.dummy.database.Database2;
+import wh1spr.bot.database.Database2;
 import wh1spr.logger.Logger;
 import wh1spr.logger.LoggerCache;
 

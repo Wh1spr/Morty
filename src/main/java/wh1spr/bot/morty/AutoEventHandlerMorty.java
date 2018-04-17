@@ -4,7 +4,6 @@ import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberLeaveEvent;
 import wh1spr.bot.dummy.AutoEventHandlerDummy;
 import wh1spr.bot.dummy.Bot;
-import wh1spr.bot.dummy.MRoles;
 
 public class AutoEventHandlerMorty extends AutoEventHandlerDummy {
 
