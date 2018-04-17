@@ -32,7 +32,7 @@ public enum Rank { // These ranks give access to functions and lift/soften limit
 	OUTOFSERVER;
 	
 	private boolean isAbove(Rank p){
-		return (compareTo(p) <= 0);
+		return (compareTo(p) >= 0);
 	}
 	
 	public static boolean has(Rank p, User u) {

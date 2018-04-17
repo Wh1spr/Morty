@@ -26,7 +26,7 @@ public enum Perm {
 	NEWB; // Everyone before accept Maelstrom Only
 	
 	private boolean isAbove(Perm p){
-		return (compareTo(p) <= 0);
+		return (compareTo(p) >= 0);
 	}
 	
 	public static boolean has(Perm p, User u) {

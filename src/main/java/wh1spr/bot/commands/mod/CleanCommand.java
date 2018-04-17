@@ -19,6 +19,7 @@ public class CleanCommand extends Command {
 
 	public CleanCommand(String name, String... aliases) {
 		super(name, aliases);
+		this.setMaelstromOnly(false);
 	}
 	
 	//Possibilities for this command are:
