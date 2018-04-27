@@ -1,6 +1,7 @@
 package wh1spr.logger;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,6 +19,7 @@ public class Logger {
 	Logger(String name, String url) {
 		this.name = name.toUpperCase();
 		try {
+			new File("url").mkdirs();
 			this.out = new PrintWriter(new BufferedWriter (new FileWriter(url, true)));
 		} catch (IOException e) {
 			if (name.equals("MAIN")) {
@@ -95,5 +97,9 @@ public class Logger {
 	private boolean isClosed = false;
 	public boolean isClosed() {
 		return isClosed;
+	}
+	
+	public void flush() {
+		out.flush();
 	}
 }

@@ -37,6 +37,7 @@ public class Morty extends Bot {
 		commandRegistry.registerCommand(new ShutdownCommand("shutdown", this));
 		commandRegistry.registerCommand(new CommandDisableCommand("disablecommand", this.getCommandRegistry(), "dcmd"));
 		commandRegistry.registerCommand(new CommandDisableCommand("disablecommand", this.getImageRegistry(), "dcmd"));
+		commandRegistry.registerCommand(new FlushLogCommand("flush"));
 		commandRegistry.registerCommand(new SendFromMortyCommand("send"));
 		
 		// Dev Commands

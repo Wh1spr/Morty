@@ -9,6 +9,12 @@ public class LoggerCache {
 	private static HashMap<String, Logger> cache = new HashMap<String, Logger>();
 	private static Logger mainlog = null;
 	
+	/**
+	 * Returns a {@link Logger} with the given name.
+	 * @param name Name the wanted logger was given with {@link LoggerCache#newLogger(String, String)}
+	 * @return {@link Logger} with the given name <br>
+	 * {@code null} if there is no registered Logger with this name.
+	 */
 	public static Logger getLogger(String name) {
 		name = name.toUpperCase();
 		return cache.get(name);
@@ -50,5 +56,9 @@ public class LoggerCache {
 		} else {
 			return cache.remove(log.getName().toUpperCase(), log);
 		}
+	}
+	
+	public static void flush() {
+		cache.forEach((name,log)->log.flush());
 	}
 }
