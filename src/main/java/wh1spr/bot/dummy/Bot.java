@@ -33,7 +33,7 @@ public abstract class Bot {
 		this.commandRegistry = new CommandRegistry(this);
 		this.imageRegistry = new ImageRegistry(this);
 		
-		this.db = new Database2(this); // Database can be overridden with protected setDb(x)
+		this.db = new Database2(this);
 		this.autoEvents = new AutoEventHandlerDummy(this);
 	}
 	
@@ -70,9 +70,9 @@ public abstract class Bot {
 		return this.db;
 	}
 	
-	protected void setDb(Database2 db) {
-		this.db = db;
-	}
+//	protected void setDb(Database2 db) {
+//		this.db = db;
+//	}
 	
 	public AutoEventHandlerDummy getAutoEvents() {
 		return this.autoEvents;

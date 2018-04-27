@@ -9,15 +9,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.Main;
+import wh1spr.bot.Tools;
 import wh1spr.bot.dummy.Bot;
 import wh1spr.logger.LoggerCache;
 
+// Since we can get the connection statically, statements that will be executed rarely are not put in here.
 public class Database2 {
 
 	private static Connection conn = null;
@@ -27,23 +31,12 @@ public class Database2 {
 		this.bot = bot;
 		if(conn == null) conn = getConn();
 		if(newConn) {
-			try {
-				guildAddStmt = conn.prepareStatement(guildAddSql);
-				guildDelStmt = conn.prepareStatement(guildDelSql);
-				userAddStmt  = conn.prepareStatement(userAddSql);
-				userAddStmt2 = conn.prepareStatement(userAddSql2);
-				userAddStmt3 = conn.prepareStatement(userAddSql3);
-				userDelStmt  = conn.prepareStatement(userDelSql);
-			} catch (SQLException e) {
-				//Shouldnt happen
-				bot.getLog().error(e, "Couldn't prepare statements in Database, shutting down...");
-				bot.shutdown();
-			}
+			prepare();
 		}
 	}
 	
 	private static boolean newConn = false;
-	public Connection getConn() {
+	public static Connection getConn() {
 		if (conn != null) return conn;
 		
 		newConn = true;
@@ -55,7 +48,8 @@ public class Database2 {
 			Class.forName("org.sqlite.JDBC");
 			if(!Files.exists(Paths.get("data/Morty2.db"))) {
 				LoggerCache.getLogger("MAIN").error("Morty2 Database is not present and application cannot run. Exiting...");
-				bot.shutdown();
+				LoggerCache.shutdown();
+				System.exit(1); // Database is the run before first bot gets in Main.bots, no shutdown is needed
 			}
 			con2 = DriverManager.getConnection(url);
 			LoggerCache.getLogger("MAIN").info("Connection to the database has been established.");
@@ -63,6 +57,46 @@ public class Database2 {
 			LoggerCache.getLogger("MAIN").error(e, "Could not establish connection to the Database. Exiting...");
 		}
 		return con2;
+	}
+	
+	public static void reset() {
+		try {
+			conn.commit();
+			conn.close(); 
+			newConn = false;
+			conn = null;
+			conn = getConn();
+			prepare();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public void resetNoStatic() {
+		reset();
+	}
+	
+	private static void prepare() {
+		try {
+			guildAddStmt = conn.prepareStatement(guildAddSql);
+			guildDelStmt = conn.prepareStatement(guildDelSql);
+			userAddStmt  = conn.prepareStatement(userAddSql);
+			userAddStmt2 = conn.prepareStatement(userAddSql2);
+			userAddStmt3 = conn.prepareStatement(userAddSql3);
+			userDelStmt  = conn.prepareStatement(userDelSql);
+			
+			balanceUpdateStmt = conn.prepareStatement(balanceUpdateSql);
+		} catch (SQLException e) {
+			//Shouldnt happen, but does sometimes whoops
+			LoggerCache.getLogger("MAIN").error(e, "Couldn't prepare statements in Database, shutting down...");
+			//cases here for reset() call
+			if (!Main.getBots().isEmpty())
+				Collections.unmodifiableCollection(Main.getBots()).forEach(bot->bot.shutdown());
+			else {
+				LoggerCache.shutdown();
+				System.exit(1);
+			}
+		}
 	}
 	
 	public ResultSet executeQuery(String sql) throws SQLException {
@@ -250,6 +284,23 @@ public class Database2 {
 		} catch (Exception e) {
 			bot.getLog().error(e, "Could not delete user with ID = " + user.getId() + ".");
 		}
+	}
+	
+	private static PreparedStatement balanceUpdateStmt = null;
+	private static final String balanceUpdateSql = "INSERT OR REPLACE INTO Economy Values(?,?,?)";
+	public void updateBal(User user, Guild guild, double val) {
+		try {
+			balanceUpdateStmt.setString(1, guild.getId());
+			balanceUpdateStmt.setString(2, user.getId());
+			balanceUpdateStmt.setDouble(3, Tools.roundBal(val));
+			
+			balanceUpdateStmt.executeUpdate();
+		} catch (Exception e) {
+			bot.getLog().error(e, String.format("Could not update balance. UserId = %s, Balance = %.2f", user.getId(), val));
+		}
+	}
+	public void updateBal(Member member, double val) {
+		updateBal(member.getUser(), member.getGuild(), val);
 	}
 	
 	public void purgeDatabase() {
