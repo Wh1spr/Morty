@@ -7,6 +7,7 @@ import wh1spr.bot.Main;
 import wh1spr.bot.command.*;
 import wh1spr.bot.commands.*;
 import wh1spr.bot.commands.dev.*;
+import wh1spr.bot.commands.images.*;
 import wh1spr.bot.commands.mod.*;
 import wh1spr.bot.dummy.Bot;
 import wh1spr.logger.LoggerCache;
@@ -31,23 +32,28 @@ public class Morty extends Bot {
 	
 	public void registerCommands() {
 		CommandRegistry commandRegistry = this.getCommandRegistry();
-		// Bot Commands
+		// Dev Commands
 		commandRegistry.registerCommand(new ChangeGameCommand("changegame", "cg"));
 		commandRegistry.registerCommand(new ChangeNameCommand("changename", "cn"));
-		commandRegistry.registerCommand(new ShutdownCommand("shutdown", this));
 		commandRegistry.registerCommand(new CommandDisableCommand("disablecommand", this.getCommandRegistry(), "dcmd"));
 		commandRegistry.registerCommand(new CommandDisableCommand("disablecommand", this.getImageRegistry(), "dcmd"));
+		commandRegistry.registerCommand(new EmojiToUnicodeCommand("emote"));
+		commandRegistry.registerCommand(new EvalCommand("eval"));
 		commandRegistry.registerCommand(new FlushLogCommand("flush"));
+		commandRegistry.registerCommand(new ShutdownCommand("shutdown", this));
 		commandRegistry.registerCommand(new SendFromMortyCommand("send"));
 		
-		// Dev Commands
-		commandRegistry.registerCommand(new EvalCommand("eval"));
-		commandRegistry.registerCommand(new EmojiToUnicodeCommand("emote"));
+		// Economy Commands
 		
-		// Channel Commands
+		// Mod Commands
 		commandRegistry.registerCommand(new CleanCommand("clean"));
-		commandRegistry.registerCommand(new VoteCommand("vote",this));
+		
+		// Other Commands
+		commandRegistry.registerCommand(new VoteCommand("vote", this));
 //		commandRegistry.registerCommand(new IntroductionCommand("intro")); // I'm gonna redo this
+		
+		// Fun Commands
+		
 			
 		// Image Commands
 		commandRegistry.registerCommand(new AddImageCommand("addimage", this.getImageRegistry()));

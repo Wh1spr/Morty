@@ -1,4 +1,4 @@
-package wh1spr.bot.commands;
+package wh1spr.bot.commands.images;
 
 import java.awt.Color;
 import java.util.HashMap;
