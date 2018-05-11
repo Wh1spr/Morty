@@ -9,8 +9,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
@@ -18,6 +22,7 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.Main;
 import wh1spr.bot.Tools;
+import wh1spr.bot.commands.economy.util.Balance;
 import wh1spr.bot.dummy.Bot;
 import wh1spr.logger.LoggerCache;
 
@@ -296,11 +301,48 @@ public class Database2 {
 			
 			balanceUpdateStmt.executeUpdate();
 		} catch (Exception e) {
-			bot.getLog().error(e, String.format("Could not update balance. UserId = %s, Balance = %.2f", user.getId(), val));
+			bot.getLog().error(e, String.format("Could not update balance. UserId = %s, new Balance = %.2f", user.getId(), val));
 		}
 	}
 	public void updateBal(Member member, double val) {
 		updateBal(member.getUser(), member.getGuild(), val);
+	}
+	
+	public void updateBalances(Collection<Balance> bals) {
+		bot.getLog().info(String.format("Updating %d balance values.", bals.size()));
+		Iterator<Balance> iter = bals.iterator();
+		while(iter.hasNext()) {
+			Balance next = iter.next();
+			updateBal(next.getMember(), next.getBal());
+		}
+	}
+	
+	private static final String balancesGetSql = "SELECT * FROM Economy";
+	/**
+	 * Retrieve balances from database.
+	 * <b>Note: These balances come from the db, which gets updated automatically once every ten minutes since startup, or with the {@link UpdateBalanceCommand}</b>
+	 * @return A set of balances found in the database
+	 */
+	public Set<Balance> getBalances() {
+		try {
+			Set<Balance> s = new HashSet<Balance>();
+			ResultSet rs = executeQuery(balancesGetSql);
+			
+			while(rs.next()) {
+				s.add(new Balance(rs.getDouble("Balance"), rs.getString("userId"), rs.getString("guildId")));
+			}
+			return s;
+		} catch (Exception e) {
+			bot.getLog().error("Balances could not be retreived from the DB.");
+			return null;
+		}
+	}
+	
+	public boolean hasEconomy(String guildid) {
+		return true; //TODO implement
+	}
+	public EcoInfo getGuildInfo(String guildid) {
+		return null; // TODO implement
 	}
 	
 	public void purgeDatabase() {

@@ -5,9 +5,12 @@ import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Properties;
 
+import wh1spr.bot.commands.economy.util.EconomyStatus;
 import wh1spr.bot.dummy.Bot;
 import wh1spr.bot.morty.Morty;
 import wh1spr.logger.Logger;
@@ -36,6 +39,8 @@ public class Main {
 		}
 		
 		morty();
+		
+		EconomyStatus.start(Main.getBots().get(0));
 		
 	}
 	
@@ -72,8 +77,8 @@ public class Main {
 		return bots.values().size();
 	}
 	
-	public static Collection<Bot> getBots() {
-		return bots.values();
+	public static List<Bot> getBots() {
+		return new ArrayList<Bot>(bots.values());
 	}
 	
 	public static void removeBot(String name) {

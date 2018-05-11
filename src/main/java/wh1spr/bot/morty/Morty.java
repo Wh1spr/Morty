@@ -12,11 +12,6 @@ import wh1spr.bot.commands.mod.*;
 import wh1spr.bot.dummy.Bot;
 import wh1spr.logger.LoggerCache;
 
-/* 
- * Basically I'm redoing a lot of stuff so I can make multiple bots from a single jar file, controlled by 
- * a .properties file. This is handy dandy if a friend would want his/her own bot instead of Morty, with
- * the same functions.
- */
 public class Morty extends Bot {
 	
 	public Morty(String key, String dataPath, String prefix) {
@@ -69,8 +64,8 @@ public class Morty extends Bot {
 			        .setToken(this.getToken()).addEventListener(
 			        		new CommandHandler(this.getPrefix(), this.getCommandRegistry()),
 			        		new CommandHandler(this.getPrefix(), this.getImageRegistry()),
-			        		this.getAutoEvents())
 			        .buildAsync();
+			this.jda.addEventListener(this.getAutoEvents());
 		} catch (Exception e) {
 			log.fatal(e, "JDA instance could not be initialized.");
 			shutdown();
