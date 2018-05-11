@@ -3,7 +3,7 @@ package wh1spr.bot.command;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-import wh1spr.bot.commands.SendImageCommand;
+import wh1spr.bot.commands.images.SendImageCommand;
 import wh1spr.bot.dummy.Bot;
 import wh1spr.bot.morty.Database;
 
