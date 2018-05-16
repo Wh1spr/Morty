@@ -41,7 +41,7 @@ public enum Perm {
 	
 	public static boolean hasSpec(Perm p, User u) {
 		Member m = u.getJDA().getGuildById(Bot.MAELSTROM).getMember(u);
-		if (m!=null) return hasSpec(p,u);
+		if (m!=null) return hasSpec(p,m);
 		else {
 			if (override.get(u) != null) return p.isAbove(override.get(u));
 			else if (u.getId().equals(Bot.OWNER)) return OWNER == p;

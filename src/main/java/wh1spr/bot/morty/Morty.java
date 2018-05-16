@@ -51,9 +51,9 @@ public class Morty extends Bot {
 		
 			
 		// Image Commands
-		commandRegistry.registerCommand(new AddImageCommand("addimage", this.getImageRegistry()));
-		commandRegistry.registerCommand(new RemoveImageCommand("removeimage", this.getImageRegistry()));
-		this.getImageRegistry().registerAllCommands();
+//		commandRegistry.registerCommand(new AddImageCommand("addimage", this.getImageRegistry()));
+//		commandRegistry.registerCommand(new RemoveImageCommand("removeimage", this.getImageRegistry()));
+//		this.getImageRegistry().registerAllCommands();
 		log.info("All commands registered.");
 		
 	}
