@@ -338,11 +338,28 @@ public class Database2 {
 		}
 	}
 	
+	private static final String hasEcoSql = "SELECT COUNT(*) as total FROM Economy_Settings Where GuildId = '%s'";
 	public boolean hasEconomy(String guildid) {
-		return true; //TODO implement
+		try {
+			ResultSet rs = executeQuery(String.format(hasEcoSql, guildid));
+			rs.next();
+			return rs.getInt("total")==1?true:false;
+		} catch (SQLException e) {
+			bot.getLog().error(e, "Could check if guild with ID " + guildid + " had a set up economy.");
+		}
+		return false;
 	}
+	private static final String getEcoInfoSql = "SELECT * FROM Economy_Settings WHERE GuildId = '%s'";
 	public EcoInfo getGuildInfo(String guildid) {
-		return null; // TODO implement
+		if (!hasEconomy(guildid)) return null;
+		try {
+			ResultSet rs = executeQuery(String.format(getEcoInfoSql, guildid));
+			rs.next();
+			return new EcoInfo(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getDouble(6),rs.getDouble(7));
+		} catch (SQLException e) {
+			bot.getLog().error(e, "Could check if guild with ID " + guildid + " had a set up economy.");
+		}
+		return null;
 	}
 	
 	public void purgeDatabase() {
