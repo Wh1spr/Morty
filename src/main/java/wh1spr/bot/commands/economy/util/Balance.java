@@ -5,7 +5,6 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.Main;
-import wh1spr.bot.database.EcoInfo;
 
 public class Balance {
 	
@@ -42,13 +41,23 @@ public class Balance {
 		this.bal = val;
 	}
 	
-	public boolean transfer(Balance b1, Balance b2, Double val) {
-		if (b1==null||b2==null) return false;
+	public static boolean transfer(Balance from, Balance to, Double val) {
+		if (from==null||to==null) return false;
 		if (val <= 0.00) return false;
-		if (b1.getBal() < val) return false;
-		if (b1.getGuild()!=b2.getGuild()) return false;
-		b1.substract(val);
-		b2.add(val);
+		if (from.getBal() < val) return false;
+		if (from.getGuild()!=to.getGuild()) return false;
+		from.substract(val);
+		to.add(val);
+		return true;
+	}
+	
+	public boolean transfer(Balance to, Double val) {
+		if (this==null||to==null) return false;
+		if (val <= 0.00) return false;
+		if (this.getBal() < val) return false;
+		if (this.getGuild()!=to.getGuild()) return false;
+		this.substract(val);
+		to.add(val);
 		return true;
 	}
 	
