@@ -4,6 +4,7 @@ import net.dv8tion.jda.core.JDA;
 import wh1spr.bot.Main;
 import wh1spr.bot.command.CommandRegistry;
 import wh1spr.bot.command.ImageRegistry;
+import wh1spr.bot.commands.economy.util.EconomyStatus;
 import wh1spr.bot.database.Database2;
 import wh1spr.logger.Logger;
 import wh1spr.logger.LoggerCache;
@@ -96,6 +97,7 @@ public abstract class Bot {
 	
 	public void shutdownLast() {
 		LoggerCache.getLogger("MAIN").info("Last bot shut down. Shutting down application.");
+		EconomyStatus.shutdown();
 		LoggerCache.shutdown();
 		System.exit(0);
 	}
