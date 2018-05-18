@@ -7,7 +7,9 @@ import wh1spr.bot.Main;
 import wh1spr.bot.command.*;
 import wh1spr.bot.commands.*;
 import wh1spr.bot.commands.dev.*;
-import wh1spr.bot.commands.images.*;
+import wh1spr.bot.commands.economy.settings.*;
+import wh1spr.bot.commands.economy.*;
+//import wh1spr.bot.commands.images.*;
 import wh1spr.bot.commands.mod.*;
 import wh1spr.bot.dummy.Bot;
 import wh1spr.logger.LoggerCache;
@@ -39,6 +41,8 @@ public class Morty extends Bot {
 		commandRegistry.registerCommand(new SendFromMortyCommand("send"));
 		
 		// Economy Commands
+		commandRegistry.registerCommand(new EcoSetupCommand("ecosetup"));
+		commandRegistry.registerCommand(new PayCommand("pay"));
 		
 		// Mod Commands
 		commandRegistry.registerCommand(new CleanCommand("clean"));
