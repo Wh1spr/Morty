@@ -35,7 +35,7 @@ public class Morty extends Bot {
 		commandRegistry.registerCommand(new CommandDisableCommand("disablecommand", this.getCommandRegistry(), "dcmd"));
 		commandRegistry.registerCommand(new CommandDisableCommand("disablecommand", this.getImageRegistry(), "dcmd"));
 		commandRegistry.registerCommand(new EmojiToUnicodeCommand("emote"));
-		commandRegistry.registerCommand(new EvalCommand("eval"));
+		commandRegistry.registerCommand(new EvalCommand("eval", this));
 		commandRegistry.registerCommand(new FlushLogCommand("flush"));
 		commandRegistry.registerCommand(new ShutdownCommand("shutdown", this));
 		commandRegistry.registerCommand(new SendFromMortyCommand("send"));

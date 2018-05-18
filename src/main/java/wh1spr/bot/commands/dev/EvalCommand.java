@@ -10,16 +10,19 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
+import wh1spr.bot.Main;
 import wh1spr.bot.command.Command;
 import wh1spr.bot.dummy.Bot;
 import wh1spr.bot.dummy.Perm;
 
 public class EvalCommand extends Command {
 
-	public EvalCommand(String name, String... aliases) {
+	public EvalCommand(String name, Bot b, String... aliases) {
 		super(name, aliases);
+		this.b = b;
 		this.setMaelstromOnly(false);
 	}
+	private Bot b = null;
 	
 	// Owner only because of obvious reasons (it can pretty much do ANYTHING)
 	@Override
@@ -31,14 +34,17 @@ public class EvalCommand extends Command {
         if (guild != null)
         	se.put("guild", guild);
         se.put("channel", channel);
+        se.put("db", b.getDb());
         
         try {
-            channel.sendMessage("Evaluated Successfully:\n```\n"+se.eval(message.getContentRaw().split(" ",2)[1])+" ```").queue();
+            channel.sendMessage("Evaluated Successfully:\n```\n"+se.eval(message.getContentRaw().split(" ",2)[1]
+            		.replaceAll("eco", "Packages.wh1spr.bot.commands.economy.util.EconomyStatus"))+" ```").queue();
             success(message);
         } catch(Exception e) {
             channel.sendMessage("An exception was thrown:\n```\n"+e+" ```").queue();
             failure(message);
         }
+        
 	}
 
 }
