@@ -20,7 +20,6 @@ public abstract class Command {
 		}
 	}
 	
-	//Only CommandRegistry can use this, rest must use CommandInfo
 	String getName() {
 		return this.name;
 	}
