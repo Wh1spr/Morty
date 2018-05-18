@@ -16,33 +16,32 @@ import wh1spr.bot.commands.economy.util.EconomyStatus;
 import wh1spr.bot.database.EcoInfo;
 import wh1spr.bot.dummy.Perm;
 
-public class PayCommand extends Command {
+public class TransferCommand extends Command {
 
-	public PayCommand(String name, String... aliases) {
+	public TransferCommand(String name, String... aliases) {
 		super(name, aliases);
 		this.setMaelstromOnly(false);
 	}
-	
+
 	@Override
 	public void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args) {
-		if (!Perm.has(Perm.MEMBER, invoker)) {return;}
-		if (!EconomyStatus.hasEconomy(guild)) {return;}
+		if(!Perm.has(Perm.ADMIN, invoker)) return;
+		
+		// .transfer amount from to
+		if (args.size() != 3) {
+			failure(message);
+			return;
+		}
 		
 		EcoInfo ei = EconomyStatus.getGuildInfo(guild);
 		if (ei == null) return; //doesnt have economy
-		
-		// syntax is .pay <amount> <to>...
-		
-		if (args.size() - message.getMentionedUsers().size() != 1) {
-			failure(message); return;
-		}
 		
 		double amount = 0;
 		try {
 			amount = Double.parseDouble(args.get(0));
 		} catch(NumberFormatException e) {
 			failure(message);
-			channel.sendMessage("I could not read how much you were trying to pay! Please use `.pay X.x @user`").queue();
+			channel.sendMessage("I could not read how much you were trying to transfer! Please use `.transfer X.x @from @to`").queue();
 		}
 		amount = Math.round(Math.abs(amount)*100)/100;
 		
@@ -51,29 +50,24 @@ public class PayCommand extends Command {
 			channel.sendMessage("The minimum pay amount is 1 " + ei.getMin(1));
 		}
 		
-		EmbedBuilder e = new EmbedBuilder().setColor(Color.GREEN).setThumbnail(invoker.getEffectiveAvatarUrl())
-				.setTitle(String.format("%s payed %.2f to these users:", invoker.getAsMention(), amount));
+		Balance from = EconomyStatus.getBalance(message.getMentionedMembers().get(0));
+		Balance to = EconomyStatus.getBalance(message.getMentionedMembers().get(0));
 		
-		Balance from = EconomyStatus.getBalance(guild, invoker);
-		boolean atleastone = false;
-		for(Member to : message.getMentionedMembers()) {
-			if(from.transfer(EconomyStatus.getBalance(to), amount)) {
-				e.appendDescription(to.getAsMention() + "\n");
-				atleastone = true;
-			}
-		}
-		if (atleastone) {
-			channel.sendMessage(e.build()).queue();
-			
-		} else {
+		if (!from.transfer(to, amount)) {
 			failure(message);
+			channel.sendMessage("Transaction could not be completed.");
+		} else {
+			EmbedBuilder e = new EmbedBuilder().setColor(Color.GREEN).setThumbnail(invoker.getEffectiveAvatarUrl())
+					.setTitle("**Admin Transfer** completed.")
+					.setDescription(String.format("%s transfered **%.2f %s** from %s to %s", invoker.getAsMention(), amount, amount==1.00?ei.getMaj(0):ei.getMaj(1), from.getUser().getAsMention(), to.getUser().getAsMention()));
+			channel.sendMessage(e.build());
 		}
+		
 	}
-	
+
 	@Override
 	public void onCallPrivate(JDA jda, MessageChannel channel, User invoker, Message message, List<String> args) {
 		failure(message);
 		channel.sendMessage("You can't use this command outside of an economy-enabled server.").queue();
 	}
-
 }
