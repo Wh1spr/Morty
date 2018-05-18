@@ -42,7 +42,8 @@ public class Balance {
 		this.bal = val;
 	}
 	
-	public boolean transfer(EcoInfo ginfo, Balance b1, Balance b2, Double val) {
+	public boolean transfer(Balance b1, Balance b2, Double val) {
+		if (b1==null||b2==null) return false;
 		if (val <= 0.00) return false;
 		if (b1.getBal() < val) return false;
 		if (b1.getGuild()!=b2.getGuild()) return false;

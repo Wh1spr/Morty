@@ -91,6 +91,8 @@ public class Database2 {
 			userDelStmt  = conn.prepareStatement(userDelSql);
 			
 			balanceUpdateStmt = conn.prepareStatement(balanceUpdateSql);
+			
+			ecoSetupStmt = conn.prepareStatement(ecoSetupSql);
 		} catch (SQLException e) {
 			//Shouldnt happen, but does sometimes whoops
 			LoggerCache.getLogger("MAIN").error(e, "Couldn't prepare statements in Database, shutting down...");
@@ -137,10 +139,11 @@ public class Database2 {
 	 * 
 	 * This is now an issue for efficiency only, since we could just replace it multiple times. Also,
 	 * since we only have Morty for now, I'm just gonna leave the eventhandler implementation for later.
-	 * We let all handlers fire everything all the time.
+	 * We let all handlers fire everything, all the time.
 	 * 
 	 * In the future there will be a task list that bots needs to check before: joining a guild, adding a guild to the server,
 	 * ... in case they are offline or haven't been online in a while. This will update the db again.
+	 * mainly so a banned guild for example wouldn't be added, or when joining a banned guild we leave immediately.
 	 * 
 	 */
 	
@@ -360,6 +363,23 @@ public class Database2 {
 			bot.getLog().error(e, "Could check if guild with ID " + guildid + " had a set up economy.");
 		}
 		return null;
+	}
+	private static final String ecoSetupSql = "INSERT OR REPLACE INTO Economy_Settings Values(?,?,?,?,?,?,?)";
+	private static PreparedStatement ecoSetupStmt = null; 
+	public void setupEconomy(String guildId, String majSing, String majMult, String minSing, String minMult, Double start, Double daily) {
+		try {
+			ecoSetupStmt.setString(1, guildId);
+			ecoSetupStmt.setString(2, majSing);
+			ecoSetupStmt.setString(3, majMult);
+			ecoSetupStmt.setString(4, minSing);
+			ecoSetupStmt.setString(5, minMult);
+			ecoSetupStmt.setDouble(6, Math.abs(Math.round(start)*100)/100);
+			ecoSetupStmt.setDouble(7, Math.abs(Math.round(daily)*100)/100);
+			
+			ecoSetupStmt.executeUpdate();
+		} catch (SQLException e) {
+			bot.getLog().error(e, "Could not set up economy for guild with ID " + guildId);
+		}
 	}
 	
 	public void purgeDatabase() {
