@@ -58,7 +58,7 @@ public class TransferCommand extends Command {
 		} else {
 			EmbedBuilder e = new EmbedBuilder().setColor(Color.GREEN)
 					.setTitle("**Admin Transfer** completed.")
-					.setDescription(String.format("**%s** transfered **%.2f %s** from **%s** #%s to **%s** #%s", invoker.getName(),
+					.setDescription(String.format("**%s** transfered **%.2f %s** from **%s**#%s to **%s**#%s", invoker.getName(),
 							amount, amount==1.00?ei.getMaj(0):ei.getMaj(1),
 							from.getUser().getName(), from.getUser().getDiscriminator(),
 							to.getUser().getName(), to.getUser().getDiscriminator()));

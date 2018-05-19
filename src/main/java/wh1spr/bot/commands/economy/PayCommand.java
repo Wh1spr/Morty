@@ -53,8 +53,8 @@ public class PayCommand extends Command {
 		
 		EmbedBuilder e = new EmbedBuilder().setColor(Color.GREEN)
 				.setDescription(message.getMentionedUsers().size()>1?
-						String.format("**%s** #%s payed **%.2f %s** to these users:", invoker.getName(), invoker.getDiscriminator(), amount,amount==1.00?ei.getMaj(0):ei.getMaj(1))
-						:String.format("**%s** #%s payed **%.2f %s** to ", invoker.getName(), invoker.getDiscriminator(), amount, amount==1.00?ei.getMaj(0):ei.getMaj(1)));
+						String.format("**%s**#%s payed **%.2f %s** to these users:", invoker.getName(), invoker.getDiscriminator(), amount,amount==1.00?ei.getMaj(0):ei.getMaj(1))
+						:String.format("**%s**#%s payed **%.2f %s** to ", invoker.getName(), invoker.getDiscriminator(), amount, amount==1.00?ei.getMaj(0):ei.getMaj(1)));
 		
 		Balance from = EconomyStatus.getBalance(guild, invoker);
 		
@@ -65,7 +65,7 @@ public class PayCommand extends Command {
 		
 		if (message.getMentionedMembers().size() == 1) {
 			if(from.transfer(EconomyStatus.getBalance(message.getMentionedMembers().get(0)), amount)) {
-				e.appendDescription(String.format("**%s** #%s", message.getMentionedMembers().get(0).getUser().getName(),
+				e.appendDescription(String.format("**%s**#%s", message.getMentionedMembers().get(0).getUser().getName(),
 						message.getMentionedMembers().get(0).getUser().getDiscriminator()));
 			}
 		} else {

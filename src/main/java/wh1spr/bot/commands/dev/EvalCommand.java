@@ -10,7 +10,6 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
-import wh1spr.bot.Main;
 import wh1spr.bot.command.Command;
 import wh1spr.bot.dummy.Bot;
 import wh1spr.bot.dummy.Perm;
@@ -38,7 +37,9 @@ public class EvalCommand extends Command {
         
         try {
             channel.sendMessage("Evaluated Successfully:\n```\n"+se.eval(message.getContentRaw().split(" ",2)[1]
-            		.replaceAll("eco", "Packages.wh1spr.bot.commands.economy.util.EconomyStatus"))+" ```").queue();
+            		.replaceAll("eco", "Packages.wh1spr.bot.commands.economy.util.EconomyStatus")
+            		.replaceAll("perm", "Packages.wh1spr.bot.dummy.Perm")
+            		.replaceAll("userget", "jda.getUserById"))+" ```").queue();
             success(message);
         } catch(Exception e) {
             channel.sendMessage("An exception was thrown:\n```\n"+e+" ```").queue();

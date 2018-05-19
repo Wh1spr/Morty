@@ -2,6 +2,8 @@ package wh1spr.bot.commands.dev;
 
 import java.util.List;
 
+import com.vdurmont.emoji.EmojiManager;
+
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
@@ -25,7 +27,7 @@ public class ShutdownCommand extends Command {
 	@Override
 	public void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args) {
 		if (!Perm.has(Perm.OWNER, invoker)) return;
-		
+		if (message.getContentRaw().toUpperCase().contains("OOF")) message.addReaction(EmojiManager.getForAlias("skull_crossbones").getUnicode()).complete();
 		bot.shutdown();
 	}
 
