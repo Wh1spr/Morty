@@ -51,23 +51,31 @@ public class PayCommand extends Command {
 			channel.sendMessage("The minimum pay amount is 1 " + ei.getMin(1));
 		}
 		
-		EmbedBuilder e = new EmbedBuilder().setColor(Color.GREEN).setThumbnail(invoker.getEffectiveAvatarUrl())
-				.setTitle(String.format("%s payed %.2f to these users:", invoker.getAsMention(), amount));
+		EmbedBuilder e = new EmbedBuilder().setColor(Color.GREEN)
+				.setDescription(message.getMentionedUsers().size()>1?
+						String.format("**%s** #%s payed **%.2f %s** to these users:", invoker.getName(), invoker.getDiscriminator(), amount,amount==1.00?ei.getMaj(0):ei.getMaj(1))
+						:String.format("**%s** #%s payed **%.2f %s** to ", invoker.getName(), invoker.getDiscriminator(), amount, amount==1.00?ei.getMaj(0):ei.getMaj(1)));
 		
 		Balance from = EconomyStatus.getBalance(guild, invoker);
-		boolean atleastone = false;
-		for(Member to : message.getMentionedMembers()) {
-			if(from.transfer(EconomyStatus.getBalance(to), amount)) {
-				e.appendDescription(to.getAsMention() + "\n");
-				atleastone = true;
+		
+		if (from.getBal() < message.getMentionedMembers().size()*amount) {
+			failure(message);
+			channel.sendMessage("Your balance is not high enough.").queue();
+		}
+		
+		if (message.getMentionedMembers().size() == 1) {
+			if(from.transfer(EconomyStatus.getBalance(message.getMentionedMembers().get(0)), amount)) {
+				e.appendDescription(String.format("**%s** #%s", message.getMentionedMembers().get(0).getUser().getName(),
+						message.getMentionedMembers().get(0).getUser().getDiscriminator()));
+			}
+		} else {
+			for(Member to : message.getMentionedMembers()) {
+				if(from.transfer(EconomyStatus.getBalance(to), amount)) {
+					e.appendDescription(to.getAsMention() + "\n");
+				}
 			}
 		}
-		if (atleastone) {
-			channel.sendMessage(e.build()).queue();
-			
-		} else {
-			failure(message);
-		}
+		channel.sendMessage(e.build()).queue();
 	}
 	
 	@Override

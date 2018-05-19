@@ -6,7 +6,6 @@ import java.util.List;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
@@ -51,16 +50,19 @@ public class TransferCommand extends Command {
 		}
 		
 		Balance from = EconomyStatus.getBalance(message.getMentionedMembers().get(0));
-		Balance to = EconomyStatus.getBalance(message.getMentionedMembers().get(0));
+		Balance to = EconomyStatus.getBalance(message.getMentionedMembers().get(1));
 		
 		if (!from.transfer(to, amount)) {
 			failure(message);
 			channel.sendMessage("Transaction could not be completed.");
 		} else {
-			EmbedBuilder e = new EmbedBuilder().setColor(Color.GREEN).setThumbnail(invoker.getEffectiveAvatarUrl())
+			EmbedBuilder e = new EmbedBuilder().setColor(Color.GREEN)
 					.setTitle("**Admin Transfer** completed.")
-					.setDescription(String.format("%s transfered **%.2f %s** from %s to %s", invoker.getAsMention(), amount, amount==1.00?ei.getMaj(0):ei.getMaj(1), from.getUser().getAsMention(), to.getUser().getAsMention()));
-			channel.sendMessage(e.build());
+					.setDescription(String.format("**%s** transfered **%.2f %s** from **%s** #%s to **%s** #%s", invoker.getName(),
+							amount, amount==1.00?ei.getMaj(0):ei.getMaj(1),
+							from.getUser().getName(), from.getUser().getDiscriminator(),
+							to.getUser().getName(), to.getUser().getDiscriminator()));
+			channel.sendMessage(e.build()).queue();
 		}
 		
 	}

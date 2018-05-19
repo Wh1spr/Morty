@@ -48,7 +48,8 @@ public class EcoSetupCommand extends Command {
 		if (!hadEco) {
 			//setup balances
 			guild.getMembers().forEach(el-> {
-				EconomyStatus.createBalance(el, start);
+				if (!el.getUser().isBot())
+					EconomyStatus.createBalance(el, start);
 			});
 			EconomyStatus.updateBalances();
 		}

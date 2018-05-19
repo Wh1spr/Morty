@@ -41,7 +41,7 @@ public class Main {
 		
 		//I get a NullPointer at EconomyStatus:26, and I don't know why
 		// Only thing i know is that this sleep fixes it.
-		try {Thread.sleep(1000);} catch (InterruptedException e) {}
+		try {Thread.sleep(5000);} catch (InterruptedException e) {}
 		EconomyStatus.start(Main.getBots().get(0));
 		
 	}
