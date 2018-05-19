@@ -33,7 +33,7 @@ public class Morty extends Bot {
 		commandRegistry.registerCommand(new ChangeGameCommand("changegame", "cg"));
 		commandRegistry.registerCommand(new ChangeNameCommand("changename", "cn"));
 		commandRegistry.registerCommand(new CommandDisableCommand("disablecommand", this.getCommandRegistry(), "dcmd"));
-		commandRegistry.registerCommand(new CommandDisableCommand("disablecommand", this.getImageRegistry(), "dcmd"));
+//		commandRegistry.registerCommand(new CommandDisableCommand("disablecommand", this.getImageRegistry(), "dcmd"));
 		commandRegistry.registerCommand(new EmojiToUnicodeCommand("emote"));
 		commandRegistry.registerCommand(new EvalCommand("eval", this));
 		commandRegistry.registerCommand(new FlushLogCommand("flushlog", "fl"));
@@ -45,6 +45,7 @@ public class Morty extends Bot {
 		commandRegistry.registerCommand(new EcoSetupCommand("ecosetup"));
 		commandRegistry.registerCommand(new TransferCommand("transfer"));
 		commandRegistry.registerCommand(new PayCommand("pay"));
+		commandRegistry.registerCommand(new DailyCommand("daily"));
 		
 		// Mod Commands
 		commandRegistry.registerCommand(new CleanCommand("clean"));
