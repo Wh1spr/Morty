@@ -46,6 +46,9 @@ public class DailyCommand extends Command {
 		EcoInfo ei = EconomyStatus.getGuildInfo(guild);
 		if (ei == null) return; //doesnt have economy
 		if (ei.getDaily() <= 0) return;
+		if (dailies.contains(guild.getMember(invoker))) return;
+		
+		dailies.add(guild.getMember(invoker));
 		
 		Balance b = EconomyStatus.getBalance(guild, invoker);
 		b.add(ei.getDaily());

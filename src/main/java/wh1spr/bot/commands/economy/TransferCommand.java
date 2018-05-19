@@ -9,6 +9,7 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
+import wh1spr.bot.Tools;
 import wh1spr.bot.command.Command;
 import wh1spr.bot.commands.economy.util.Balance;
 import wh1spr.bot.commands.economy.util.EconomyStatus;
@@ -42,7 +43,7 @@ public class TransferCommand extends Command {
 			failure(message);
 			channel.sendMessage("I could not read how much you were trying to transfer! Please use `.transfer X.x @from @to`").queue();
 		}
-		amount = Math.round(Math.abs(amount)*100)/100;
+		amount = Tools.round(amount);
 		
 		if (amount == 0) {
 			failure(message);

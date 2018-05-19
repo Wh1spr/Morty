@@ -19,6 +19,7 @@ public class BalanceCommand extends Command {
 
 	public BalanceCommand(String name, String... aliases) {
 		super(name, aliases);
+		this.setMaelstromOnly(false);
 	}
 
 	@Override
@@ -34,11 +35,11 @@ public class BalanceCommand extends Command {
 		String title = "You currently have";
 		
 		if (b.getBal() >= 1) {
-			title += String.format(" **%f %s**", Math.round(b.getBal()), Math.round(b.getBal())==1?ei.getMaj(0):ei.getMaj(1));
+			title += String.format(" **%s %s**", Long.toString(Math.round(b.getBal())), Math.round(b.getBal())==1?ei.getMaj(0):ei.getMaj(1));
 		}
 		if ((b.getBal()*100) - Math.round(b.getBal())*100 > 0) {
-			double cents = (b.getBal()*100) - Math.round(b.getBal())*100;
-			title += String.format(" **%f %s**", cents, cents==1?ei.getMaj(0):ei.getMaj(1));
+			int cents = (int) ((b.getBal()*100) - Math.round(b.getBal())*100);
+			title += String.format(" **%d %s**", cents, cents==1?ei.getMin(0):ei.getMin(1));
 		}
 		
 		e.setTitle(title);

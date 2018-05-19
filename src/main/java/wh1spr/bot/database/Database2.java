@@ -300,7 +300,7 @@ public class Database2 {
 		try {
 			balanceUpdateStmt.setString(1, guild.getId());
 			balanceUpdateStmt.setString(2, user.getId());
-			balanceUpdateStmt.setDouble(3, Tools.roundBal(val));
+			balanceUpdateStmt.setDouble(3, Tools.round(val));
 			
 			balanceUpdateStmt.executeUpdate();
 		} catch (Exception e) {
@@ -373,8 +373,8 @@ public class Database2 {
 			ecoSetupStmt.setString(3, majMult);
 			ecoSetupStmt.setString(4, minSing);
 			ecoSetupStmt.setString(5, minMult);
-			ecoSetupStmt.setDouble(6, Math.abs(Math.round(start)*100)/100);
-			ecoSetupStmt.setDouble(7, Math.abs(Math.round(daily)*100)/100);
+			ecoSetupStmt.setDouble(6, Tools.round(start));
+			ecoSetupStmt.setDouble(7, Tools.round(daily));
 			
 			ecoSetupStmt.executeUpdate();
 		} catch (SQLException e) {

@@ -5,6 +5,7 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.Main;
+import wh1spr.bot.Tools;
 
 public class Balance {
 	
@@ -30,11 +31,11 @@ public class Balance {
 	}
 	
 	public void add(Double val) {
-		this.bal += Math.round(val*100)/100;
+		this.bal += Tools.round(val);
 	}
 	
 	public void substract(Double val) {
-		this.bal -= Math.round(val*100)/100;
+		this.bal -= Tools.round(val);
 	}
 	
 	public void set(Double val) {
