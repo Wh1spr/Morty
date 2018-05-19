@@ -16,6 +16,7 @@ public class FlushLogCommand extends Command {
 
 	public FlushLogCommand(String name, String... aliases) {
 		super(name, aliases);
+		this.setMaelstromOnly(false);
 	}
 
 	@Override

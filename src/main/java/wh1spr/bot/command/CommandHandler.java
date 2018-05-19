@@ -27,13 +27,13 @@ public class CommandHandler extends ListenerAdapter {
 		if (!event.getMessage().getContentStripped().startsWith(PREFIX)) return;
 		
 		//if this command exists
-		String cmdName = event.getMessage().getContentStripped().split(" ")[0].replaceFirst(PREFIX, "").toLowerCase();
+		String cmdName = event.getMessage().getContentRaw().split(" ")[0].replaceFirst(PREFIX, "").toLowerCase();
 		if (registry.getRegisteredCommandsAndAliases().contains(cmdName)) {
 			Command cmd = registry.getCommand(cmdName).command;
 			//no response if not in maelstrom and only maelstrom has been set
 			if (cmd.isMaelstromOnly() && !event.getGuild().getId().equals(Bot.MAELSTROM)) return;
 			List<String> args = new ArrayList<String>();
-			args.addAll(Arrays.asList(event.getMessage().getContentDisplay().split(" ")));
+			args.addAll(Arrays.asList(event.getMessage().getContentRaw().split(" ")));
 			args.remove(0);
 			cmd.onCall(event.getJDA(), event.getGuild(), event.getChannel(), event.getAuthor(), event.getMessage(), args);
 		}

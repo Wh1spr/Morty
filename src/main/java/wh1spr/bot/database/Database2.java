@@ -211,7 +211,7 @@ public class Database2 {
 						userAddStmt2.setString(2, g.getId());
 						userAddStmt2.executeUpdate();
 						
-						ResultSet rs = executeQuery("SELECT GuildId, EcoStartBal FROM Economy_Settings WHERE GuildId = '" + g.getId() + "'");
+						ResultSet rs = executeQuery("SELECT GuildId, StartBal FROM Economy_Settings WHERE GuildId = '" + g.getId() + "'");
 						if (rs.getFetchSize() > 0) {
 							while (rs.next()) {
 								double bal = rs.getDouble("EcoStartBal");

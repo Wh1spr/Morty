@@ -16,6 +16,7 @@ public class FlushEcoCommand extends Command {
 
 	public FlushEcoCommand(String name, String... aliases) {
 		super(name, aliases);
+		this.setMaelstromOnly(false);
 	}
 
 	@Override
