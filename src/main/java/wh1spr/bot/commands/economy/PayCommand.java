@@ -29,7 +29,6 @@ public class PayCommand extends Command {
 		if (!EconomyStatus.hasEconomy(guild)) {return;}
 		
 		EcoInfo ei = EconomyStatus.getGuildInfo(guild);
-		if (ei == null) return; //doesnt have economy
 		
 		// syntax is .pay <amount> <to>...
 		
