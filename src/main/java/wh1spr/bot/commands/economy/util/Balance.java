@@ -74,4 +74,9 @@ public class Balance {
 		return this.mem.getGuild();
 	}
 	
+	@Override
+	public String toString() {
+		return String.format("[G:%s,U:%s,B:%.2f]", this.getGuild().getId(), this.getUser().getId(), this.getBal());
+	}
+	
 }
