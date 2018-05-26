@@ -83,6 +83,10 @@ public class Main {
 		return new ArrayList<Bot>(bots.values());
 	}
 	
+	public static Bot getABot() {
+		return getBots().get(0);
+	}
+	
 	public static void removeBot(String name) {
 		bots.remove(name);
 	}
