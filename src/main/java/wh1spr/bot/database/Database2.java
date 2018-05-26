@@ -366,7 +366,7 @@ public class Database2 {
 	}
 	private static final String ecoSetupSql = "INSERT OR REPLACE INTO Economy_Settings Values(?,?,?,?,?,?,?)";
 	private static PreparedStatement ecoSetupStmt = null; 
-	public void setupEconomy(String guildId, String majSing, String majMult, String minSing, String minMult, Double start, Double daily) {
+	public boolean setupEconomy(String guildId, String majSing, String majMult, String minSing, String minMult, Double start, Double daily) {
 		try {
 			ecoSetupStmt.setString(1, guildId);
 			ecoSetupStmt.setString(2, majSing);
@@ -377,8 +377,10 @@ public class Database2 {
 			ecoSetupStmt.setDouble(7, Tools.round(daily));
 			
 			ecoSetupStmt.executeUpdate();
+			return true;
 		} catch (SQLException e) {
 			bot.getLog().error(e, "Could not set up economy for guild with ID " + guildId);
+			return false;
 		}
 	}
 	

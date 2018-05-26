@@ -24,7 +24,8 @@ public class EconomyStatus {
 		if (balances==null) {
 			balances = new HashMap<String, Balance>();
 			bot.getDb().getBalances().forEach(el->{
-				balances.put(el.getGuild().getId() + "-" + el.getUser().getId(), el);
+				if (el.getMember() != null)
+					balances.put(el.getGuild().getId() + "-" + el.getUser().getId(), el);
 			});
 		}
 		if (t==null) {
