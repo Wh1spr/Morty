@@ -72,7 +72,7 @@ public class Morty extends Bot {
 			this.jda = new JDABuilder(AccountType.BOT)
 			        .setToken(this.getToken()).addEventListener(
 			        		new CommandHandler(this.getPrefix(), this.getCommandRegistry()),
-			        		new CommandHandler(this.getPrefix(), this.getImageRegistry()),
+			        		new CommandHandler(this.getPrefix(), this.getImageRegistry()))
 			        .buildAsync();
 			this.jda.addEventListener(this.getAutoEvents());
 		} catch (Exception e) {
