@@ -16,11 +16,14 @@ public class AutoEventHandlerMorty extends AutoEventHandlerDummy {
 	@Override
 	public void onGuildMemberJoin(GuildMemberJoinEvent event) {
 		
-		if (event.getGuild().getId().equals(Bot.MAELSTROM) && !event.getUser().isBot() && !event.getUser().isFake()) {
-			event.getGuild().getTextChannelById(welcome).sendMessage("**Please welcome "+ event.getUser().getAsMention() +" to the server!**").queue();
-			event.getGuild().getController().addSingleRoleToMember(event.getMember(), event.getGuild().getRoleById(MRoles.GUEST)).queue();
-		}
+		if (event.getGuild().getId().equals(Bot.MAELSTROM)) {
+			if (event.getUser().isBot()) {
+				event.getGuild().getController().addSingleRoleToMember(event.getMember(), event.getGuild().getRoleById(MRoles.BOTS)).queue();
+			} else {
+				event.getGuild().getController().addSingleRoleToMember(event.getMember(), event.getGuild().getRoleById(MRoles.ACCEPT)).queue();
 		
+			}
+		} 
 	}
 	
 	@Override

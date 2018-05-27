@@ -129,7 +129,7 @@ public class Database2 {
 	}
 	
 	/*
-	 * What follows will be multiple standardised queries that can be used by all the bots.
+	 * What follows will be queries that can be used by all the bots.
 	 * These include new users and new guilds, removing them and updating them.
 	 * Because we can have multiple bots in the same guild, we have to somehow let the 
 	 * eventhandlers know when to fire an update so we dont flood the database with duplicates.
@@ -348,7 +348,7 @@ public class Database2 {
 			rs.next();
 			return rs.getInt("total")==1?true:false;
 		} catch (SQLException e) {
-			bot.getLog().error(e, "Could check if guild with ID " + guildid + " had a set up economy.");
+			bot.getLog().error(e, "Couldn't check if guild with ID " + guildid + " had a set up economy.");
 		}
 		return false;
 	}
@@ -360,7 +360,7 @@ public class Database2 {
 			rs.next();
 			return new EcoInfo(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getDouble(6),rs.getDouble(7));
 		} catch (SQLException e) {
-			bot.getLog().error(e, "Could check if guild with ID " + guildid + " had a set up economy.");
+			bot.getLog().error(e, "Couldn't check if guild with ID " + guildid + " had a set up economy.");
 		}
 		return null;
 	}

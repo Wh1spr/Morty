@@ -13,7 +13,6 @@ import wh1spr.bot.Main;
 import wh1spr.bot.Tools;
 import wh1spr.bot.command.Command;
 import wh1spr.bot.commands.economy.util.EconomyStatus;
-import wh1spr.bot.database.EcoInfo;
 import wh1spr.bot.dummy.Perm;
 
 public class EcoSetupCommand extends Command {

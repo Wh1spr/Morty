@@ -68,18 +68,19 @@ public class Morty extends Bot {
 	}
 	
 	public JDA run() {
+		JDA jda = null;
 		try {
-			this.jda = new JDABuilder(AccountType.BOT)
+			jda = new JDABuilder(AccountType.BOT)
 			        .setToken(this.getToken()).addEventListener(
 			        		new CommandHandler(this.getPrefix(), this.getCommandRegistry()),
-			        		new CommandHandler(this.getPrefix(), this.getImageRegistry()))
-			        .buildAsync();
-			this.jda.addEventListener(this.getAutoEvents());
+			        		new CommandHandler(this.getPrefix(), this.getImageRegistry()),
+			        		this.getAutoEvents())
+			        .buildBlocking();
 		} catch (Exception e) {
 			log.fatal(e, "JDA instance could not be initialized.");
 			shutdown();
 		}
-		return this.jda; // I know, you don't have to tell me.
+		return jda; // I know, you don't have to tell me.
 		
 	}
 

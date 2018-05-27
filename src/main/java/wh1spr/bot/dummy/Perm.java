@@ -86,6 +86,8 @@ public enum Perm {
 				case MRoles.TRIAL:
 					return TRIAL;
 				case MRoles.GUEST:
+					return TRIAL;
+				case MRoles.ACCEPT:
 					return NEWB;
 				}
 			}
