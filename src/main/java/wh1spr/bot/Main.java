@@ -19,7 +19,7 @@ public class Main {
 	
 	private static final String propertiesPath = "data/main.properties";
 	private static Properties properties = null;
-	private static Logger log = LoggerCache.newLogger("MAIN", "data/main.log");
+	private static Logger log = null;
 	
 	private static HashMap<String, Bot> bots = new HashMap<String, Bot>();
 
@@ -36,6 +36,9 @@ public class Main {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		LoggerCache.start("data/main.log");
+		log = LoggerCache.getLogger("MAIN");
 		
 		morty();
 		

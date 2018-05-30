@@ -1,105 +1,81 @@
 package wh1spr.logger;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.LocalDateTime;
-
-//Change this so it appends and has closedown/startup message + sets some whitespace in between
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Logger {
 
 	private final String name;
 	private PrintWriter out = null;
 	
-	private LocalDateTime time = LocalDateTime.now();
-	
-	Logger(String name, String url) {
+	Logger(String name, PrintWriter out) {
 		this.name = name.toUpperCase();
-		try {
-			new File("url").mkdirs();
-			this.out = new PrintWriter(new BufferedWriter (new FileWriter(url, true)));
-		} catch (IOException e) {
-			if (name.equals("MAIN")) {
-				System.err.println("FATAL - Logger startup failed. Shutting down application.");
-				e.printStackTrace();
-				System.exit(1);
-			} else {
-				LoggerCache.getLogger("MAIN").error(e, "Logger startup for logger " + name + " at location '" + url + "' failed.");
-			}
-		}
-		
-		info("");
-		info("LOGGER STARTUP - " + getDateTime());
-		info("");
-		out.flush();
+		this.out = out;
+		info("Logger startup at " + getDateTimeStamp());
 	}
 	
 	public void error(Exception e, String msg) {
-		String time = "[" + getTime() + "]";
-		out.println(time + "[ERROR] " + msg);
+		out.println(String.format("[%s][%s][ERROR]", getTimeStamp(), this.getName()));
 		e.printStackTrace(out);
 	}
 	
 	public void error(String msg) {
-		String time = "[" + getTime() + "]";
-		out.println(time + "[ERROR] " + msg);
+		out.println(String.format("[%s][%s][ERROR]", getTimeStamp(), this.getName()));
 	}
 	
 	public void fatal(Exception e, String msg) {
-		String time = "[" + getTime() + "]";
-		out.println(time + "[FATAL] " + msg);
+		out.println(String.format("[%s][%s][FATAL]", getTimeStamp(), this.getName()));
 		e.printStackTrace(out);
 	}
 	
 	public void fatal(String msg) {
-		String time = "[" + getTime() + "]";
-		out.println(time + "[FATAL] " + msg);
+		out.println(String.format("[%s][%s][FATAL]", getTimeStamp(), this.getName()));
 	}
 	
 	public void info(String msg) {
-		String time = "[" + getTime() + "]";
-		out.println(time + "[INFO] " + msg);
+		out.println(String.format("[%s][%s][INFO]", getTimeStamp(), this.getName()));
 	}
 	
 	public void debug(String msg) {
-		String time = "[" + getTime() + "]";
-		out.println(time + "[DEBUG] " + msg);
+		out.println(String.format("[%s][%s][DEBUG]", getTimeStamp(), this.getName()));
 	}
 	
 	public void warning(String msg) {
-		String time = "[" + getTime() + "]";
-		out.println(time + "[WARNING] " + msg);
-	}
-	
-	public String getTime() {
-		return time.getHour() + ":" + String.format("%2d", time.getMinute()).replace(' ', '0') + ":" + String.format("%2d", time.getSecond()).replace(' ', '0');
-	}
-	public String getDateTime() {
-		return time.getYear() + "/" + time.getMonthValue() + "/" + time.getDayOfMonth() + " - " + getTime();
+		out.println(String.format("[%s][%s][WARNING]", getTimeStamp(), this.getName()));
 	}
 	
 	public String getName() {
 		return this.name;
 	}
 	
-	public boolean shutdown() {
-		LoggerCache.getLogger("MAIN").info("Logger " + name + " shutting down.");
-		info("Logger has been shutdown.");
-		out.flush();
-		out.close();
-		isClosed = true;
-		return LoggerCache.removeLogger(this);
+	public static String getDateTimeStamp() {
+		return getDateStamp() + "_" + getTimeStamp();
 	}
 	
-	private boolean isClosed = false;
-	public boolean isClosed() {
-		return isClosed;
+	public static String getDateStamp() {
+		SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd");
+	    Date now = new Date();
+	    String strDate = sdfDate.format(now);
+	    return strDate;
 	}
 	
-	public void flush() {
+	public static String getTimeStamp() {
+		SimpleDateFormat sdfDate = new SimpleDateFormat("HH:mm:ss");
+	    Date now = new Date();
+	    String strDate = sdfDate.format(now);
+	    return strDate;
+	}
+	
+	void setOut(PrintWriter newOut) {
+		this.out = newOut;
+	}
+	
+	public void shutdown() {
+		if (out == null) return; //already shut down
+		info("Logger shutting down. Goodbye!");
 		out.flush();
+		out = null;
+		LoggerCache.removeLogger(this);
 	}
 }
