@@ -22,14 +22,6 @@ public class FlushLogCommand extends Command {
 	@Override
 	public void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args) {
 		if (!Perm.hasSpec(Perm.OWNER, invoker) && !invoker.getId().equals(Bot.OWNER)) return;
-		
-		if (args.size() == 1) {
-			if (LoggerCache.getLogger(args.get(0).toUpperCase()) != null) {
-				LoggerCache.getLogger(args.get(0).toUpperCase()).flush();
-				success(message);
-				return;
-			}
-		}
 		LoggerCache.flush();
 		success(message);
 	}

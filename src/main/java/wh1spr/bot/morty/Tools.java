@@ -15,6 +15,7 @@ import java.util.stream.Stream;
 
 public class Tools {
 
+	@Deprecated
 	public static boolean isInFile(String filename, String toFind) {
 		try (Stream<String> stream = Files.lines(Paths.get(filename))) {
 	        return stream.anyMatch(e->e.equals(toFind));
@@ -23,6 +24,7 @@ public class Tools {
 		}
 	}
 	
+	@Deprecated
 	public static boolean isInLineInFile(String filename, String toFind) {
 		try (Stream<String> stream = Files.lines(Paths.get(filename))) {
 	        return stream.anyMatch(e->e.contains(toFind));
@@ -31,6 +33,7 @@ public class Tools {
 		}
 	}
 	
+	@Deprecated
 	public static List<String> getLinesFromFile(String filename) {
 	
 		List<String> lines = new ArrayList<String>();
@@ -44,6 +47,7 @@ public class Tools {
 		return lines;
 	}
 	
+	@Deprecated
 	public static boolean addLineToFile(String filename, String lineToAdd) {
 		try(FileWriter fw = new FileWriter(new File(filename), true);
 			    BufferedWriter bw = new BufferedWriter(fw);
@@ -56,6 +60,7 @@ public class Tools {
 		return true;
 	}
 	
+	@Deprecated
 	public static boolean removeLineFromFile(String filename, String lineToRemove) {
 		// The "try" traps any possible read/write exceptions which might occur
 		try {

@@ -42,6 +42,11 @@ public class Main {
 		
 		morty();
 		
+		if (bots.isEmpty()) {
+			log.fatal("No bots were created. Shutting down...");
+			System.exit(1);
+		}
+		
 		//I get a NullPointer at EconomyStatus:26, and I don't know why
 		// Only thing i know is that this sleep fixes it.
 		try {Thread.sleep(5000);} catch (InterruptedException e) {}
@@ -55,7 +60,6 @@ public class Main {
 			String key = properties.getProperty("MORTY-KEY");
 			String dataPath = properties.getProperty("MORTY-DATA", "data/Morty/");
 			String prefix = properties.getProperty("MORTY-PREFIX");
-			LoggerCache.newLogger("MORTY", dataPath + "morty.log");
 			log.debug("[Morty] Token - " + key);
 			log.debug("[Morty] DataPath - " + dataPath);
 			log.debug("[Morty] Prefix - '" + prefix + "'");
