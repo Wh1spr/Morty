@@ -11,4 +11,5 @@ Morty.db
 data/
 libs/
 
+Morty_*
 gradle.properties
