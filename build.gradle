@@ -1,6 +1,6 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
-version = '2.5_111'
+version = '2.5_112'
 
 
 repositories {

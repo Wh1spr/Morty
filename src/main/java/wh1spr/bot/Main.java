@@ -37,7 +37,7 @@ public class Main {
 			e.printStackTrace();
 		}
 		
-		LoggerCache.start("data/main.log");
+		LoggerCache.start("data/logs/main-%s.log");
 		log = LoggerCache.getLogger("MAIN");
 		
 		morty();
