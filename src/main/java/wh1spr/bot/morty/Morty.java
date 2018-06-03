@@ -80,7 +80,7 @@ public class Morty extends Bot {
 			log.fatal(e, "JDA instance could not be initialized.");
 			shutdown();
 		}
-		return jda; // I know, you don't have to tell me.
+		return jda;
 		
 	}
 

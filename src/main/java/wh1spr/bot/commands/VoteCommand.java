@@ -30,6 +30,7 @@ public class VoteCommand extends Command {
 	public VoteCommand(String name, Bot bot) {
 		super(name);
 		this.bot = bot;
+		this.setMaelstromOnly(false);
 	}
 
 	private Bot bot;

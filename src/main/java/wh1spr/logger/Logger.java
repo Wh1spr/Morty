@@ -71,7 +71,10 @@ public class Logger {
 		this.out = newOut;
 	}
 	
+	private boolean shutdown = false;
 	public void shutdown() {
+		if (shutdown) return;
+		shutdown = true;
 		if (out == null) return; //already shut down
 		info("Logger shutting down. Goodbye!");
 		out.flush();

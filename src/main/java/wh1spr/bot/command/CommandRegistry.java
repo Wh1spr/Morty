@@ -23,7 +23,7 @@ public  class CommandRegistry {
 
     public void registerCommand(Command command) {
         CommandEntry entry = new CommandEntry(command);
-        registry.put(command.getName(), entry);
+        registry.put(command.getName().toLowerCase(), entry);
         for (String alias : command.getAliases()) {
             registry.put(alias, entry);
         }
