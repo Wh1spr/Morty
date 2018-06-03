@@ -27,6 +27,13 @@ public class EconomyStatus {
 				if (el.getMember() != null)
 					balances.put(el.getGuild().getId() + "-" + el.getUser().getId(), el);
 			});
+		} else {
+			updateBalances();
+			balances = new HashMap<String, Balance>();
+			bot.getDb().getBalances().forEach(el->{
+				if (el.getMember() != null)
+					balances.put(el.getGuild().getId() + "-" + el.getUser().getId(), el);
+			});
 		}
 		if (t==null) {
 			t = new Timer();
