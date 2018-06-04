@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -39,6 +40,7 @@ public class LoggerCache {
 		today.set(Calendar.MINUTE, 0);
 		today.set(Calendar.SECOND, 1);
 
+		t = new Timer();
 		t.schedule(new DailyCycle(), today.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
 	}
 	
@@ -61,12 +63,12 @@ public class LoggerCache {
 	}
 	
 	public static void shutdown() {
-		Iterator<Logger> iter = cache.values().iterator();
+		ArrayList<Logger> copy = new ArrayList<Logger>(cache.values());
+		Iterator<Logger> iter = copy.iterator();
 		while (iter.hasNext()) {
 			Logger log = iter.next();
 			if(!log.getName().equals("MAIN")) {
 				log.shutdown();
-				iter.remove();
 			}
 		}
 		main.info("All loggers shutdown. Closing down MAIN logger.");

@@ -16,33 +16,33 @@ public class Logger {
 	}
 	
 	public void error(Exception e, String msg) {
-		out.println(String.format("[%s][%s][ERROR]", getTimeStamp(), this.getName()));
+		out.println(String.format("[%s][%s][ERROR] %s", getTimeStamp(), this.getName(), msg));
 		e.printStackTrace(out);
 	}
 	
 	public void error(String msg) {
-		out.println(String.format("[%s][%s][ERROR]", getTimeStamp(), this.getName()));
+		out.println(String.format("[%s][%s][ERROR] %s", getTimeStamp(), this.getName(), msg));
 	}
 	
 	public void fatal(Exception e, String msg) {
-		out.println(String.format("[%s][%s][FATAL]", getTimeStamp(), this.getName()));
+		out.println(String.format("[%s][%s][FATAL] %s", getTimeStamp(), this.getName(), msg));
 		e.printStackTrace(out);
 	}
 	
 	public void fatal(String msg) {
-		out.println(String.format("[%s][%s][FATAL]", getTimeStamp(), this.getName()));
+		out.println(String.format("[%s][%s][FATAL] %s", getTimeStamp(), this.getName(), msg));
 	}
 	
 	public void info(String msg) {
-		out.println(String.format("[%s][%s][INFO]", getTimeStamp(), this.getName()));
+		out.println(String.format("[%s][%s][INFO] %s", getTimeStamp(), this.getName(), msg));
 	}
 	
 	public void debug(String msg) {
-		out.println(String.format("[%s][%s][DEBUG]", getTimeStamp(), this.getName()));
+		out.println(String.format("[%s][%s][DEBUG] %s", getTimeStamp(), this.getName(), msg));
 	}
 	
 	public void warning(String msg) {
-		out.println(String.format("[%s][%s][WARNING]", getTimeStamp(), this.getName()));
+		out.println(String.format("[%s][%s][WARNING] %s", getTimeStamp(), this.getName(), msg));
 	}
 	
 	public String getName() {
