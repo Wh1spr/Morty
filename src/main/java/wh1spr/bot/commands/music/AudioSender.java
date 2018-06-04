@@ -23,8 +23,8 @@ public class AudioSender implements AudioSendHandler {
 	
 	@Override
 	public byte[] provide20MsAudio() {
-		if (lastFrame == null) return lastFrame.data;
-		byte[] data = lastFrame!=null ? lastFrame.data : null;
+		if (lastFrame == null) return lastFrame.getData();
+		byte[] data = lastFrame!=null ? lastFrame.getData() : null;
 		lastFrame = null;
 		return data;
 	}
