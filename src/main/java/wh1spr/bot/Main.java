@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Properties;
 
 import wh1spr.bot.commands.economy.util.EconomyStatus;
+import wh1spr.bot.database.Database2;
 import wh1spr.bot.dummy.Bot;
 import wh1spr.bot.morty.Morty;
 import wh1spr.logger.Logger;
@@ -37,6 +38,18 @@ public class Main {
 			e.printStackTrace();
 		}
 		
+		/*
+		 * Launch Order
+		 * 1. LoggerCache
+		 * 2. Bots
+		 * 3. Database
+		 * 4. EconomyStatus
+		 * 
+		 * Between 2-4 commands have to check in with Database 
+		 * AND EconomyStatus to check if ready. If not ready, commands are
+		 * practically disabled.
+		 */
+		
 		LoggerCache.start("data/logs/main-%s.log");
 		log = LoggerCache.getLogger("MAIN");
 		
@@ -46,6 +59,9 @@ public class Main {
 			log.fatal("No bots were created. Shutting down...");
 			System.exit(1);
 		}
+		
+		log.info("Starting Database");
+		Database2.start(getABot().getJDA());
 		
 		//I get a NullPointer at EconomyStatus:26, and I don't know why
 		// Only thing i know is that this sleep fixes it.

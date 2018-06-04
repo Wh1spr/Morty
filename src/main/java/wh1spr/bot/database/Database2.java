@@ -23,62 +23,72 @@ import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.Main;
 import wh1spr.bot.Tools;
 import wh1spr.bot.commands.economy.util.Balance;
+import wh1spr.bot.database.modules.*;
 import wh1spr.bot.dummy.Bot;
+import wh1spr.logger.Logger;
 import wh1spr.logger.LoggerCache;
 
 // Since we can get the connection statically, statements that will be executed rarely are not put in here.
 public class Database2 {
 
+	private static Logger log = LoggerCache.getLogger("DATABASE");
+	
 	private static Connection conn = null;
+	private static JDA jda = null;
+	private static boolean isReady = false;
+	private static ArrayList<Module> modules = null;
+	
+	public static boolean start(JDA jda) {
+		log.info("Getting connection to DB");
+		conn = getConn();
+		Database2.jda = jda;
+		//instance modules with conn, jda
+		modules = new ArrayList<Module>();
+		eco = new EconomyModule(conn, jda);
+		
+		//getters setters
+		log.info("Database is ready to rumble!");
+		isReady = true;
+		return isReady;
+	}
+	
+	public static boolean isReady() {
+		return isReady;
+	}
+	
+	private static EconomyModule eco = null;
+	
+	public static EconomyModule getEco() {
+		return Database2.eco;
+	}
+	
 	private Bot bot;
 	
 	public Database2(Bot bot) {
 		this.bot = bot;
 		if(conn == null) conn = getConn();
-		if(newConn) {
-			prepare();
-		}
+		prepare();
 	}
 	
-	private static boolean newConn = false;
 	public static Connection getConn() {
-		if (conn != null) return conn;
-		
-		newConn = true;
-		
-		Connection con2 = null;
+		Connection con = null;
 		
 		String url = "jdbc:sqlite:data/Morty2.db";
 		try {
 			Class.forName("org.sqlite.JDBC");
 			if(!Files.exists(Paths.get("data/Morty2.db"))) {
-				LoggerCache.getLogger("MAIN").error("Morty2 Database is not present and application cannot run. Exiting...");
+				log.error("Morty2 Database is not present @data/Morty2.db and application cannot run. Exiting...");
 				LoggerCache.shutdown();
-				System.exit(1); // Database is the run before first bot gets in Main.bots, no shutdown is needed
+				System.exit(1);
 			}
-			con2 = DriverManager.getConnection(url);
-			LoggerCache.getLogger("MAIN").info("Connection to the database has been established.");
+			con = DriverManager.getConnection(url);
+			log.info("Connection to the database has been established.");
 		} catch (Exception e) {
-			LoggerCache.getLogger("MAIN").error(e, "Could not establish connection to the Database. Exiting...");
+			log.error(e, "Could not establish connection to the Database. Exiting...");
+			LoggerCache.shutdown();
+			System.exit(1);
 		}
-		return con2;
-	}
-	
-	public static void reset() {
-		try {
-			conn.commit();
-			conn.close(); 
-			newConn = false;
-			conn = null;
-			conn = getConn();
-			prepare();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	public void resetNoStatic() {
-		reset();
+		return con;
 	}
 	
 	private static void prepare() {
@@ -95,7 +105,7 @@ public class Database2 {
 			ecoSetupStmt = conn.prepareStatement(ecoSetupSql);
 		} catch (SQLException e) {
 			//Shouldnt happen, but does sometimes whoops
-			LoggerCache.getLogger("MAIN").error(e, "Couldn't prepare statements in Database, shutting down...");
+			log.error(e, "Couldn't prepare statements in Database, shutting down...");
 			//cases here for reset() call
 			if (!Main.getBots().isEmpty())
 				Collections.unmodifiableCollection(Main.getBots()).forEach(bot->bot.shutdown());
@@ -296,6 +306,7 @@ public class Database2 {
 	
 	private static PreparedStatement balanceUpdateStmt = null;
 	private static final String balanceUpdateSql = "INSERT OR REPLACE INTO Economy Values(?,?,?)";
+	@Deprecated
 	public void updateBal(User user, Guild guild, double val) {
 		try {
 			balanceUpdateStmt.setString(1, guild.getId());
@@ -307,10 +318,12 @@ public class Database2 {
 			bot.getLog().error(e, String.format("Could not update balance. UserId = %s, new Balance = %.2f", user.getId(), val));
 		}
 	}
+	@Deprecated
 	public void updateBal(Member member, double val) {
 		updateBal(member.getUser(), member.getGuild(), val);
 	}
 	
+	@Deprecated
 	public void updateBalances(Collection<Balance> bals) {
 		bot.getLog().info(String.format("Updating %d balance values.", bals.size()));
 		Iterator<Balance> iter = bals.iterator();
@@ -326,6 +339,7 @@ public class Database2 {
 	 * <b>Note: These balances come from the db, which gets updated automatically once every ten minutes since startup, or with the {@link UpdateBalanceCommand}</b>
 	 * @return A set of balances found in the database
 	 */
+	@Deprecated
 	public Set<Balance> getBalances() {
 		try {
 			Set<Balance> s = new HashSet<Balance>();
@@ -342,6 +356,7 @@ public class Database2 {
 	}
 	
 	private static final String hasEcoSql = "SELECT COUNT(*) as total FROM Economy_Settings Where GuildId = '%s'";
+	@Deprecated
 	public boolean hasEconomy(String guildid) {
 		try {
 			ResultSet rs = executeQuery(String.format(hasEcoSql, guildid));
@@ -353,6 +368,7 @@ public class Database2 {
 		return false;
 	}
 	private static final String getEcoInfoSql = "SELECT * FROM Economy_Settings WHERE GuildId = '%s'";
+	@Deprecated
 	public EcoInfo getGuildInfo(String guildid) {
 		if (!hasEconomy(guildid)) return null;
 		try {
@@ -366,6 +382,7 @@ public class Database2 {
 	}
 	private static final String ecoSetupSql = "INSERT OR REPLACE INTO Economy_Settings Values(?,?,?,?,?,?,?)";
 	private static PreparedStatement ecoSetupStmt = null; 
+	@Deprecated
 	public boolean setupEconomy(String guildId, String majSing, String majMult, String minSing, String minMult, Double start, Double daily) {
 		try {
 			ecoSetupStmt.setString(1, guildId);
@@ -383,10 +400,4 @@ public class Database2 {
 			return false;
 		}
 	}
-	
-	public void purgeDatabase() {
-		//purges everything that shouldn't be in the database anymore
-		//This method shouldn't be called often, just once in a while
-	}
-	
 }
