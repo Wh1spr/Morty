@@ -4,13 +4,11 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
-import wh1spr.bot.database.Database2;
 import wh1spr.logger.Logger;
 
 public abstract class Module {
@@ -39,7 +37,7 @@ public abstract class Module {
 	}
 	
 	public boolean isReady() {
-		return isReady();
+		return isReady;
 	}
 	
 	protected void setReady(boolean b) {

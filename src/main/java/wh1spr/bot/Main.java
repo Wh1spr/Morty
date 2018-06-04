@@ -60,13 +60,11 @@ public class Main {
 			System.exit(1);
 		}
 		
-		log.info("Starting Database");
+		log.info("Starting Database...");
 		Database2.start(getABot().getJDA());
 		
-		//I get a NullPointer at EconomyStatus:26, and I don't know why
-		// Only thing i know is that this sleep fixes it.
-		try {Thread.sleep(5000);} catch (InterruptedException e) {}
-		EconomyStatus.start(Main.getBots().get(0));
+		log.info("Starting EconomyStatus...");
+		EconomyStatus.start();
 		
 	}
 	

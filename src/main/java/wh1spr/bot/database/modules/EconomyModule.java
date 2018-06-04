@@ -54,8 +54,8 @@ public class EconomyModule extends Module {
 	private static final String getEcoInfoSql = "SELECT * FROM Economy_Settings WHERE GuildId = ?";
 	private static final String ecoSetupSql = "INSERT OR REPLACE INTO Economy_Settings Values(?,?,?,?,?,?,?)";
 	
-	private static final String memberDeleteSql = "DELETE * FROM Economy WHERE GuildId = ? AND UserId = ?";
-	private static final String guildDeleteSql = "DELETE * FROM Economy WHERE GuildId = ?; DELETE * FROM Economy_Settings WHERE GuildId = ?";
+	private static final String memberDeleteSql = "DELETE FROM Economy WHERE GuildId = ? AND UserId = ?";
+	private static final String guildDeleteSql = "DELETE FROM Economy WHERE GuildId = ?; DELETE * FROM Economy_Settings WHERE GuildId = ?";
 	
 	/* PreparedStatements */
 	private static PreparedStatement balanceUpdateStmt = null;
