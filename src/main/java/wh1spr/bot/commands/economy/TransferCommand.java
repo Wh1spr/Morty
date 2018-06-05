@@ -27,6 +27,11 @@ public class TransferCommand extends Command {
 	public void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args) {
 		if(!Perm.has(Perm.ADMIN, invoker)) return;
 		
+		if (!EconomyStatus.isReady()) {
+			warning(message);
+			return;
+		}
+		
 		// .transfer amount from to
 		if (args.size() != 3) {
 			failure(message);

@@ -11,6 +11,7 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.command.Command;
+import wh1spr.bot.database.Database2;
 import wh1spr.bot.dummy.Bot;
 import wh1spr.bot.dummy.Perm;
 
@@ -33,12 +34,13 @@ public class EvalCommand extends Command {
         if (guild != null)
         	se.put("guild", guild);
         se.put("channel", channel);
-        se.put("db", b.getDb());
+        se.put("dbeco", Database2.getEco());
         
         try {
             channel.sendMessage("Evaluated Successfully:\n```\n"+se.eval(message.getContentRaw().split(" ",2)[1]
             		.replaceAll("eco", "Packages.wh1spr.bot.commands.economy.util.EconomyStatus")
             		.replaceAll("perm", "Packages.wh1spr.bot.dummy.Perm")
+            		.replaceAll("rank", "Packages.wh1spr.bot.dummy.Rank")
             		.replaceAll("userget", "jda.getUserById"))+" ```").queue();
             success(message);
         } catch(Exception e) {

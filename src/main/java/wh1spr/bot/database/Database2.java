@@ -45,6 +45,7 @@ public class Database2 {
 		//instance modules with conn, jda
 		modules = new ArrayList<Module>();
 		eco = new EconomyModule(conn, jda);
+		if(eco.isReady()) modules.add(eco);
 		
 		//getters setters
 		log.info("Database is ready to rumble!");

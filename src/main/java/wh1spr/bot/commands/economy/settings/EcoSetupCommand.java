@@ -9,10 +9,11 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
-import wh1spr.bot.Main;
 import wh1spr.bot.Tools;
 import wh1spr.bot.command.Command;
 import wh1spr.bot.commands.economy.util.EconomyStatus;
+import wh1spr.bot.database.Database2;
+import wh1spr.bot.database.modules.EconomyModule;
 import wh1spr.bot.dummy.Perm;
 
 public class EcoSetupCommand extends Command {
@@ -20,12 +21,20 @@ public class EcoSetupCommand extends Command {
 	// .ecosetup
 	public EcoSetupCommand(String name, String... aliases) {
 		super(name, aliases);
+		this.eco = Database2.getEco();
 		this.setMaelstromOnly(false);
 	}
 
+	private EconomyModule eco = null;
+	
 	@Override
 	public void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args) {
 		if (!Perm.has(Perm.SERVER, invoker)) {return;}
+		
+		if (!EconomyStatus.isReady()) {
+			warning(message);
+			return;
+		}
 		
 		if (args.size() != 6) {
 			failure(message);
@@ -35,7 +44,7 @@ public class EcoSetupCommand extends Command {
 		boolean hadEco = EconomyStatus.hasEconomy(guild);
 		
 		double start;
-		double daily = 0.0;
+		double daily;
 		try {
 			start = Double.parseDouble(args.get(0));
 			daily = Double.parseDouble(args.get(1));
@@ -65,7 +74,7 @@ public class EcoSetupCommand extends Command {
 		
 		s = String.format(s, majSing, majMult, minSing, majSing, daily, start);
 		
-		if(!Main.getBots().get(0).getDb().setupEconomy(guild.getId(), majSing, majMult, minSing, minMult, start, daily)){
+		if(!eco.setupEconomy(guild.getId(), majSing, majMult, minSing, minMult, start, daily)){
 			warning(message);
 			return;
 		}

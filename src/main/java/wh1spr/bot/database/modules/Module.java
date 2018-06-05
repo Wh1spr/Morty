@@ -25,6 +25,7 @@ public abstract class Module {
 		log.info("Preparing module...");
 		if (!prepare()) {
 			log.error("Module could not be prepared. Continuing without module.");
+			log.shutdown();
 			return;
 		}
 		log.info("Module prepared.");

@@ -43,6 +43,11 @@ public class DailyCommand extends Command {
 	public void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args) {
 		if (!Perm.has(Perm.MEMBER, invoker)) return;
 		
+		if (!EconomyStatus.isReady()) {
+			warning(message);
+			return;
+		}
+		
 		EcoInfo ei = EconomyStatus.getGuildInfo(guild);
 		if (ei == null) return; //doesnt have economy
 		if (ei.getDaily() <= 0) return;

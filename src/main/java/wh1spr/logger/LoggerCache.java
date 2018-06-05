@@ -26,7 +26,7 @@ public class LoggerCache {
 	public static void start(String url) {
 		LoggerCache.url = url;
 		try {
-			new File(url).mkdirs();
+			new File(url.substring(0, url.lastIndexOf('/'))).mkdirs();
 			mainOut = new PrintWriter(new BufferedWriter (new FileWriter(String.format(url, getDateStamp()), true)));
 			main = getLogger("MAIN");
 		} catch (IOException e) {

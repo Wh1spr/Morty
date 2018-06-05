@@ -25,6 +25,12 @@ public class BalanceCommand extends Command {
 	@Override
 	public void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args) {
 		if(!Perm.has(Perm.MEMBER, invoker)) return;
+		
+		if (!EconomyStatus.isReady()) {
+			warning(message);
+			return;
+		}
+		
 		if (!EconomyStatus.hasEconomy(guild)) {return;}
 		
 		EcoInfo ei = EconomyStatus.getGuildInfo(guild);
