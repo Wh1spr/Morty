@@ -36,6 +36,8 @@ public class Database2 {
 		if(ent.isReady()) modules.add(ent);
 		maelstrom = new MaelstromModule(conn, jda);
 		if(maelstrom.isReady()) modules.add(maelstrom);
+		intro = new IntroModule(conn, jda);
+		if(intro.isReady()) modules.add(intro);
 		
 		log.info("Database is ready to rumble!");
 		isReady = true;
@@ -49,6 +51,7 @@ public class Database2 {
 	private static EconomyModule eco = null;
 	private static EntityModule ent = null;
 	private static MaelstromModule maelstrom = null;
+	private static IntroModule intro = null;
 	
 	public static EconomyModule getEco() {
 		return Database2.eco;
