@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import wh1spr.logger.LoggerCache;
@@ -29,6 +30,7 @@ public class IntroModule extends Module {
 		try {
 			userAddStmt = conn.prepareStatement(userAddSql);
 			getIntroChannelStmt = conn.prepareStatement(getIntroChannelSql);
+			getIntroMessageStmt = conn.prepareStatement(getIntroMessageSql);
 			guildAddStmt = conn.prepareStatement(guildAddSql);
 			
 			userDeleteStmt = conn.prepareStatement(userDeleteSql);
@@ -51,6 +53,7 @@ public class IntroModule extends Module {
 	/* SQL Statements */
 	private static final String userAddSql = "INSERT OR REPLACE INTO Introduction Values(?,?,?)";
 	private static final String getIntroChannelSql = "SELECT IntroChannel FROM HasIntro WHERE GuildId = ?";
+	private static final String getIntroMessageSql = "SELECT MessageId FROM Introduction WHERE UserId = ? AND GuildId = ?";
 	private static final String guildAddSql = "INSERT OR REPLACE INTO HasIntro Values(?,?)";
 	
 	private static final String userDeleteSql = "DELETE FROM Introduction WHERE UserId = ?";
@@ -60,6 +63,7 @@ public class IntroModule extends Module {
 	/* PreparedStatements */
 	private static PreparedStatement userAddStmt = null;
 	private static PreparedStatement getIntroChannelStmt = null;
+	private static PreparedStatement getIntroMessageStmt = null;
 	private static PreparedStatement guildAddStmt = null;
 	
 	private static PreparedStatement userDeleteStmt = null;
@@ -106,9 +110,28 @@ public class IntroModule extends Module {
 		return getIntroChannelId(guildId)!=null;
 	}
 	
+	public boolean hasIntro(String userId, String guildId) {
+		if (!isReady()) return false;
+		return getIntroMessageId(userId, guildId)!=null;
+	}
+	
 	public TextChannel getIntroChannel(String guildId) {
 		if (!isReady()) return null;
 		return jda.getTextChannelById(getIntroChannelId(guildId));
+	}
+	
+	public String getIntroMessageId(String userId, String guildId) {
+		if (!isReady()) return null;
+		try {
+			getIntroMessageStmt.setString(1, userId);
+			getIntroMessageStmt.setString(2, guildId);
+			ResultSet rs = getIntroMessageStmt.executeQuery();
+			
+			if (rs.next()) return rs.getString("MessageId");
+		} catch(SQLException e) {
+			log.error(e, String.format("Something went wrong trying to get IntroMessageId for UserId = %s, GuildId = %s", userId, guildId));
+		}
+		return null;
 	}
 	
 	/**
@@ -128,6 +151,14 @@ public class IntroModule extends Module {
 		return rs>0;
 	}
 	
+	public Message getIntroMessage(String userId, String guildId) {
+		if (!isReady()) return null;
+		if (!hasIntro(guildId)) return null;
+		TextChannel intro = getIntroChannel(guildId);
+		if (intro==null) return null;
+		return intro.getMessageById(getIntroMessageId(userId, guildId)).complete();
+	}
+	
 	/***************
 	 *   ALIASES   *
 	 ***************/
@@ -142,6 +173,22 @@ public class IntroModule extends Module {
 	
 	public TextChannel getIntroChannel(Guild guild) {
 		return getIntroChannel(guild.getId());
+	}
+	
+	public String getIntroMessageId(User user, Guild guild) {
+		return getIntroMessageId(user.getId(), guild.getId());
+	}
+	
+	public String getIntroMessageId(Member member) {
+		return getIntroMessageId(member.getUser(), member.getGuild());
+	}
+	
+	public Message getIntroMessage(User user, Guild guild) {
+		return getIntroMessage(user.getId(), guild.getId());
+	}
+	
+	public Message getIntroMessage(Member member) {
+		return getIntroMessage(member.getUser(), member.getGuild());
 	}
 	
 	/***************
