@@ -33,6 +33,7 @@ public class EconomyModule extends Module {
 			ecoSetupStmt = conn.prepareStatement(ecoSetupSql);
 			getEcoInfoStmt = conn.prepareStatement(getEcoInfoSql);
 			
+			userDeleteStmt = conn.prepareStatement(userDeleteSql);
 			memberDeleteStmt = conn.prepareStatement(memberDeleteSql);
 			guildDeleteStmt = conn.prepareStatement(guildDeleteSql);
 		} catch (SQLException e) {
@@ -44,7 +45,8 @@ public class EconomyModule extends Module {
 
 	@Override
 	protected boolean update() {
-		return false;
+		// TODO
+		return true;
 	}
 	
 	/* SQL Statements */
@@ -54,6 +56,7 @@ public class EconomyModule extends Module {
 	private static final String getEcoInfoSql = "SELECT * FROM Economy_Settings WHERE GuildId = ?";
 	private static final String ecoSetupSql = "INSERT OR REPLACE INTO Economy_Settings Values(?,?,?,?,?,?,?)";
 	
+	private static final String userDeleteSql = "DELETE FROM Economy WHERE UserId = ?";
 	private static final String memberDeleteSql = "DELETE FROM Economy WHERE GuildId = ? AND UserId = ?";
 	private static final String guildDeleteSql = "DELETE FROM Economy WHERE GuildId = ?; DELETE * FROM Economy_Settings WHERE GuildId = ?";
 	
@@ -63,6 +66,7 @@ public class EconomyModule extends Module {
 	private static PreparedStatement getEcoInfoStmt = null;
 	private static PreparedStatement ecoSetupStmt = null; 
 	
+	private static PreparedStatement userDeleteStmt = null;
 	private static PreparedStatement memberDeleteStmt = null;
 	private static PreparedStatement guildDeleteStmt = null;
 	
@@ -191,7 +195,15 @@ public class EconomyModule extends Module {
 	 */
 	@Override
 	public boolean deleteUser(User user) {
-		return false;
+		int rs = -1;
+		try {
+			userDeleteStmt.setString(1, user.getId());
+			rs = userDeleteStmt.executeUpdate();
+		} catch (SQLException e) {
+			log.error(e, String.format("Something went wrong trying to delete user with ID = %s", user.getId()));
+			return false;
+		}
+		return rs>0;
 	}
 	
 	// I'm assuming this member wasn't in the server, and EconomyStatus needs to wait on DB anyways
@@ -200,7 +212,10 @@ public class EconomyModule extends Module {
 		if (!hasEconomy(member.getGuild())) return false;
 		// Guild has an economy, so ei != null
 		EcoInfo ei = getGuildInfo(member.getGuild().getId());
+		boolean was = isReady();
+		this.setReady(true);
 		updateBal(member, ei.getStartVal());
+		this.setReady(was);
 		return true;
 	}
 	

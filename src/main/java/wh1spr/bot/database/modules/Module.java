@@ -24,13 +24,17 @@ public abstract class Module {
 		this.jda = j;
 		log.info("Preparing module...");
 		if (!prepare()) {
-			log.error("Module could not be prepared. Continuing without module.");
+			log.error("Module could not be prepared. Continuing without module...");
 			log.shutdown();
 			return;
 		}
 		log.info("Module prepared.");
 		log.info("Updating module...");
-		update();
+		if(!update()) {
+			log.error("Module failed to update. Continuing without module...");
+			log.shutdown();
+			return;
+		}
 		log.info("Module updated.");
 		
 		isReady = true;

@@ -1,0 +1,136 @@
+package wh1spr.bot.database.modules;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.User;
+import wh1spr.logger.LoggerCache;
+
+/* 
+ * Users and Guilds tables
+ * 
+ * Users - UserId, UserName
+ * Guilds - GuildId, GuildName, OwnerId, NrOfMembers, NrOfTChannels, NrOfVChannels
+ */
+public class EntityModule extends Module {
+
+	public EntityModule(Connection c, JDA j) {
+		super(c, j, LoggerCache.getLogger("DB-ENT"));
+	}
+
+	@Override
+	protected boolean prepare() {
+		try {
+			userAddStmt = conn.prepareStatement(userAddSql);
+			userDeleteStmt = conn.prepareStatement(userDeleteSql);
+			guildAddStmt = conn.prepareStatement(guildAddSql);
+			guildDeleteStmt = conn.prepareStatement(guildDeleteSql);
+		} catch (SQLException e) {
+			log.error(e, "Error while preparing module.");
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	protected boolean update() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	
+	
+	/* SQL Statements */
+	private static final String userAddSql = "INSERT OR REPLACE INTO Users Values(?,?)";
+	private static final String userDeleteSql = "DELETE FROM Users WHERE UserId = ?";
+	private static final String guildAddSql = "INSERT OR REPLACE INTO Guilds Values(?,?,?,?,?,?)";
+	private static final String guildDeleteSql = "DELETE FROM Guilds WHERE GuildId = ?";
+	
+	/* PreparedStatements */
+	private static PreparedStatement userAddStmt = null;
+	private static PreparedStatement userDeleteStmt = null;
+	private static PreparedStatement guildAddStmt = null;
+	private static PreparedStatement guildDeleteStmt = null;
+	
+	
+	/***************
+	 *  FUNCTIONS  *
+	 ***************/
+	
+	/***************
+	 *   ALIASES   *
+	 ***************/
+	
+	/***************
+	 *  INHERITED  * - Inherited functions don't need isReady() permissions, as they can be used in update()
+	 ***************/
+
+	@Override
+	public boolean deleteUser(User user) {
+		int rs = -1;
+		try {
+			userDeleteStmt.setString(1, user.getId());
+			rs = userDeleteStmt.executeUpdate();
+		} catch (SQLException e) {
+			log.error(e, String.format("Something went wrong trying to delete user with ID = %s", user.getId()));
+			return false;
+		}
+		return rs>0;
+	}
+
+	@Override
+	public boolean addMember(Member member) {
+		int rs = -1;
+		try {
+			userAddStmt.setString(1, member.getUser().getId());
+			userAddStmt.setString(2, member.getUser().getName());
+			
+			rs = userAddStmt.executeUpdate();
+		} catch (SQLException e) {
+			log.error(e, String.format("Something went wrong trying to add user with ID = %s", member.getUser().getId()));
+			return false;
+		}
+		return rs>0;
+	}
+
+	@Override
+	public boolean deleteMember(Member member) {
+		return deleteUser(member.getUser());
+	}
+
+	@Override
+	public boolean addGuild(Guild guild) {
+		int rs = -1;
+		try {
+			guildAddStmt.setString(1, guild.getId());
+			guildAddStmt.setString(2, guild.getName());
+			guildAddStmt.setString(3, guild.getOwner().getUser().getId());
+			guildAddStmt.setInt(4, guild.getMembers().size());
+			guildAddStmt.setInt(5, guild.getTextChannels().size());
+			guildAddStmt.setInt(6, guild.getVoiceChannels().size());
+			
+			rs = guildAddStmt.executeUpdate();
+		} catch (SQLException e) {
+			log.error(e, String.format("Something went wrong trying to add guild with ID = %s", guild.getId()));
+			return false;
+		}
+		return rs>0;
+	}
+
+	@Override
+	public boolean deleteGuild(Guild guild) {
+		int rs = -1;
+		try {
+			guildDeleteStmt.setString(1, guild.getId());
+			rs = guildDeleteStmt.executeUpdate();
+		} catch (SQLException e) {
+			log.error(e, String.format("Something went wrong trying to delete guild with ID = %s", guild.getId()));
+			return false;
+		}
+		return rs>0;
+	}
+
+}
