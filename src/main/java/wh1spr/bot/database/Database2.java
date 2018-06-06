@@ -23,10 +23,10 @@ public class Database2 {
 	private static boolean isReady = false;
 	private static ArrayList<Module> modules = null;
 	
-	public static boolean start(JDA jda) {
+	public static boolean start(JDA Jda) {
 		log.info("Getting connection to DB");
 		conn = getConn();
-		Database2.jda = jda;
+		Database2.jda = Jda;
 		//instance modules with conn, jda
 		modules = new ArrayList<Module>();
 		
@@ -34,6 +34,8 @@ public class Database2 {
 		if(eco.isReady()) modules.add(eco);
 		ent = new EntityModule(conn, jda);
 		if(ent.isReady()) modules.add(ent);
+		maelstrom = new MaelstromModule(conn, jda);
+		if(maelstrom.isReady()) modules.add(maelstrom);
 		
 		log.info("Database is ready to rumble!");
 		isReady = true;
@@ -45,7 +47,8 @@ public class Database2 {
 	}
 	
 	private static EconomyModule eco = null;
-	private static EntityModule  ent = null;
+	private static EntityModule ent = null;
+	private static MaelstromModule maelstrom = null;
 	
 	public static EconomyModule getEco() {
 		return Database2.eco;
@@ -53,6 +56,10 @@ public class Database2 {
 	
 	public static EntityModule getEntity() {
 		return Database2.ent;
+	}
+	
+	public static MaelstromModule getMaelstrom() {
+		return Database2.maelstrom;
 	}
 	
 	public static Connection getConn() {
