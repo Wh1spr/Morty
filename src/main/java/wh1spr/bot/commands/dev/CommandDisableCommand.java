@@ -35,7 +35,7 @@ public class CommandDisableCommand extends Command {
 				if (cmd.equals("shutdown")) {
 					channel.sendMessage("`shutdown` can not be disabled.");
 					continue;
-				} else if (cmd.equals("eval") && !Permission.hasPerm(Permission.OWNER, invoker, false)) {
+				} else if (cmd.equals("eval") && !Perm.hasSpec(Perm.OWNER, invoker)) {
 					continue;
 				}
 				registry.removeCommand(cmd);
