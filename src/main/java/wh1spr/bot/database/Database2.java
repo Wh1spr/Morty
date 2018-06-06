@@ -44,10 +44,12 @@ public class Database2 {
 		Database2.jda = jda;
 		//instance modules with conn, jda
 		modules = new ArrayList<Module>();
+		
 		eco = new EconomyModule(conn, jda);
 		if(eco.isReady()) modules.add(eco);
+		ent = new EntityModule(conn, jda);
+		if(ent.isReady()) modules.add(ent);
 		
-		//getters setters
 		log.info("Database is ready to rumble!");
 		isReady = true;
 		return isReady;
@@ -58,13 +60,20 @@ public class Database2 {
 	}
 	
 	private static EconomyModule eco = null;
+	private static EntityModule  ent = null;
 	
 	public static EconomyModule getEco() {
 		return Database2.eco;
 	}
 	
+	public static EntityModule getEntity() {
+		return Database2.ent;
+	}
+	
+	@Deprecated
 	private Bot bot;
 	
+	@Deprecated
 	public Database2(Bot bot) {
 		this.bot = bot;
 		if(conn == null) conn = getConn();
@@ -101,9 +110,6 @@ public class Database2 {
 			userAddStmt3 = conn.prepareStatement(userAddSql3);
 			userDelStmt  = conn.prepareStatement(userDelSql);
 			
-			balanceUpdateStmt = conn.prepareStatement(balanceUpdateSql);
-			
-			ecoSetupStmt = conn.prepareStatement(ecoSetupSql);
 		} catch (SQLException e) {
 			//Shouldnt happen, but does sometimes whoops
 			log.error(e, "Couldn't prepare statements in Database, shutting down...");
@@ -117,6 +123,7 @@ public class Database2 {
 		}
 	}
 	
+	@Deprecated
 	public ResultSet executeQuery(String sql) throws SQLException {
 		if (!sql.toUpperCase().contains("SELECT")) {
 			return null;
@@ -127,6 +134,7 @@ public class Database2 {
 		return rs;
 	}
 	
+	@Deprecated
 	public boolean executeUpdate(String sql) throws SQLException {
 		if (!sql.toUpperCase().contains("UPDATE")||!sql.toUpperCase().contains("INSERT")) {
 			return false;
@@ -164,6 +172,7 @@ public class Database2 {
 	private static final String guildDelSql = "DELETE FROM Guilds WHERE GuildId = ?; DELETE FROM InGuild WHERE GuildId = ?;"
 			+ "DELETE FROM Economy_Settings WHERE GuildId = ?; DELETE FROM Economy WHERE GuildId = ?;"
 			+ "DELETE FROM HasIntro WHERE GuildId = ?; DELETE FROM Introduction Where GuildId = ?";
+	@Deprecated
 	public void addGuild(Guild guild) {
 		try {
 			guildAddStmt.setString(1, guild.getId());
@@ -182,6 +191,7 @@ public class Database2 {
 			bot.getLog().error(e, "Could not insert guild with ID = " + guild.getId() + ".");
 		}
 	}
+	@Deprecated
 	public void deleteGuild(Guild guild) {
 		try {
 			guildDelStmt.setString(1, guild.getId());
@@ -206,6 +216,7 @@ public class Database2 {
 	private static final String userAddSql3 = "INSERT OR REPLACE INTO Economy Values(?,?,?)";
 	private static final String userDelSql = "DELETE FROM Users WHERE UserId = ?; DELETE FROM Economy WHERE UserId = ?;"
 			+ "DELETE FROM InGuild WHERE UserId = ?; DELETE FROM Introduction WHERE UserId = ?;";
+	@Deprecated
 	public void addUsers(List<User> users) {
 		try {
 			for (User el : users) {
@@ -239,6 +250,7 @@ public class Database2 {
 			bot.getLog().error(e, "Couldn't insert list of users into db.");
 		}
 	}
+	@Deprecated
 	public void addUser(User user) {
 		if (user.isBot()) return;
 		try {
@@ -275,6 +287,7 @@ public class Database2 {
 	 * If the provided user is also an owner of a guild one of our bots is in, also delete that guild.
 	 * ! AutoEventHandlers will take care of other active bots leaving that server, inactive bots might read it.
 	 */
+	@Deprecated
 	public void deleteUser(User user) {
 		if (user.getId().equals(Bot.OWNER)) return; //cant delete myself now can I?
 		try {
@@ -302,103 +315,6 @@ public class Database2 {
 			
 		} catch (Exception e) {
 			bot.getLog().error(e, "Could not delete user with ID = " + user.getId() + ".");
-		}
-	}
-	
-	private static PreparedStatement balanceUpdateStmt = null;
-	private static final String balanceUpdateSql = "INSERT OR REPLACE INTO Economy Values(?,?,?)";
-	@Deprecated
-	public void updateBal(User user, Guild guild, double val) {
-		try {
-			balanceUpdateStmt.setString(1, guild.getId());
-			balanceUpdateStmt.setString(2, user.getId());
-			balanceUpdateStmt.setDouble(3, Tools.round(val));
-			
-			balanceUpdateStmt.executeUpdate();
-		} catch (Exception e) {
-			bot.getLog().error(e, String.format("Could not update balance. UserId = %s, new Balance = %.2f", user.getId(), val));
-		}
-	}
-	@Deprecated
-	public void updateBal(Member member, double val) {
-		updateBal(member.getUser(), member.getGuild(), val);
-	}
-	
-	@Deprecated
-	public void updateBalances(Collection<Balance> bals) {
-		bot.getLog().info(String.format("Updating %d balance values.", bals.size()));
-		Iterator<Balance> iter = bals.iterator();
-		while(iter.hasNext()) {
-			Balance next = iter.next();
-			updateBal(next.getMember(), next.getBal());
-		}
-	}
-	
-	private static final String balancesGetSql = "SELECT * FROM Economy";
-	/**
-	 * Retrieve balances from database.
-	 * <b>Note: These balances come from the db, which gets updated automatically once every ten minutes since startup, or with the {@link UpdateBalanceCommand}</b>
-	 * @return A set of balances found in the database
-	 */
-	@Deprecated
-	public Set<Balance> getBalances() {
-		try {
-			Set<Balance> s = new HashSet<Balance>();
-			ResultSet rs = executeQuery(balancesGetSql);
-			
-			while(rs.next()) {
-				s.add(new Balance(rs.getDouble("Balance"), rs.getString("userId"), rs.getString("guildId")));
-			}
-			return s;
-		} catch (Exception e) {
-			bot.getLog().error("Balances could not be retreived from the DB.");
-			return null;
-		}
-	}
-	
-	private static final String hasEcoSql = "SELECT COUNT(*) as total FROM Economy_Settings Where GuildId = '%s'";
-	@Deprecated
-	public boolean hasEconomy(String guildid) {
-		try {
-			ResultSet rs = executeQuery(String.format(hasEcoSql, guildid));
-			rs.next();
-			return rs.getInt("total")==1?true:false;
-		} catch (SQLException e) {
-			bot.getLog().error(e, "Couldn't check if guild with ID " + guildid + " had a set up economy.");
-		}
-		return false;
-	}
-	private static final String getEcoInfoSql = "SELECT * FROM Economy_Settings WHERE GuildId = '%s'";
-	@Deprecated
-	public EcoInfo getGuildInfo(String guildid) {
-		if (!hasEconomy(guildid)) return null;
-		try {
-			ResultSet rs = executeQuery(String.format(getEcoInfoSql, guildid));
-			rs.next();
-			return new EcoInfo(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getDouble(6),rs.getDouble(7));
-		} catch (SQLException e) {
-			bot.getLog().error(e, "Couldn't check if guild with ID " + guildid + " had a set up economy.");
-		}
-		return null;
-	}
-	private static final String ecoSetupSql = "INSERT OR REPLACE INTO Economy_Settings Values(?,?,?,?,?,?,?)";
-	private static PreparedStatement ecoSetupStmt = null; 
-	@Deprecated
-	public boolean setupEconomy(String guildId, String majSing, String majMult, String minSing, String minMult, Double start, Double daily) {
-		try {
-			ecoSetupStmt.setString(1, guildId);
-			ecoSetupStmt.setString(2, majSing);
-			ecoSetupStmt.setString(3, majMult);
-			ecoSetupStmt.setString(4, minSing);
-			ecoSetupStmt.setString(5, minMult);
-			ecoSetupStmt.setDouble(6, Tools.round(start));
-			ecoSetupStmt.setDouble(7, Tools.round(daily));
-			
-			ecoSetupStmt.executeUpdate();
-			return true;
-		} catch (SQLException e) {
-			bot.getLog().error(e, "Could not set up economy for guild with ID " + guildId);
-			return false;
 		}
 	}
 }

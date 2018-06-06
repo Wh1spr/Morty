@@ -3,6 +3,8 @@ package wh1spr.bot.database.modules;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Iterator;
+import java.util.List;
 
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
@@ -59,6 +61,32 @@ public class EntityModule extends Module {
 	/***************
 	 *  FUNCTIONS  *
 	 ***************/
+	
+	public void addUser(User user) {
+		try {
+			userAddStmt.setString(1, user.getId());
+			userAddStmt.setString(2, user.getName());
+			
+			userAddStmt.executeUpdate();
+		} catch (SQLException e) {
+			log.error(e, String.format("Something went wrong trying to add user with ID = %s", user.getId()));
+			return;
+		}
+	}
+	
+	public void addUsers(List<User> users) {
+		Iterator<User> iter = users.iterator();
+		while(iter.hasNext()) {
+			addUser(iter.next());
+		}
+	}
+	
+	public void addMembers(List<Member> members) {
+		Iterator<Member> iter = members.iterator();
+		while(iter.hasNext()) {
+			addMember(iter.next());
+		}
+	}
 	
 	/***************
 	 *   ALIASES   *
