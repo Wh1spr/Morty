@@ -23,7 +23,6 @@ public abstract class Bot {
 	private final CommandRegistry commandRegistry;
 	private final ImageRegistry imageRegistry;
 	
-	private Database2 db;
 	private AutoEventHandlerDummy autoEvents;
 	
 	protected Bot(String token, String dataPath, String prefix) {
@@ -34,7 +33,6 @@ public abstract class Bot {
 		this.commandRegistry = new CommandRegistry(this);
 		this.imageRegistry = new ImageRegistry(this);
 		
-		this.db = new Database2(this);
 		this.autoEvents = new AutoEventHandlerDummy(this);
 	}
 	
@@ -66,14 +64,6 @@ public abstract class Bot {
 	public ImageRegistry getImageRegistry() {
 		return this.imageRegistry;
 	}
-	
-	public Database2 getDb() {
-		return this.db;
-	}
-	
-//	protected void setDb(Database2 db) {
-//		this.db = db;
-//	}
 	
 	public AutoEventHandlerDummy getAutoEvents() {
 		return this.autoEvents;
