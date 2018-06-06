@@ -12,6 +12,8 @@ public class AutoEventHandlerMorty extends AutoEventHandlerDummy {
 	}
 
 	private final String welcome = "433718059254153216";
+	//after accept
+	//event.getGuild().getTextChannelById(welcome).sendMessage("**Please welcome "+ event.getUser().getAsMention() +" to the server!**").queue();
 	
 	@Override
 	public void onGuildMemberJoin(GuildMemberJoinEvent event) {

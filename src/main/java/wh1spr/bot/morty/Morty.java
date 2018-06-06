@@ -40,7 +40,7 @@ public class Morty extends Bot {
 		commandRegistry.registerCommand(new FlushEcoCommand("flusheco", "fe"));
 		commandRegistry.registerCommand(new ShutdownCommand("shutdown", this, "oof"));
 		commandRegistry.registerCommand(new SendFromMortyCommand("send"));
-		commandRegistry.registerCommand(new SqlExecCommand("sql", this));
+		commandRegistry.registerCommand(new SqlExecCommand("sql"));
 		
 		// Economy Commands
 		commandRegistry.registerCommand(new EcoSetupCommand("ecosetup"));

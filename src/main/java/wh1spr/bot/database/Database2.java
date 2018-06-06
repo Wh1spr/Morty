@@ -56,10 +56,14 @@ public class Database2 {
 	}
 	
 	public static Connection getConn() {
+		
 		Connection con = null;
 		
 		String url = "jdbc:sqlite:data/Morty2.db";
 		try {
+			if (conn != null)
+				if (!conn.isClosed()) return conn;
+			
 			Class.forName("org.sqlite.JDBC");
 			if(!Files.exists(Paths.get("data/Morty2.db"))) {
 				log.error("Morty2 Database is not present @data/Morty2.db and application cannot run. Exiting...");

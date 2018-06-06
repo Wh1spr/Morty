@@ -36,11 +36,13 @@ public class EvalCommand extends Command {
         se.put("channel", channel);
         se.put("dbeco", Database2.getEco());
         se.put("dbent", Database2.getEntity());
+        se.put("bot", b);
         
         try {
             channel.sendMessage("Evaluated Successfully:\n```\n"+se.eval(message.getContentRaw().split(" ",2)[1]
             		.replaceAll("eco", "Packages.wh1spr.bot.commands.economy.util.EconomyStatus")
-            		.replaceAll("db", "Packages.wh1spr.database.Database2")
+            		.replaceAll("main", "Packages.wh1spr.bot.main")
+            		.replaceAll("db", "Packages.wh1spr.bot.database.Database2")
             		.replaceAll("perm", "Packages.wh1spr.bot.dummy.Perm")
             		.replaceAll("rank", "Packages.wh1spr.bot.dummy.Rank")
             		.replaceAll("userget", "jda.getUserById"))+" ```").queue();

@@ -10,7 +10,6 @@ import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.command.Command;
 import wh1spr.bot.command.CommandRegistry;
 import wh1spr.bot.dummy.Perm;
-import wh1spr.bot.morty.Permission;
 
 // add in non static reference as bot object
 public class CommandDisableCommand extends Command {
@@ -23,7 +22,7 @@ public class CommandDisableCommand extends Command {
 
 	private CommandRegistry registry = null;
 	
-	//admins can dcmd in case of abuse, overuse or unnecessary use
+	//bot owners can dcmd in case of abuse, overuse or unnecessary use
 	@Override
 	public void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args) {
 		if (!Perm.hasSpec(Perm.OWNER, invoker)) {

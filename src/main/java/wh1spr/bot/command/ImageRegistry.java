@@ -4,8 +4,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import wh1spr.bot.commands.images.SendImageCommand;
+import wh1spr.bot.database.Database2;
 import wh1spr.bot.dummy.Bot;
-import wh1spr.bot.morty.Database;
 
 public class ImageRegistry extends CommandRegistry {
 	
@@ -24,7 +24,7 @@ public class ImageRegistry extends CommandRegistry {
 	public void registerAllCommands() {
 		String sql = "SELECT Name, URL FROM Images";
 		
-		try (Statement stmt  = Database.conn.createStatement();
+		try (Statement stmt  = Database2.getConn().createStatement();
 		     ResultSet rs    = stmt.executeQuery(sql)){
 			while(rs.next()) {
 				registerCommand(new SendImageCommand(rs.getString("URL"), rs.getString("Name")));
