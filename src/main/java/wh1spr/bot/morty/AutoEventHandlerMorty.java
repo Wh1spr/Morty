@@ -2,6 +2,8 @@ package wh1spr.bot.morty;
 
 import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberLeaveEvent;
+import wh1spr.bot.database.Database2;
+import wh1spr.bot.database.modules.*;
 import wh1spr.bot.dummy.AutoEventHandlerDummy;
 import wh1spr.bot.dummy.Bot;
 
@@ -11,12 +13,26 @@ public class AutoEventHandlerMorty extends AutoEventHandlerDummy {
 		super(bot);
 	}
 
+	private EntityModule dbent = null;
+	private EconomyModule dbeco = null;
+	private IntroModule dbintro = null;
+	private MaelstromModule dbmaelstrom = null;
+	
+	private void db() {
+		if (dbent == null) dbent = Database2.getEntity();
+		if (dbeco == null) dbeco = Database2.getEco();
+		if (dbintro == null) dbintro = Database2.getIntro();
+		if (dbmaelstrom == null) dbmaelstrom = Database2.getMaelstrom();
+	}
+	
 	private final String welcome = "433718059254153216";
 	//after accept
 	//event.getGuild().getTextChannelById(welcome).sendMessage("**Please welcome "+ event.getUser().getAsMention() +" to the server!**").queue();
 	
 	@Override
 	public void onGuildMemberJoin(GuildMemberJoinEvent event) {
+		db();
+		dbent.addMember(event.getMember());
 		
 		if (event.getGuild().getId().equals(Bot.MAELSTROM)) {
 			if (event.getUser().isBot()) {
@@ -30,10 +46,14 @@ public class AutoEventHandlerMorty extends AutoEventHandlerDummy {
 	
 	@Override
 	public void onGuildMemberLeave(GuildMemberLeaveEvent event) {
+		db();
+		dbent.deleteMember(event.getMember());
+		dbeco.deleteMember(event.getMember());
+		dbintro.deleteMember(event.getMember());
+		
 		if (event.getGuild().getId().equals(Bot.MAELSTROM)) {
+			dbmaelstrom.deleteMember(event.getMember());
 			event.getGuild().getTextChannelById(welcome).sendMessage("**Goodbye, " + event.getUser().getAsMention() + "**").queue();
-			
-			// Take out of introduction, economy in database
 		}
 	}
 	

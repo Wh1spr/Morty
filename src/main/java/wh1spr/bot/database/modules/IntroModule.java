@@ -46,7 +46,7 @@ public class IntroModule extends Module {
 	@Override
 	protected boolean update() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 	
 

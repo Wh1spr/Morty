@@ -61,6 +61,10 @@ public class Database2 {
 		return Database2.ent;
 	}
 	
+	public static IntroModule getIntro() {
+		return Database2.intro;
+	}
+	
 	public static MaelstromModule getMaelstrom() {
 		return Database2.maelstrom;
 	}

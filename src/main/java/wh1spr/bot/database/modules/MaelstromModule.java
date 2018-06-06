@@ -39,7 +39,7 @@ public class MaelstromModule extends Module {
 	@Override
 	protected boolean update() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 	
 
