@@ -194,13 +194,13 @@ public class EconomyModule extends Module {
 	 * @param user The user to be deleted.
 	 */
 	@Override
-	public boolean deleteUser(User user) {
+	public boolean deleteUser(String userId) {
 		int rs = -1;
 		try {
-			userDeleteStmt.setString(1, user.getId());
+			userDeleteStmt.setString(1, userId);
 			rs = userDeleteStmt.executeUpdate();
 		} catch (SQLException e) {
-			log.error(e, String.format("Something went wrong trying to delete user with ID = %s", user.getId()));
+			log.error(e, String.format("Something went wrong trying to delete user with ID = %s", userId));
 			return false;
 		}
 		return rs>0;
@@ -220,6 +220,11 @@ public class EconomyModule extends Module {
 	}
 	
 	@Override
+	public boolean addMember(String memberId) {
+		return false; // impossible without guild
+	}
+	
+	@Override
 	public boolean deleteMember(Member member) {
 		int rs = -1;
 		try {
@@ -235,20 +240,25 @@ public class EconomyModule extends Module {
 	}
 	
 	@Override
-	public boolean addGuild(Guild guild) {
+	public boolean deleteMember(String memberId) {
+		return false; //not safe
+	}
+	
+	@Override
+	public boolean addGuild(String guildId) {
 		// guild cannot be added, it has to go through EcoSetupCommand
 		return false;
 	}
 	
 	@Override
-	public boolean deleteGuild(Guild guild) {
+	public boolean deleteGuild(String guildId) {
 		int rs = -1;
 		try {
-			guildDeleteStmt.setString(1, guild.getId());
-			guildDeleteStmt.setString(2, guild.getId());
+			guildDeleteStmt.setString(1, guildId);
+			guildDeleteStmt.setString(2, guildId);
 			rs = guildDeleteStmt.executeUpdate();
 		} catch (SQLException e) {
-			log.error(e, String.format("Something went wrong trying to delete guild with ID = %s", guild.getId()));
+			log.error(e, String.format("Something went wrong trying to delete guild with ID = %s", guildId));
 			return false;
 		}
 		

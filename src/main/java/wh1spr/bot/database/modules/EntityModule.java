@@ -63,6 +63,8 @@ public class EntityModule extends Module {
 	 ***************/
 	
 	public void addUser(User user) {
+		if (!isReady()) return;
+		if (user == null) return;
 		try {
 			userAddStmt.setString(1, user.getId());
 			userAddStmt.setString(2, user.getName());
@@ -75,6 +77,7 @@ public class EntityModule extends Module {
 	}
 	
 	public void addUsers(List<User> users) {
+		if (!isReady()) return;
 		Iterator<User> iter = users.iterator();
 		while(iter.hasNext()) {
 			addUser(iter.next());
@@ -82,6 +85,7 @@ public class EntityModule extends Module {
 	}
 	
 	public void addMembers(List<Member> members) {
+		if (!isReady()) return;
 		Iterator<Member> iter = members.iterator();
 		while(iter.hasNext()) {
 			addMember(iter.next());
@@ -97,13 +101,13 @@ public class EntityModule extends Module {
 	 ***************/
 
 	@Override
-	public boolean deleteUser(User user) {
+	public boolean deleteUser(String userId) {
 		int rs = -1;
 		try {
-			userDeleteStmt.setString(1, user.getId());
+			userDeleteStmt.setString(1, userId);
 			rs = userDeleteStmt.executeUpdate();
 		} catch (SQLException e) {
-			log.error(e, String.format("Something went wrong trying to delete user with ID = %s", user.getId()));
+			log.error(e, String.format("Something went wrong trying to delete user with ID = %s", userId));
 			return false;
 		}
 		return rs>0;
@@ -123,10 +127,15 @@ public class EntityModule extends Module {
 		}
 		return rs>0;
 	}
+	@Override
+	public boolean addMember(String memberId) {
+		addUser(jda.getUserById(memberId));
+		return true;
+	}
 
 	@Override
-	public boolean deleteMember(Member member) {
-		return deleteUser(member.getUser());
+	public boolean deleteMember(String memberId) {
+		return deleteUser(memberId);
 	}
 
 	@Override
@@ -149,13 +158,18 @@ public class EntityModule extends Module {
 	}
 
 	@Override
-	public boolean deleteGuild(Guild guild) {
+	public boolean addGuild(String guildId) {
+		return jda.getGuildById(guildId)==null?null:addGuild(jda.getGuildById(guildId));
+	}
+	
+	@Override
+	public boolean deleteGuild(String guildId) {
 		int rs = -1;
 		try {
-			guildDeleteStmt.setString(1, guild.getId());
+			guildDeleteStmt.setString(1, guildId);
 			rs = guildDeleteStmt.executeUpdate();
 		} catch (SQLException e) {
-			log.error(e, String.format("Something went wrong trying to delete guild with ID = %s", guild.getId()));
+			log.error(e, String.format("Something went wrong trying to delete guild with ID = %s", guildId));
 			return false;
 		}
 		return rs>0;

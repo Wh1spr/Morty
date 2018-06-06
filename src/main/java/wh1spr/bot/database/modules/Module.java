@@ -83,15 +83,21 @@ public abstract class Module {
 		return false;
 	}
 	
+	public boolean deleteUser(User user) {return deleteUser(user.getId());}
+	public boolean addMember(Member member) {return deleteUser(member.getUser().getId());}
+	public boolean deleteMember(Member member) {return deleteUser(member.getUser().getId());}
+	public boolean addGuild(Guild guild) {return deleteUser(guild.getId());}
+	public boolean deleteGuild(Guild guild) {return deleteUser(guild.getId());}
+	
 	// No addUser() because it's easier with member (no checks for guilds)
 	/**
 	 * Deletes a user from this module's tables.
 	 * @param user User to delete
 	 * @return true if user was deleted, false if no rows were deleted
 	 */
-	public abstract boolean deleteUser(User user);
-	public abstract boolean addMember(Member member);
-	public abstract boolean deleteMember(Member member);
-	public abstract boolean addGuild(Guild guild);
-	public abstract boolean deleteGuild(Guild guild);
+	public abstract boolean deleteUser(String userId);
+	public abstract boolean addMember(String memberId);
+	public abstract boolean deleteMember(String memberId);
+	public abstract boolean addGuild(String guildId);
+	public abstract boolean deleteGuild(String guildId);
 }

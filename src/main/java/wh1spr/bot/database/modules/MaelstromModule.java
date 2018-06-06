@@ -63,22 +63,26 @@ public class MaelstromModule extends Module {
 	 *  FUNCTIONS  *
 	 ***************/
 	
-	public boolean addUser(User user) {
+	public boolean addUser(String userId) {
+		if (!isReady()) return false;
+		if (jda.getGuildById(Morty.MAELSTROM).getMemberById(userId)==null) return false;
 		int rs = -1;
 		try {
-			userAddStmt.setString(1, user.getId());
+			userAddStmt.setString(1, userId);
 			userAddStmt.setInt(2, 0);
 			rs = userAddStmt.executeUpdate();
 		} catch (SQLException e) {
-			log.error(e, String.format("Something went wrong trying to add user with ID = %s", user.getId()));
+			log.error(e, String.format("Something went wrong trying to add user with ID = %s", userId));
 			return false;
 		}
 		return rs>0;
 	}
 	
-	public boolean accepted(User user) {
+	public boolean accepted(String userId) {
+		if (!isReady()) return false;
+		if (jda.getGuildById(Morty.MAELSTROM).getMemberById(userId)==null) return false;
 		try {
-			userAcceptedStmt.setString(1, user.getId());
+			userAcceptedStmt.setString(1, userId);
 			userAcceptedStmt.setInt(2, 0);
 			ResultSet rs = userAcceptedStmt.executeQuery();
 			
@@ -86,20 +90,22 @@ public class MaelstromModule extends Module {
 				if (rs.getInt("acceptRules") == 1) return true;
 			}
 		} catch (SQLException e) {
-			log.error(e, String.format("Something went wrong trying to add user with ID = %s", user.getId()));
+			log.error(e, String.format("Something went wrong trying to add user with ID = %s", userId));
 			return false;
 		}
 		return false;
 	}
 
-	public boolean setAccept(User user, boolean accept) {
+	public boolean setAccept(String userId, boolean accept) {
+		if (!isReady()) return false;
+		if (jda.getGuildById(Morty.MAELSTROM).getMemberById(userId)==null) return false;
 		int rs = -1;
 		try {
-			setAcceptStmt.setString(1, user.getId());
+			setAcceptStmt.setString(1, userId);
 			setAcceptStmt.setInt(2, accept?1:0);
 			rs = userAddStmt.executeUpdate();
 		} catch (SQLException e) {
-			log.error(e, String.format("Something went wrong set acceptRules property to %s for user with ID = %s", Boolean.toString(accept), user.getId()));
+			log.error(e, String.format("Something went wrong set acceptRules property to %s for user with ID = %s", Boolean.toString(accept), userId));
 			return false;
 		}
 		return rs>0;
@@ -108,10 +114,21 @@ public class MaelstromModule extends Module {
 	/***************
 	 *   ALIASES   *
 	 ***************/
+	public boolean addUser(User user) {
+		return addUser(user.getId());
+	}
+	
+	public boolean accepted(User user) {
+		return accepted(user.getId());
+	}
 	
 	public boolean accepted(Member member) {
 		if (!member.getGuild().getId().equals(Morty.MAELSTROM)) return false;
 		return accepted(member.getUser());
+	}
+	
+	public boolean setAccept(User user, boolean accept) {
+		return setAccept(user.getId(), accept);
 	}
 	
 	/***************
@@ -119,37 +136,35 @@ public class MaelstromModule extends Module {
 	 ***************/
 
 	@Override
-	public boolean deleteUser(User user) {
+	public boolean deleteUser(String userId) {
 		int rs = -1;
 		try {
-			userDeleteStmt.setString(1, user.getId());
+			userDeleteStmt.setString(1, userId);
 			rs = userDeleteStmt.executeUpdate();
 		} catch (SQLException e) {
-			log.error(e, String.format("Something went wrong trying to delete user with ID = %s", user.getId()));
+			log.error(e, String.format("Something went wrong trying to delete user with ID = %s", userId));
 			return false;
 		}
 		return rs>0;
 	}
 
 	@Override
-	public boolean addMember(Member member) {
-		if (!member.getGuild().getId().equals(Morty.MAELSTROM)) return false;
-		return addUser(member.getUser());
+	public boolean addMember(String memberId) {
+		return addUser(memberId);
 	}
 
 	@Override
-	public boolean deleteMember(Member member) {
-		if (!member.getGuild().getId().equals(Morty.MAELSTROM)) return false;
-		return deleteUser(member.getUser());
+	public boolean deleteMember(String memberId) {
+		return deleteUser(memberId);
 	}
 
 	@Override
-	public boolean addGuild(Guild guild) {
+	public boolean addGuild(String guildId) {
 		return false;
 	}
 
 	@Override
-	public boolean deleteGuild(Guild guild) {
+	public boolean deleteGuild(String guildId) {
 		return false;
 	}
 

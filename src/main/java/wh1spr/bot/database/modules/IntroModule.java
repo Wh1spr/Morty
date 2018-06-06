@@ -28,7 +28,7 @@ public class IntroModule extends Module {
 	protected boolean prepare() {
 		try {
 			userAddStmt = conn.prepareStatement(userAddSql);
-			getIntroStmt = conn.prepareStatement(getIntroSql);
+			getIntroChannelStmt = conn.prepareStatement(getIntroChannelSql);
 			guildAddStmt = conn.prepareStatement(guildAddSql);
 			
 			userDeleteStmt = conn.prepareStatement(userDeleteSql);
@@ -50,7 +50,7 @@ public class IntroModule extends Module {
 
 	/* SQL Statements */
 	private static final String userAddSql = "INSERT OR REPLACE INTO Introduction Values(?,?,?)";
-	private static final String getIntroSql = "SELECT IntroChannel FROM HasIntro WHERE GuildId = ?";
+	private static final String getIntroChannelSql = "SELECT IntroChannel FROM HasIntro WHERE GuildId = ?";
 	private static final String guildAddSql = "INSERT OR REPLACE INTO HasIntro Values(?,?)";
 	
 	private static final String userDeleteSql = "DELETE FROM Introduction WHERE UserId = ?";
@@ -59,7 +59,7 @@ public class IntroModule extends Module {
 	
 	/* PreparedStatements */
 	private static PreparedStatement userAddStmt = null;
-	private static PreparedStatement getIntroStmt = null;
+	private static PreparedStatement getIntroChannelStmt = null;
 	private static PreparedStatement guildAddStmt = null;
 	
 	private static PreparedStatement userDeleteStmt = null;
@@ -72,6 +72,7 @@ public class IntroModule extends Module {
 	 ***************/
 	
 	public boolean addUser(String userId, String guildId, String messageId) {
+		if (!isReady()) return false;
 		int rs = -1;
 		try {
 			userAddStmt.setString(1, userId);
@@ -85,10 +86,11 @@ public class IntroModule extends Module {
 		return rs>0;
 	}
 
-	public String getIntro(String guildId) {
+	public String getIntroChannelId(String guildId) {
+		if (!isReady()) return null;
 		try {
-			getIntroStmt.setString(1, guildId);
-			ResultSet rs = getIntroStmt.executeQuery();
+			getIntroChannelStmt.setString(1, guildId);
+			ResultSet rs = getIntroChannelStmt.executeQuery();
 			if(rs.next()) {
 				return rs.getString("IntroChannel");
 			}
@@ -100,20 +102,23 @@ public class IntroModule extends Module {
 	}
 	
 	public boolean hasIntro(String guildId) {
-		return getIntro(guildId)!=null;
+		if (!isReady()) return false;
+		return getIntroChannelId(guildId)!=null;
 	}
 	
 	public TextChannel getIntroChannel(String guildId) {
-		return jda.getTextChannelById(getIntro(guildId));
+		if (!isReady()) return null;
+		return jda.getTextChannelById(getIntroChannelId(guildId));
 	}
 	
 	/**
 	 * THIS WILL REMOVE THE GUILD FIRST
 	 */
 	public boolean addGuild(String guildId, String channelId) {
+		if (!isReady()) return false;
 		int rs = -1;
 		try {
-			deleteGuild(jda.getGuildById(guildId));
+			deleteGuild(guildId);
 			guildAddStmt.setString(1, guildId);
 			guildAddStmt.setString(2, channelId);
 			rs = guildAddStmt.executeUpdate();
@@ -132,7 +137,7 @@ public class IntroModule extends Module {
 	}
 	
 	public String getIntro(Guild guild) {
-		return getIntro(guild.getId());
+		return getIntroChannelId(guild.getId());
 	}
 	
 	public TextChannel getIntroChannel(Guild guild) {
@@ -144,20 +149,20 @@ public class IntroModule extends Module {
 	 ***************/
 
 	@Override
-	public boolean deleteUser(User user) {
+	public boolean deleteUser(String userId) {
 		int rs = -1;
 		try {
-			userDeleteStmt.setString(1, user.getId());
+			userDeleteStmt.setString(1, userId);
 			rs = userDeleteStmt.executeUpdate();
 		} catch (SQLException e) {
-			log.error(e, String.format("Something went wrong trying to delete user with ID = %s", user.getId()));
+			log.error(e, String.format("Something went wrong trying to delete user with ID = %s", userId));
 			return false;
 		}
 		return rs>0;
 	}
 
 	@Override
-	public boolean addMember(Member member) {
+	public boolean addMember(String memberId) {
 		return false;
 	}
 
@@ -175,20 +180,25 @@ public class IntroModule extends Module {
 		}
 		return rs>0;
 	}
+	
+	@Override
+	public boolean deleteMember(String memberId) {
+		return false; //not safe
+	}
 
 	@Override
-	public boolean addGuild(Guild guild) {
+	public boolean addGuild(String guildId) {
 		return false;
 	}
 
 	@Override
-	public boolean deleteGuild(Guild guild) {
+	public boolean deleteGuild(String guildId) {
 		int rs = -1;
 		try {
-			guildDeleteStmt.setString(1, guild.getId());
+			guildDeleteStmt.setString(1, guildId);
 			rs = guildDeleteStmt.executeUpdate();
 		} catch (SQLException e) {
-			log.error(e, String.format("Something went wrong trying to delete guild with ID = %s", guild.getId()));
+			log.error(e, String.format("Something went wrong trying to delete guild with ID = %s", guildId));
 			return false;
 		}
 		return rs>0;
