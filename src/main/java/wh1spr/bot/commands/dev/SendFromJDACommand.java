@@ -7,14 +7,12 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
-import wh1spr.bot.Main;
 import wh1spr.bot.command.Command;
-import wh1spr.bot.dummy.Bot;
 import wh1spr.bot.dummy.Perm;
 
-public class SendFromMortyCommand extends Command {
+public class SendFromJDACommand extends Command {
 
-	public SendFromMortyCommand(String name, String... aliases) {
+	public SendFromJDACommand(String name, String... aliases) {
 		super(name, aliases);
 		this.setMaelstromOnly(false);
 	}
@@ -27,13 +25,7 @@ public class SendFromMortyCommand extends Command {
 			MessageChannel channelTo = jda.getTextChannelById(args.get(0));
 			if (channelTo == null) {failure(message);return;}
 			
-			Bot morty = Main.getBot("MORTY");
-			if (morty == null) {
-				failure(message);
-				return;
-			}
-			
-			channelTo.sendMessage(message.getContentRaw().replaceFirst(morty.getPrefix() + this.name, "").replaceFirst(args.get(0), "").trim()).queue();
+			channelTo.sendMessage(message.getContentRaw().split(" ", 2)[1]).queue();
 			success(message);
 			return;
 		} else {

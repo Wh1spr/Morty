@@ -19,7 +19,7 @@ public class ChangeNameCommand extends Command {
 
 	@Override
 	public void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args) {
-		if (!Perm.hasSpec(Perm.OWNER, invoker)) {
+		if (!Perm.has(Perm.SERVER, invoker)) {
 			return;
 		}
 		

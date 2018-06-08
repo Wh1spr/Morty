@@ -12,18 +12,6 @@ public class AutoEventHandlerMorty extends AutoEventHandlerDummy {
 	public AutoEventHandlerMorty(Bot bot) {
 		super(bot);
 	}
-
-	private EntityModule dbent = null;
-	private EconomyModule dbeco = null;
-	private IntroModule dbintro = null;
-	private MaelstromModule dbmaelstrom = null;
-	
-	private void db() {
-		if (dbent == null) dbent = Database2.getEntity();
-		if (dbeco == null) dbeco = Database2.getEco();
-		if (dbintro == null) dbintro = Database2.getIntro();
-		if (dbmaelstrom == null) dbmaelstrom = Database2.getMaelstrom();
-	}
 	
 	private final String welcome = "433718059254153216";
 	//after accept

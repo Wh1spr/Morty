@@ -53,6 +53,7 @@ public class Main {
 		LoggerCache.start("data/logs/main-%s.log");
 		log = LoggerCache.getLogger("MAIN");
 		
+		log.info("Starting bots...");
 		morty();
 		
 		if (bots.isEmpty()) {

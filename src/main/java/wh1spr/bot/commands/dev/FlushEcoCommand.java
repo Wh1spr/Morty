@@ -21,7 +21,7 @@ public class FlushEcoCommand extends Command {
 
 	@Override
 	public void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args) {
-		if (!Perm.hasSpec(Perm.OWNER, invoker) && !invoker.getId().equals(Bot.OWNER)) return;
+		if (!Perm.hasSpec(Perm.SERVER, invoker) && !invoker.getId().equals(Bot.OWNER)) return;
 		EconomyStatus.updateBalances();
 		success(message);
 	}
