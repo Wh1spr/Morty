@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
@@ -26,24 +27,28 @@ public enum Perm {
 	NEWB; // Everyone before accept Maelstrom Only
 	
 	private boolean isAbove(Perm p){
-		return (compareTo(p) >= 0);
+		return (compareTo(p) <= 0);
 	}
 	
 	public static boolean has(Perm p, User u) {
-		Member m = u.getJDA().getGuildById(Bot.MAELSTROM).getMember(u);
+		Guild maelstrom = u.getJDA().getGuildById(Bot.MAELSTROM);
+		Member m = null;
+		if (maelstrom != null) m = maelstrom.getMember(u);
 		if (m!=null) return has(p,m);
 		else {
-			if (override.get(u) != null) return p.isAbove(override.get(u));
+			if (override.get(u) != null) return override.get(u).isAbove(p);
 			else if (u.getId().equals(Bot.OWNER)) return true;
-			else return p.isAbove(MEMBER);
+			else return MEMBER.isAbove(p);
 		}
 	}
 	
 	public static boolean hasSpec(Perm p, User u) {
-		Member m = u.getJDA().getGuildById(Bot.MAELSTROM).getMember(u);
+		Guild maelstrom = u.getJDA().getGuildById(Bot.MAELSTROM);
+		Member m = null;
+		if (maelstrom != null) m = maelstrom.getMember(u);
 		if (m!=null) return hasSpec(p,m);
 		else {
-			if (override.get(u) != null) return p.isAbove(override.get(u));
+			if (override.get(u) != null) return p == override.get(u);
 			else if (u.getId().equals(Bot.OWNER)) return OWNER == p;
 			else return p == MEMBER;
 		}
@@ -51,7 +56,7 @@ public enum Perm {
 	
 	public static boolean has(Perm p, Member m) {
 		if (override.get(m.getUser()) != null) return override.get(m.getUser()).isAbove(p);
-		return p.isAbove(getPerm(m));
+		return getPerm(m).isAbove(p);
 	}
 	
 	public static boolean hasSpec(Perm p, Member m) {
@@ -60,6 +65,7 @@ public enum Perm {
 	}
 	
 	public static Perm getPerm(Member m) {
+		if (override.get(m.getUser()) != null) return override.get(m.getUser());
 		if (m.getUser().getId().equals(Bot.OWNER)) return OWNER;
 		if (!m.getGuild().getId().equals(Bot.MAELSTROM)) {
 			// standard

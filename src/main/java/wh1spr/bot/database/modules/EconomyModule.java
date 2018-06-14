@@ -105,7 +105,10 @@ public class EconomyModule extends Module {
 			Set<Balance> s = new HashSet<Balance>();
 			ResultSet rs = executeQuery(balancesGetSql);
 			while(rs.next()) {
-				s.add(new Balance(rs.getDouble("Balance"), rs.getString("userId"), rs.getString("guildId")));
+				Balance b = new Balance(rs.getDouble("Balance"), rs.getString("userId"), rs.getString("guildId"));
+				if (b.getMember()!=null) {
+					s.add(b);
+				}
 			}
 			return s;
 		} catch (Exception e) {

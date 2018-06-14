@@ -3,6 +3,7 @@ package wh1spr.bot.dummy;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
@@ -36,7 +37,9 @@ public enum Rank { // These ranks give access to functions and lift/soften limit
 	}
 	
 	public static boolean has(Rank p, User u) {
-		Member m = u.getJDA().getGuildById(Bot.MAELSTROM).getMember(u);
+		Guild maelstrom = u.getJDA().getGuildById(Bot.MAELSTROM);
+		Member m = null;
+		if (maelstrom != null) m = maelstrom.getMember(u);
 		if (m!=null) return has(p,m);
 		else {
 			if (override.get(u) != null) return p.isAbove(override.get(u));
@@ -45,7 +48,9 @@ public enum Rank { // These ranks give access to functions and lift/soften limit
 	}
 	
 	public static boolean hasSpec(Rank p, User u) {
-		Member m = u.getJDA().getGuildById(Bot.MAELSTROM).getMember(u);
+		Guild maelstrom = u.getJDA().getGuildById(Bot.MAELSTROM);
+		Member m = null;
+		if (maelstrom != null) m = maelstrom.getMember(u);
 		if (m!=null) return hasSpec(p,u);
 		else {
 			if (override.get(u) != null) return p == override.get(u);
