@@ -23,12 +23,25 @@ public abstract class Command {
 	String getName() {
 		return this.name;
 	}
+	
 	List<String> getAliases() {
 		return this.aliases;
 	}
 	
 	protected String name = null;
 	protected ArrayList<String> aliases = new ArrayList<String>();
+	
+	private boolean isDisabled = false;
+	public boolean isDisabled() {
+		return isDisabled;
+	}
+	
+	public void disable() {
+		isDisabled = true;
+	}
+	public void enable() {
+		isDisabled = false;
+	}
 	
 	private boolean mOnly = true;
 	protected void setMaelstromOnly(boolean toggle) {

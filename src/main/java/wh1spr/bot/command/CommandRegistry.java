@@ -41,27 +41,6 @@ public  class CommandRegistry {
         return registry.keySet();
     }
 
-    public void removeCommand(String name) {
-        CommandEntry entry = new CommandEntry(new Command(name) {
-            @Override
-            public void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args ) {
-            	warning(message);
-            }
-            @Override
-            public void onCallPrivate(JDA jda, MessageChannel channel, User invoker, Message message, List<String> args ) {
-            	warning(message);
-            }
-        });
-        
-        //Disables all aliases AND you can disable it by using an alias.
-        Command old = registry.get(name).command;
-        List<String> aliases = old.getAliases();
-        String cmdname = old.getName();
-        
-        bot.getCommandRegistry().registry.put(cmdname, entry);
-        aliases.forEach(e->bot.getCommandRegistry().registry.put(e, entry));
-    }
-
     public class CommandEntry {
 
         public Command command;

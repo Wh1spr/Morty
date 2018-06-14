@@ -33,13 +33,15 @@ public class Morty extends Bot {
 		commandRegistry.registerCommand(new ChangeGameCommand("changegame", "cg"));
 		commandRegistry.registerCommand(new ChangeNameCommand("changename", "cn"));
 		commandRegistry.registerCommand(new CommandDisableCommand("disablecommand", this.getCommandRegistry(), "dcmd"));
+		commandRegistry.registerCommand(new CommandEnableCommand("enablecommand", this.getCommandRegistry(), "ecmd"));
 //		commandRegistry.registerCommand(new CommandDisableCommand("disablecommand", this.getImageRegistry(), "dcmd"));
+//		commandRegistry.registerCommand(new CommandEnableCommand("enablecommand", this.getImageRegistry(), "ecmd"));
 		commandRegistry.registerCommand(new EmojiToUnicodeCommand("emote"));
 		commandRegistry.registerCommand(new EvalCommand("eval", this));
 		commandRegistry.registerCommand(new FlushLogCommand("flushlog", "fl"));
 		commandRegistry.registerCommand(new FlushEcoCommand("flusheco", "fe"));
 		commandRegistry.registerCommand(new ShutdownCommand("shutdown", this, "oof"));
-		commandRegistry.registerCommand(new SendFromMortyCommand("send"));
+		commandRegistry.registerCommand(new SendFromJDACommand("send"));
 		commandRegistry.registerCommand(new SqlExecCommand("sql"));
 		
 		// Economy Commands

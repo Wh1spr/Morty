@@ -34,12 +34,15 @@ public class CommandHandler extends ListenerAdapter {
 		String cmdName = event.getMessage().getContentRaw().split(" ")[0].substring(PREFIX.length()).toLowerCase();
 		if (registry.getRegisteredCommandsAndAliases().contains(cmdName)) {
 			Command cmd = registry.getCommand(cmdName).command;
+			boolean execute = !cmd.isDisabled();
 			//no response if not in maelstrom and only maelstrom has been set
-			if (cmd.isMaelstromOnly() && !event.getGuild().getId().equals(Bot.MAELSTROM)) return;
+			if (cmd.isMaelstromOnly() && !event.getGuild().getId().equals(Bot.MAELSTROM)) execute = false;
+			commandCalled(cmd, event, execute);
+			if (!execute) return;
+			
 			List<String> args = new ArrayList<String>();
 			args.addAll(Arrays.asList(event.getMessage().getContentRaw().split(" ")));
 			args.remove(0);
-			commandCalled(cmd, event);
 			cmd.onCall(event.getJDA(), event.getGuild(), event.getChannel(), event.getAuthor(), event.getMessage(), args);
 		}
 		
@@ -54,20 +57,24 @@ public class CommandHandler extends ListenerAdapter {
 		String cmdName = event.getMessage().getContentStripped().split(" ")[0].replaceFirst(PREFIX, "").toLowerCase();
 		if (registry.getRegisteredCommandsAndAliases().contains(cmdName)) {
 			Command cmd = registry.getCommand(cmdName).command;
+			boolean execute = !cmd.isDisabled();
 			//no response if not in maelstrom and only maelstrom has been set
-			if (cmd.isMaelstromOnly()) return;
+			if (cmd.isMaelstromOnly()) execute = false;
+			commandCalled(cmd, event, execute);
+			if (!execute) return;
+			
 			List<String> args = new ArrayList<String>();
 			args.addAll(Arrays.asList(event.getMessage().getContentDisplay().split(" ")));
 			args.remove(0);
-			commandCalled(cmd, event);
 			cmd.onCallPrivate(event.getJDA(), event.getChannel(), event.getAuthor(), event.getMessage(), args);
 		}
 		
 	}
 	
+	//booleans for another row, whenever i make that one lol
 	private static final String commandCalledSql = "INSERT INTO CommandCalls Values(?,?,?,?,?,?,?)";
 	private PreparedStatement commandCalledStmt = null;
-	private void commandCalled(Command cmd, GuildMessageReceivedEvent e) {
+	private void commandCalled(Command cmd, GuildMessageReceivedEvent e, boolean executed) {
 		try {
 			if (commandCalledStmt == null)
 				commandCalledStmt = Database2.getConn().prepareStatement(commandCalledSql);
@@ -82,7 +89,7 @@ public class CommandHandler extends ListenerAdapter {
 			commandCalledStmt.executeUpdate();
 		} catch (SQLException e1) {e1.printStackTrace();}
 	}
-	private void commandCalled(Command cmd, PrivateMessageReceivedEvent e) {
+	private void commandCalled(Command cmd, PrivateMessageReceivedEvent e, boolean executed) {
 		try {
 			if (commandCalledStmt == null)
 				commandCalledStmt = Database2.getConn().prepareStatement(commandCalledSql);

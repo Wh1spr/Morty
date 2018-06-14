@@ -13,7 +13,6 @@ public class ImageRegistry extends CommandRegistry {
 		super(bot);
 	}
 
-	@Override
 	public void removeCommand(String URLorName) {
         if (registry.containsKey(URLorName)) {
         	//string is name

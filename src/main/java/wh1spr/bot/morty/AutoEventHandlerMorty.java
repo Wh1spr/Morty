@@ -2,8 +2,6 @@ package wh1spr.bot.morty;
 
 import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberLeaveEvent;
-import wh1spr.bot.database.Database2;
-import wh1spr.bot.database.modules.*;
 import wh1spr.bot.dummy.AutoEventHandlerDummy;
 import wh1spr.bot.dummy.Bot;
 
