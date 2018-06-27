@@ -72,52 +72,6 @@ public enum Rank { // These ranks give access to functions and lift/soften limit
 		if (!m.getGuild().getId().equals(Bot.MAELSTROM)) {
 			return OUTOFSERVER;
 		} else { // Maelstrom
-			Iterator<Role> iter = m.getRoles().iterator();
-			while(iter.hasNext()) {
-				Role n = iter.next();
-				switch(n.getId()) {
-				case MRoles.CELESTIAL:
-					return CELESTIAL;
-				case MRoles.DIMENSIONAL:
-					return DIMENSIONAL;
-				case MRoles.DIVINE:
-					return DIVINE;
-				case MRoles.GODLIKE:
-					return GODLIKE;
-				case MRoles.TRANSCENDENT:
-					return TRANSCENDENT;
-				case MRoles.OMNISCIENT:
-					return OMNISCIENT;
-				case MRoles.MYTHICAL:
-					return MYTHICAL;
-				case MRoles.IMMORTAL:
-					return IMMORTAL;
-				case MRoles.DEMIGOD:
-					return DEMIGOD;
-				case MRoles.LEGENDARY:
-					return LEGENDARY;
-				case MRoles.HEROIC:
-					return HEROIC;
-				case MRoles.FAMOUS:
-					return FAMOUS;
-				case MRoles.VETERAN:
-					return VETERAN;
-				case MRoles.GLORIOUS:
-					return GLORIOUS;
-				case MRoles.FANTASTIC:
-					return FANTASTIC;
-				case MRoles.MASTER:
-					return MASTER;
-				case MRoles.SKILLFUL:
-					return SKILLFUL;
-				case MRoles.GOOD:
-					return GOOD;
-				case MRoles.HANDY:
-					return HANDY;
-				case MRoles.NOOB:
-					return NOOB;
-				}
-			}
 			return NOOB;
 		}
 	}
