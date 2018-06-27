@@ -36,6 +36,9 @@ public class BalanceCommand extends Command {
 		EcoInfo ei = EconomyStatus.getGuildInfo(guild);
 		Balance b = EconomyStatus.getBalance(guild, invoker);
 		
+		// for cases where Morty was offline
+		if (b==null) b = EconomyStatus.createBalance(guild.getMember(invoker), ei.getStartVal());
+		
 		EmbedBuilder e = new EmbedBuilder().setColor(Color.GREEN);
 		
 		String title = "You currently have";

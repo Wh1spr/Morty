@@ -58,6 +58,10 @@ public class TransferCommand extends Command {
 		Balance from = EconomyStatus.getBalance(message.getMentionedMembers().get(0));
 		Balance to = EconomyStatus.getBalance(message.getMentionedMembers().get(1));
 		
+		//if morty was offline, you never know (should never happen, but I can't be safe enough)
+		if (from==null) from = EconomyStatus.createBalance(message.getMentionedMembers().get(0), ei.getStartVal());
+		if (to==null) to = EconomyStatus.createBalance(message.getMentionedMembers().get(1), ei.getStartVal());
+		
 		if (!from.transfer(to, amount)) {
 			failure(message);
 			channel.sendMessage("Transaction could not be completed.");

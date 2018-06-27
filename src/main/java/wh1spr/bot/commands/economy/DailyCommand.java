@@ -56,6 +56,8 @@ public class DailyCommand extends Command {
 		dailies.add(guild.getMember(invoker));
 		
 		Balance b = EconomyStatus.getBalance(guild, invoker);
+		// for cases where Morty was offline
+		if (b==null) b = EconomyStatus.createBalance(guild.getMember(invoker), ei.getStartVal());
 		b.add(ei.getDaily());
 		
 		channel.sendMessage(String.format(":white_check_mark: You have been awarded your daily **%.2f %s**.", ei.getDaily(), ei.getDaily()==1.00?ei.getMaj(0):ei.getMaj(1))).queue();
