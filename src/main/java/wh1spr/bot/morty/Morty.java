@@ -44,6 +44,10 @@ public class Morty extends Bot {
 		commandRegistry.registerCommand(new SendFromJDACommand("send"));
 		commandRegistry.registerCommand(new SqlExecCommand("sql"));
 		
+		// Maelstrom Commands
+		commandRegistry.registerCommand(new AcceptCommand("accept"));
+		
+		
 		// Economy Commands
 		commandRegistry.registerCommand(new EcoSetupCommand("ecosetup"));
 		commandRegistry.registerCommand(new TransferCommand("transfer"));
