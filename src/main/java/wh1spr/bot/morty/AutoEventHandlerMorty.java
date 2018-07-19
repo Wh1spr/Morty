@@ -25,7 +25,7 @@ public class AutoEventHandlerMorty extends AutoEventHandlerDummy {
 				event.getGuild().getController().addSingleRoleToMember(event.getMember(), event.getGuild().getRoleById(MRoles.BOTS)).queue();
 			} else {
 				event.getGuild().getController().addSingleRoleToMember(event.getMember(), event.getGuild().getRoleById(MRoles.ACCEPT)).queue();
-		
+				dbmaelstrom.addUser(event.getUser());
 			}
 		} 
 	}

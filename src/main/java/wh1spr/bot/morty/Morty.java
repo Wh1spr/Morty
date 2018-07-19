@@ -8,6 +8,7 @@ import wh1spr.bot.command.*;
 import wh1spr.bot.commands.*;
 import wh1spr.bot.commands.dev.*;
 import wh1spr.bot.commands.economy.settings.*;
+import wh1spr.bot.commands.maelstrom.*;
 import wh1spr.bot.commands.economy.*;
 //import wh1spr.bot.commands.images.*;
 import wh1spr.bot.commands.mod.*;
