@@ -82,7 +82,6 @@ public class MaelstromModule extends Module {
 		if (jda.getGuildById(Morty.MAELSTROM).getMemberById(userId)==null) return false;
 		try {
 			userAcceptedStmt.setString(1, userId);
-			userAcceptedStmt.setInt(2, 0);
 			ResultSet rs = userAcceptedStmt.executeQuery();
 			
 			if(rs.next()) {
@@ -102,7 +101,7 @@ public class MaelstromModule extends Module {
 		try {
 			setAcceptStmt.setString(1, userId);
 			setAcceptStmt.setInt(2, accept?1:0);
-			rs = userAddStmt.executeUpdate();
+			rs = setAcceptStmt.executeUpdate();
 		} catch (SQLException e) {
 			log.error(e, String.format("Something went wrong set acceptRules property to %s for user with ID = %s", Boolean.toString(accept), userId));
 			return false;

@@ -2,6 +2,7 @@ package wh1spr.bot.morty;
 
 import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberLeaveEvent;
+import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import wh1spr.bot.dummy.AutoEventHandlerDummy;
 import wh1spr.bot.dummy.Bot;
 
@@ -43,7 +44,13 @@ public class AutoEventHandlerMorty extends AutoEventHandlerDummy {
 		}
 	}
 	
-	
+	@Override
+	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
+		if(event.getChannel().getId().equals("433702216856240138")&&!event.getAuthor().getId().equals(Bot.OWNER)
+				&&!event.getMessage().getContentRaw().startsWith("accept",1)) {
+			event.getMessage().delete().queue();
+		}
+	}
 	// This will be put in IntroductionCommand, adds eventlistener to given bot
 //	@Override
 //	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
