@@ -36,7 +36,7 @@ public class Balance {
 		this.bal += Tools.round(val);
 	}
 	
-	public void substract(Double val) {
+	public void subtract(Double val) {
 		this.bal -= Tools.round(val);
 	}
 	
@@ -49,7 +49,7 @@ public class Balance {
 		if (val <= 0.00) return false;
 		if (from.getBal() < val) return false;
 		if (from.getGuild()!=to.getGuild()) return false;
-		from.substract(val);
+		from.subtract(val);
 		to.add(val);
 		return true;
 	}
@@ -59,7 +59,7 @@ public class Balance {
 		if (val <= 0.00) return false;
 		if (this.getBal() < val) return false;
 		if (this.getGuild()!=to.getGuild()) return false;
-		this.substract(val);
+		this.subtract(val);
 		to.add(val);
 		return true;
 	}
