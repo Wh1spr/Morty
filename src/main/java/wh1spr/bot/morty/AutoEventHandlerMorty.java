@@ -3,6 +3,8 @@ package wh1spr.bot.morty;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberLeaveEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import wh1spr.bot.commands.economy.util.Balance;
+import wh1spr.bot.commands.economy.util.EconomyStatus;
 import wh1spr.bot.dummy.AutoEventHandlerDummy;
 import wh1spr.bot.dummy.Bot;
 
@@ -21,20 +23,29 @@ public class AutoEventHandlerMorty extends AutoEventHandlerDummy {
 		db();
 		dbent.addMember(event.getMember());
 		
+		Balance b = null;
+		
+		if (EconomyStatus.hasEconomy(event.getGuild()))
+			b = EconomyStatus.createBalance(event.getMember(), EconomyStatus.getGuildInfo(event.getGuild().getId()).getStartVal());
+		
 		if (event.getGuild().getId().equals(Bot.MAELSTROM)) {
+			if (event.getJDA().getGuildById("319896741233033216").getMember(event.getUser()) != null) {
+				b.set(EconomyStatus.getBalance(event.getJDA().getGuildById("319896741233033216").getMember(event.getUser())).getBal());
+			}
 			if (event.getUser().isBot()) {
 				event.getGuild().getController().addSingleRoleToMember(event.getMember(), event.getGuild().getRoleById(MRoles.BOTS)).queue();
 			} else {
 				event.getGuild().getController().addSingleRoleToMember(event.getMember(), event.getGuild().getRoleById(MRoles.ACCEPT)).queue();
 				dbmaelstrom.addUser(event.getUser());
 			}
-		} 
+		}
 	}
 	
 	@Override
 	public void onGuildMemberLeave(GuildMemberLeaveEvent event) {
 		db();
-		dbent.deleteMember(event.getMember());
+		if (event.getMember().getUser().getMutualGuilds().isEmpty())
+			dbent.deleteMember(event.getMember());
 		dbeco.deleteMember(event.getMember());
 		dbintro.deleteMember(event.getMember());
 		

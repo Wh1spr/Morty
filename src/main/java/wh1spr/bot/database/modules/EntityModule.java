@@ -2,7 +2,9 @@ package wh1spr.bot.database.modules;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -41,6 +43,32 @@ public class EntityModule extends Module {
 	@Override
 	protected boolean update() {
 		// TODO Auto-generated method stub
+		try {
+			ResultSet rs = conn.createStatement().executeQuery("Select GuildId FROM Guilds");
+			
+			List<String> guildIds = new ArrayList<String>();
+			while (rs.next()) {
+				guildIds.add(rs.getString("Guildid"));
+			}
+			List<String> guildIdsJda = new ArrayList<String>();
+			jda.getGuilds().forEach(el->guildIdsJda.add(el.getId()));
+			
+			//which ones to remove?
+			List<String> toRemove = new ArrayList<String>(guildIds);
+			toRemove.remove(guildIdsJda);
+			toRemove.forEach(el->deleteGuild(el));
+			//which ones to add?
+			// -> every single one, because we need to update their counts
+			guildIdsJda.forEach(el->addGuild(el));
+		} catch (SQLException e) {
+			log.error(e, "Could not update EntityModule: Guilds");
+			return false;
+		}
+		//get list of users
+		//get list of guilds
+		// do the same with jda
+		//check difference
+		//update
 		return true;
 	}
 	
@@ -159,7 +187,7 @@ public class EntityModule extends Module {
 
 	@Override
 	public boolean addGuild(String guildId) {
-		return jda.getGuildById(guildId)==null?null:addGuild(jda.getGuildById(guildId));
+		return jda.getGuildById(guildId)==null?false:addGuild(jda.getGuildById(guildId));
 	}
 	
 	@Override

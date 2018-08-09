@@ -42,7 +42,7 @@ public class AcceptCommand extends Command {
 		GuildController g = guild.getController();
 		
 		g.removeSingleRoleFromMember(guild.getMember(invoker), guild.getRoleById(MRoles.ACCEPT)).queue();
-		g.addSingleRoleToMember(guild.getMember(invoker), guild.getRoleById(MRoles.GUEST)).queue();
+		g.addSingleRoleToMember(guild.getMember(invoker), guild.getRoleById(MRoles.MEMBER)).queue();
 		
 		mael.setAccept(invoker, true);
 		guild.getTextChannelById(welcomeId).sendMessage("*Please welcome " + invoker.getAsMention() + " to Maelstrom!*").queue();

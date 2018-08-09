@@ -25,7 +25,7 @@ public class SendFromJDACommand extends Command {
 			MessageChannel channelTo = jda.getTextChannelById(args.get(0));
 			if (channelTo == null) {failure(message);return;}
 			
-			channelTo.sendMessage(message.getContentRaw().split(" ", 2)[1]).queue();
+			channelTo.sendMessage(message.getContentRaw().split(" ", 3)[2]).queue();
 			success(message);
 			return;
 		} else {
