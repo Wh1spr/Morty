@@ -57,6 +57,9 @@ public class Morty extends Bot {
 		commandRegistry.registerCommand(new PayCommand("pay"));
 		commandRegistry.registerCommand(new DailyCommand("daily"));
 		
+		// Economy Games Commands
+		commandRegistry.registerCommand(new SlotsCommand("slots"));
+		
 		// Mod Commands
 		commandRegistry.registerCommand(new CleanCommand("clean"));
 		
