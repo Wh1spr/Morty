@@ -52,6 +52,7 @@ public class Morty extends Bot {
 		// Economy Commands
 		commandRegistry.registerCommand(new EcoSetupCommand("ecosetup"));
 		commandRegistry.registerCommand(new TransferCommand("transfer"));
+		commandRegistry.registerCommand(new GrantCommand("grant"));
 		commandRegistry.registerCommand(new BalanceCommand("balance", "bal"));
 		commandRegistry.registerCommand(new PayCommand("pay"));
 		commandRegistry.registerCommand(new DailyCommand("daily"));
