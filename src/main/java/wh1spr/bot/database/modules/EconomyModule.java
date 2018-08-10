@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -117,6 +118,7 @@ public class EconomyModule extends Module {
 		}
 	}
 	
+	private HashMap<String, Boolean> hasEconomy = new HashMap<String, Boolean>();
 	/**
 	 * Checks wether or not a guild with id guildid has a set up economy.
 	 * @param guildid The ID of the guild to check.
@@ -124,11 +126,18 @@ public class EconomyModule extends Module {
 	 */
 	public boolean hasEconomy(String guildid) {
 		if (!isReady()) return false;
+		if (hasEconomy.get(guildid) != null) return hasEconomy.get(guildid);
 		try {
 			hasEcoStmt.setString(1, guildid);
 			ResultSet rs = hasEcoStmt.executeQuery();
 			rs.next();
-			return rs.getInt("total")==1?true:false;
+			if(rs.getInt("total")==1) {
+				hasEconomy.put(guildid, true);
+				return true;
+			} else {
+				hasEconomy.put(guildid, false);
+				return false;
+			}
 		} catch (SQLException e) {
 			log.error(e, "Couldn't check if guild with ID " + guildid + " had a set up economy.");
 		}
