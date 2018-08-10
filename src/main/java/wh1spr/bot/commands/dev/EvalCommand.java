@@ -45,6 +45,7 @@ public class EvalCommand extends Command {
             		.replaceAll("db", "Packages.wh1spr.bot.database.Database2")
             		.replaceAll("perm", "Packages.wh1spr.bot.dummy.Perm")
             		.replaceAll("rank", "Packages.wh1spr.bot.dummy.Rank")
+            		.replaceAll("slotscommand", "Packages.wh1spr.bot.commands.economy.SlotsCommand")
             		.replaceAll("userget", "jda.getUserById"))+" ```").queue();
             success(message);
         } catch(Exception e) {

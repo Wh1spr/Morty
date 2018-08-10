@@ -21,10 +21,17 @@ public class SlotsCommand extends Command {
 	public SlotsCommand(String name, String... aliases) {
 		super(name, aliases);
 		this.setMaelstromOnly(false);
-		jackpayout = 10000d;
+		jackpayout = 8000d;
 	}
 	
-	private double jackpayout = 0;
+	private static double jackpayout = 0;
+	public static void setJackpot(double val) {
+		jackpayout = val;
+	}
+	public static double getJackpot() {
+		return jackpayout;
+	}
+	
 
 	@SuppressWarnings("unused")
 	@Override
@@ -99,28 +106,28 @@ public class SlotsCommand extends Command {
 		
 		if (jackpot) {
 			b.add(jackpayout);
-			jackpayout = 10000d;
+			jackpayout = 8000d;
 			msg += String.format("and won the :tada: ***JACKPOT*** :tada: of **%d %s** \n%s", (int)(jackpayout), ei.getMaj()[1], guild.getPublicRole().getAsMention());
 		} else if (win3 || win2 || win22 || win4) {
 			String format = "and won! (%s/4) :tada: \nPayout is **%d %s**";
 			String formatneutral = "and got something back! (%s/4)\nPayout is **%d %s**";
-			jackpayout += 5;
+			jackpayout += 2;
 			if (win4) {
-				msg += String.format(format, "4", 5000, ei.getMaj()[1]);
+				msg += String.format(format, "4", 4500, ei.getMaj()[1]);
 				b.add(5000d);
 			} else if (win3) {
-				msg += String.format(format, "3", 600, ei.getMaj()[1]);
-				b.add(600d);
+				msg += String.format(format, "3", 100, ei.getMaj()[1]);
+				b.add(100d);
 			} else if (win22) {
 				msg += String.format(formatneutral, "2*2", 10, ei.getMaj()[1]);
 				b.add(10d);
 			} else if (win2) {
-				msg += String.format(formatneutral, "2", 5, ei.getMaj()[1]);
-				b.add(5d);
+				msg += String.format(formatneutral, "2", 3, ei.getMaj()[1]);
+				b.add(3d);
 			}
 		} else {
 			msg += "and lost!";
-			jackpayout += 5d;
+			jackpayout += 2d;
 		}
 		channel.sendMessage(msg).queue();
 	}
