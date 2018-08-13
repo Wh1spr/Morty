@@ -108,7 +108,7 @@ public class SlotsCommand extends Command {
 			b.add(jackpayout);
 			jackpayout = 8000d;
 			msg += String.format("and won the :tada: ***JACKPOT*** :tada: of **%d %s** \n%s", (int)(jackpayout), ei.getMaj()[1], guild.getPublicRole().getAsMention());
-		} else if (win3 || win2 || win22 || win4) {
+		} else if (win3 || win22 || win4) {
 			String format = "and won! (%s/4) :tada: \nPayout is **%d %s**";
 			String formatneutral = "and got something back! (%s/4)\nPayout is **%d %s**";
 			jackpayout += 2;
@@ -121,10 +121,11 @@ public class SlotsCommand extends Command {
 			} else if (win22) {
 				msg += String.format(formatneutral, "2*2", 10, ei.getMaj()[1]);
 				b.add(10d);
-			} else if (win2) {
-				msg += String.format(formatneutral, "2", 3, ei.getMaj()[1]);
-				b.add(3d);
-			}
+			} 
+//			else if (win2) {
+//				msg += String.format(formatneutral, "2", 3, ei.getMaj()[1]);
+//				b.add(3d);
+//			}
 		} else {
 			msg += "and lost!";
 			jackpayout += 2d;
