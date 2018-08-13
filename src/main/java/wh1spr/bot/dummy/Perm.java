@@ -17,6 +17,7 @@ public enum Perm {
 	BOT, // basically admin
 	
 	STAFF, // aka community moderator Maelstrom Only
+	EO, //aka Event organizer
 	
 	PROGRAMMER, // programmers and technical staff, get perms in programming and serveral commands
 	CONTENT, // content creators, they get perms in content creators category
@@ -83,6 +84,8 @@ public enum Perm {
 					return BOT;
 				case MRoles.STAFF:
 					return STAFF;
+				case MRoles.EO:
+					return EO;
 				case MRoles.PROGRAMMER:
 					return PROGRAMMER;
 				case MRoles.CONTENT_CREATOR:
