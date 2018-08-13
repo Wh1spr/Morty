@@ -46,9 +46,9 @@ public class BalanceCommand extends Command {
 		if (b.getBal() >= 1) {
 			title += String.format(" **%s %s**", Long.toString(Math.round(b.getBal())), Math.round(b.getBal())==1?ei.getMaj(0):ei.getMaj(1));
 		}
-		if (b.getBal() >= 1.01 && (b.getBal()*100) - Math.round(b.getBal())*100 != 0) title += " and";
-		if ((b.getBal()*100) - Math.round(b.getBal())*100 > 0) {
-			int cents = (int) ((b.getBal()*100) - Math.round(b.getBal())*100);
+		if (b.getBal() >= 1.01 && (b.getBal()*100) - ((int)((b.getBal() + 0.001) * 100) % 100) != 0) title += " and";
+		if ((int)((b.getBal() + 0.001) * 100) % 100 > 0) {
+			int cents = (int)((b.getBal() + 0.001) * 100) % 100;
 			title += String.format(" **%d %s**", cents, cents==1?ei.getMin(0):ei.getMin(1));
 		}
 		
