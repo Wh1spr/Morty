@@ -12,7 +12,6 @@ import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.Tools;
 import wh1spr.bot.command.Command;
-import wh1spr.bot.commands.economy.util.Balance;
 import wh1spr.bot.commands.economy.util.EconomyStatus;
 import wh1spr.bot.database.EcoInfo;
 import wh1spr.bot.dummy.Perm;
