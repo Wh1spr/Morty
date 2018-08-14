@@ -5,10 +5,10 @@ import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
+import net.dv8tion.jda.core.OnlineStatus;
 import wh1spr.bot.commands.economy.util.EconomyStatus;
 import wh1spr.bot.database.Database2;
 import wh1spr.bot.dummy.Bot;
@@ -22,7 +22,7 @@ public class Main {
 	private static Properties properties = null;
 	private static Logger log = null;
 	
-	private static HashMap<String, Bot> bots = new HashMap<String, Bot>();
+	private static Bot bot = null;
 
 	public static void main(String[] args) {
 		if(!Files.exists(Paths.get(propertiesPath))) {
@@ -53,25 +53,21 @@ public class Main {
 		LoggerCache.start("data/logs/main-%s.log");
 		log = LoggerCache.getLogger("MAIN");
 		
-		log.info("Starting bots...");
+		log.info("Starting Morty...");
 		morty();
 		
-		if (bots.isEmpty()) {
-			log.fatal("No bots were created. Shutting down...");
-			System.exit(1);
-		}
-		
 		log.info("Starting Database...");
-		Database2.start(getABot().getJDA());
+		Database2.start(bot.getJDA());
 		
 		log.info("Starting EconomyStatus...");
 		EconomyStatus.start();
+		
+		bot.getJDA().getPresence().setStatus(OnlineStatus.ONLINE);
 		
 	}
 	
 	private static void morty() {
 		if(properties.getProperty("MORTY-START", "False").equals("True"))  {
-			log.info("Trying to start MORTY...");
 			String key = properties.getProperty("MORTY-KEY");
 			String dataPath = properties.getProperty("MORTY-DATA", "data/Morty/");
 			String prefix = properties.getProperty("MORTY-PREFIX");
@@ -88,28 +84,35 @@ public class Main {
 			}
 			
 			log.info("Running MORTY...");
-			bots.put("MORTY", new Morty(key, dataPath, prefix)); // This will also run Morty
+			bot = new Morty(key, dataPath, prefix); // This will also run Morty
 			
 		}
 	}
 	
+	@Deprecated
 	public static Bot getBot(String name) {
-		return bots.get(name);
+		return bot;
 	}
 	
+	@Deprecated
 	public static int getNrOfBots() {
-		return bots.values().size();
+		return 1;
 	}
 	
+	@Deprecated
 	public static List<Bot> getBots() {
-		return new ArrayList<Bot>(bots.values());
+		List<Bot> lol = new ArrayList<Bot>();
+		lol.add(bot);
+		return lol;
 	}
 	
+	@Deprecated
 	public static Bot getABot() {
-		return getBots().get(0);
+		return bot;
 	}
 	
+	@Deprecated
 	public static void removeBot(String name) {
-		bots.remove(name);
+		return;
 	}
 }
