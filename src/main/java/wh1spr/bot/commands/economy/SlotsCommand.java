@@ -32,8 +32,8 @@ public class SlotsCommand extends Command {
 		return jackpayout;
 	}
 	
-
-	@SuppressWarnings("unused")
+	Random r = new Random();
+	
 	@Override
 	public void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args) {
 		if (!Perm.has(Perm.MEMBER, invoker)) {return;}
@@ -49,8 +49,6 @@ public class SlotsCommand extends Command {
 		
 		//:apple: :tangerine: :lemon: :cherries: :watermelon: :grapes: :strawberry: :banana: and jackpot -> :moneybag:
 		String[] options = ":apple: :tangerine: :lemon: :cherries: :watermelon: :grapes: :strawberry: :banana: :moneybag:".split(" ");
-		
-		Random r = new Random();
 		
 		//get 10 from balance
 		Balance b = EconomyStatus.getBalance(guild.getMember(invoker));
@@ -69,7 +67,7 @@ public class SlotsCommand extends Command {
 		// jackpot  (1/15000) gets you the jackpot, at least 10k
 		
 		boolean jackpot = false;
-		boolean win2 = false;
+//		boolean win2 = false;
 		boolean win22 = false;
 		boolean win3 = false;
 		boolean win4 = false;
@@ -92,7 +90,7 @@ public class SlotsCommand extends Command {
 			} else if (max == 3) {
 				win3 = true;
 			}	else if (max == 2) {
-				win2 = true;
+//				win2 = true;
 				if (Arrays.toString(res).split("2").length > 2) win22 = true;
 			}
 		} else {
