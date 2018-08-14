@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 import net.dv8tion.jda.core.OnlineStatus;
@@ -89,30 +87,7 @@ public class Main {
 		}
 	}
 	
-	@Deprecated
-	public static Bot getBot(String name) {
+	public static Bot getBot() {
 		return bot;
-	}
-	
-	@Deprecated
-	public static int getNrOfBots() {
-		return 1;
-	}
-	
-	@Deprecated
-	public static List<Bot> getBots() {
-		List<Bot> lol = new ArrayList<Bot>();
-		lol.add(bot);
-		return lol;
-	}
-	
-	@Deprecated
-	public static Bot getABot() {
-		return bot;
-	}
-	
-	@Deprecated
-	public static void removeBot(String name) {
-		return;
 	}
 }

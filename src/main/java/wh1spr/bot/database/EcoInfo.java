@@ -27,7 +27,7 @@ public class EcoInfo {
 	private Double daily = null;
 	
 	public Guild getGuild() {
-		return Main.getBots().get(0).getJDA().getGuildById(this.guildId);
+		return Main.getBot().getJDA().getGuildById(this.guildId);
 	}
 	public String[] getMaj() {
 		return new String[] {majSing, majMult};

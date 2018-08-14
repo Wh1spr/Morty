@@ -21,7 +21,7 @@ public class Balance {
 		this.bal = val;
 	}
 	public Balance(Double val, String userId, String guildId) {
-		JDA jda = Main.getBots().get(0).getJDA();
+		JDA jda = Main.getBot().getJDA();
 		this.bal = val;
 		Guild g = jda.getGuildById(guildId);
 		if (g==null) return;

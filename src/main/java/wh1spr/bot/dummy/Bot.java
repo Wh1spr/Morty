@@ -79,13 +79,11 @@ public abstract class Bot {
 	
 	public void shutdown() {
 		shutdownBot();
-		if (Main.getNrOfBots() <= 0) {
-			shutdownLast();
-		}
+		shutdownLast();
 	}
 	
 	public void shutdownLast() {
-		LoggerCache.getLogger("MAIN").info("Last bot shut down. Shutting down application.");
+		LoggerCache.getLogger("MAIN").info("Bot shut down. Shutting down application.");
 		EconomyStatus.shutdown();
 		LoggerCache.shutdown();
 		System.exit(0);

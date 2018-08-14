@@ -5,7 +5,7 @@ The Morty Discord bot. An allrounder for server management, testing things in Di
 * **Wh1spr** - *The idea and most of the work.* - [Wh1spr](https://github.com/Wh1spr)
 
 ## Built with
-* **[JDA](https://github.com/DV8FromTheWorld/JDA)** - *Java Discord Api*
+* **[JDA](https://github.com/DV8FromTheWorld/JDA)** - *Java Discord API*
 * **[LavaPlayer](https://github.com/sedmelluq/lavaplayer)** - *Audio player library for Discord (Not executed)*
 * **[Gradle](https://gradle.org)** - *Dependency Management*
 * **[Emoji-Java](https://github.com/vdurmont/emoji-java)** - *The missing emoji library for Java*
