@@ -1,9 +1,11 @@
 package wh1spr.bot;
 
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Scanner;
 
 public final class Tools {
 
@@ -29,5 +31,16 @@ public final class Tools {
 	    Date now = new Date();
 	    String strDate = sdfDate.format(now);
 	    return strDate;
+	}
+	
+	public static String getStringFromInputStream(InputStream i) {
+		@SuppressWarnings("resource")
+		Scanner s = (new Scanner(i)).useDelimiter("\\A");
+		String res = s.hasNext()?s.next():"";
+		s.close();
+		return res;
+	}
+	public static boolean isNumeric(String str) {
+	  return str.matches("-?\\d+(\\.\\d+)?");  //match a number with optional '-' and decimal.
 	}
 }
