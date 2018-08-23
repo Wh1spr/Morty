@@ -2,6 +2,9 @@ package wh1spr.bot.database;
 
 import net.dv8tion.jda.core.entities.Guild;
 import wh1spr.bot.Main;
+import wh1spr.bot.Tools;
+import wh1spr.bot.mongodb.MongoDB;
+import wh1spr.bot.mongodb.MongoGuild;
 
 public class EcoInfo {
 
@@ -13,11 +16,13 @@ public class EcoInfo {
 		this.minMult = minMult;
 		this.start = start;
 		this.daily = daily;
+		this.mongo = MongoDB.getMongoGuild(getGuild());
 	}
 	public EcoInfo(Guild guild, String majSing, String majMult, String minSing, String minMult, Double start, Double daily) {
 		this(guild.getId(), majSing, majMult, minSing, minMult, start, daily);
 	}
 	
+	private MongoGuild mongo = null;
 	private String guildId = null;
 	private String majSing = null;
 	private String majMult = null;
@@ -47,4 +52,32 @@ public class EcoInfo {
 	public Double getDaily() {
 		return this.daily;
 	}
+	
+	// Setters assume what you're doing is correct.
+	public void setMajSing(String s) {
+		this.majSing = s;
+		mongo.setEconomy(this);
+	}
+	public void setMajMult(String s) {
+		this.majMult = s;
+		mongo.setEconomy(this);
+	}
+	public void setMinSing(String s) {
+		this.minSing = s;
+		mongo.setEconomy(this);
+	}
+	public void setMinMult(String s) {
+		this.minMult = s;
+		mongo.setEconomy(this);
+	}
+	public void setStartval(Double val) {
+		this.start = Tools.round(val);
+		mongo.setEconomy(this);
+	}
+	public void setDailyval(Double val) {
+		this.daily = Tools.round(val);
+		mongo.setEconomy(this);
+	}
+	
+	
 }
