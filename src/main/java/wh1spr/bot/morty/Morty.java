@@ -3,6 +3,7 @@ package wh1spr.bot.morty;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
+import net.dv8tion.jda.core.OnlineStatus;
 import wh1spr.bot.Main;
 import wh1spr.bot.command.*;
 import wh1spr.bot.commands.*;
@@ -26,6 +27,7 @@ public class Morty extends Bot {
 		this.registerCommands();
 		log.info("Starting JDA instance.");
 		this.jda = run();
+		jda.getPresence().setStatus(OnlineStatus.OFFLINE);
 	}
 	
 	public void registerCommands() {
@@ -101,6 +103,5 @@ public class Morty extends Bot {
 		log.info("Shutting down Morty.");
 		if (jda!=null) getJDA().shutdown();
 		log.shutdown();
-		Main.removeBot("MORTY");
 	}
 }

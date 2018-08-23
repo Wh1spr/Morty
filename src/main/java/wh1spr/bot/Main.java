@@ -10,6 +10,7 @@ import net.dv8tion.jda.core.OnlineStatus;
 import wh1spr.bot.commands.economy.util.EconomyStatus;
 import wh1spr.bot.database.Database2;
 import wh1spr.bot.dummy.Bot;
+import wh1spr.bot.mongodb.MongoDB;
 import wh1spr.bot.morty.Morty;
 import wh1spr.logger.Logger;
 import wh1spr.logger.LoggerCache;
@@ -56,6 +57,7 @@ public class Main {
 		
 		log.info("Starting Database...");
 		Database2.start(bot.getJDA());
+		MongoDB.start(bot.getJDA());
 		
 		log.info("Starting EconomyStatus...");
 		EconomyStatus.start();
