@@ -18,7 +18,7 @@ import wh1spr.logger.LoggerCache;
 public class Main {
 	
 	private static final String propertiesPath = "data/main.properties";
-	private static Properties properties = null;
+	public static Properties properties = null;
 	private static Logger log = null;
 	
 	private static Bot bot = null;
