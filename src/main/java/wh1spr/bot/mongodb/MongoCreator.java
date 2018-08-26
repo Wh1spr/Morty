@@ -24,6 +24,23 @@ class MongoCreator {
 		this.db = db;
 	}
 	
+	MongoUser createUser(User user) {
+		if (MongoDB.exists(user)) throw new IllegalArgumentException("Cannot create a user that already exists in db.");
+		
+		Document u = new Document("_id", user.getId());
+		u.append("mention", user.getName() + "#" + user.getDiscriminator());
+		
+		List<Guild> guilds = user.getMutualGuilds();
+		Document gs = new Document();
+		guilds.forEach(g->{
+			gs.append(g.getId(), new BasicDBObject()); //stuff like balance can be added here or on first use
+		});
+		u.append("guilds", gs);
+		db.getCollection("users").insertOne(u);
+		
+		return new MongoUser(user);
+	}
+	
 	MongoGuild createGuild(Guild guild) {
 		if (MongoDB.exists(guild)) throw new IllegalArgumentException("Cannot create a guild that already exists in db.");
 		

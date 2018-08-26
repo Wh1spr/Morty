@@ -56,6 +56,16 @@ public class MongoDB {
 		else return true;
 	}
 	
+	//User
+	public static MongoUser getMongoUser(User user) {
+		if (!exists(user)) mc.createUser(user);
+		return new MongoUser(user);
+	}
+	public static boolean exists(User user) {
+		if (db.getCollection("users").find(eq("_id", user.getId())).first() == null) return false;
+		else return true;
+	}
+	
 	//updated-cache (just strings)
 	// prefixes u-user g-guild c-channel v-voicechannel
 	// should get cleared at midnight or something
