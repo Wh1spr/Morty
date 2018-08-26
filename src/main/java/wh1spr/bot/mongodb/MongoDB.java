@@ -13,6 +13,7 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
+import wh1spr.bot.Main;
 import wh1spr.logger.Logger;
 import wh1spr.logger.LoggerCache;
 
@@ -28,7 +29,7 @@ public class MongoDB {
 	public static void start(JDA jda) {
 		MongoDB.jda = jda;
 		log.info("Setting up database...");
-		client = MongoClients.create("mongodb://192.168.1.121");
+		client = MongoClients.create(Main.properties.getProperty("MONGO", "mongodb://localhost"));
 		db = client.getDatabase("discord");
 		
 		mc = new MongoCreator(jda, db);
