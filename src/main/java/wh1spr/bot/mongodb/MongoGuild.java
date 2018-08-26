@@ -41,17 +41,8 @@ public class MongoGuild {
 		return jda.getGuildById(guildId);
 	}
 	
-	public Document getDoc() {
-		if (useDoc && doc != null) return this.doc;
-		else doc = MongoDB.getDb().getCollection("guilds").find(eq("_id", guildId)).first();
-		return doc;
-	}
-	private Document doc = null;
-	// useDoc is set false when you're just getting stuff, instead of getting new doc every time.
-	private boolean useDoc = false;
-	public boolean toggleDoc() {
-		useDoc = !useDoc;
-		return useDoc;
+	public final Document getDoc() {
+		return MongoDB.getDb().getCollection("guilds").find(eq("_id", getId())).first();
 	}
 	
 	/*************
@@ -83,15 +74,12 @@ public class MongoGuild {
 	 *  		 * Setters update straight to DB. Getters use newest doc version.
 	 *************/
 	public void setName() {
-		this.doc = null;
 		db.getCollection("guilds").updateOne(eq("_id", getId()), set("name", this.getGuild().getName()));
 	}
 	public void setOwner() {
-		this.doc = null;
 		db.getCollection("guilds").updateOne(eq("_id", getId()), set("ownerid", this.getGuild().getOwner()));
 	}
 	public void updateCounts() {
-		this.doc = null;
 		db.getCollection("guilds").updateOne(eq("_id", getId()), 
 				combine(set("textchannels", this.getGuild().getTextChannels().size()),
 						set("voicechannels", this.getGuild().getVoiceChannels().size()),
@@ -99,7 +87,6 @@ public class MongoGuild {
 	}
 	
 	public void setEconomy(EcoInfo ei) {
-		this.doc = null;
 		db.getCollection("guilds").updateOne(eq("_id", getId()),
 				set("economy", new BasicDBObject("MajSing", ei.getMaj(0))
 				.append("MajMult", ei.getMaj(1))
@@ -110,7 +97,6 @@ public class MongoGuild {
 	}
 	
 	public void setIntroChannel(TextChannel intro) {
-		this.doc = null;
 		db.getCollection("guilds").updateOne(eq("_id", getId()), 
 				set("introID", intro.getId()));
 	}
@@ -123,9 +109,8 @@ public class MongoGuild {
 			MongoDB.addUpdated("g" + getId());
 			return true;
 		} catch (Exception e) {
-			LoggerCache.getLogger("MONGO").error(e, "Couldn't update MongoGuild with ID " + guildId);
+			LoggerCache.getLogger("MONGO").error(e, "Couldn't update MongoGuild with ID " + getId());
 			return false;
 		}
-		
 	}
 }
