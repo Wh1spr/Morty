@@ -54,7 +54,7 @@ public class CommandHandler extends ListenerAdapter {
 		if (!event.getMessage().getContentStripped().startsWith(PREFIX)) return;
 		
 		//if this command exists
-		String cmdName = event.getMessage().getContentStripped().split(" ")[0].replaceFirst(PREFIX, "").toLowerCase();
+		String cmdName = event.getMessage().getContentRaw().split(" ")[0].substring(PREFIX.length()).toLowerCase();
 		if (registry.getRegisteredCommandsAndAliases().contains(cmdName)) {
 			Command cmd = registry.getCommand(cmdName).command;
 			boolean execute = !cmd.isDisabled();
