@@ -52,7 +52,7 @@ public class Main {
 		LoggerCache.start("data/logs/main-%s.log");
 		log = LoggerCache.getLogger("MAIN");
 		
-		log.info("Starting Morty...");
+		log.info("Starting Bot...");
 		morty();
 		
 		log.info("Starting Database...");
