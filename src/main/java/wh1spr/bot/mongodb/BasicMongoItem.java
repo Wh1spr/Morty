@@ -12,11 +12,14 @@ import static java.util.Arrays.asList;
 
 import net.dv8tion.jda.core.JDA;
 import wh1spr.bot.Main;
+import wh1spr.logger.Logger;
+import wh1spr.logger.LoggerCache;
 /**
  * Constructor of subclasses MUST make sure that the item exists in Database before finishing.
  */
 public abstract class BasicMongoItem {
 
+	protected Logger log;
 	
 	/**
 	 * A basic MongoDB Item. Contains ID of the item in a MongoDB and some helper functions.
