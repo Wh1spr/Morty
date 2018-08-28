@@ -11,5 +11,8 @@ Morty.db
 data/
 libs/
 
+src/main/java/wh1spr/bot/commands/torncity/
+src/main/java/wh1spr/bot/tornbot/
+
 Morty_*
 gradle.properties
