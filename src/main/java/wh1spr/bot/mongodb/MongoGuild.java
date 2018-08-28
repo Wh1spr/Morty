@@ -4,45 +4,31 @@ import org.bson.BsonDouble;
 import org.bson.Document;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.client.MongoDatabase;
 
-import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Updates.*;
 
-import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.TextChannel;
-import wh1spr.bot.Main;
 import wh1spr.bot.database.EcoInfo;
 import wh1spr.logger.LoggerCache;
 
-public class MongoGuild {
+public class MongoGuild extends BasicMongoItem {
 
 	MongoGuild(Guild guild) {
 		this(guild.getId());
 	}
 	private MongoGuild(String guildId) {
-		this.guildId = guildId;
-		
+		super("guilds"); //collection
+		this.setId(guildId);
 		if (!MongoDB.exists(jda.getGuildById(guildId))) throw new IllegalArgumentException("Guild doesn't exist in db.");
 		
-		if (MongoDB.isUpdated("g" + guildId)) 
+		if (MongoDB.isUpdated(getGuild())) 
 			if (!update())
-				throw new Error("Could not update guild " + guildId + " in MongoDB.");
-	}
-
-	private JDA jda = Main.getBot().getJDA();
-	private MongoDatabase db = MongoDB.getDb();
-	private String guildId = null;
-	public String getId() {
-		return this.guildId;
-	}
-	public Guild getGuild() {
-		return jda.getGuildById(guildId);
+				throw new Error("Could not update guild " + this.getId() + " in MongoDB.");
 	}
 	
-	public final Document getDoc() {
-		return MongoDB.getDb().getCollection("guilds").find(eq("_id", getId())).first();
+	public Guild getGuild() {
+		return jda.getGuildById(this.getId());
 	}
 	
 	/*************
@@ -50,7 +36,7 @@ public class MongoGuild {
 	 *  		 * Getters use newest doc version, and only get stuff that can't be easily obtained with guild.
 	 *************/
 	public boolean hasEconomy() {
-		return getDoc().containsKey("economy");
+		return this.hasKey("economy");
 	}
 	public EcoInfo getEconomy() {
 		if (hasEconomy()) {
@@ -63,45 +49,44 @@ public class MongoGuild {
 	}
 	
 	public boolean hasIntro() {
-		return getDoc().containsKey("introID");
+		return this.hasKey("introID");
 	}
 	public TextChannel getIntroChannel() {
 		return jda.getTextChannelById(getDoc().getString("introID"));
+		//TODO check if this gives an error
 	}
 	
 	/*************
 	 *  SETTERS  * Setters assume what you're doing is correct.
-	 *  		 * Setters update straight to DB. Getters use newest doc version.
+	 *  		 * Setters update straight to DB.
 	 *************/
 	public void setName() {
-		db.getCollection("guilds").updateOne(eq("_id", getId()), set("name", this.getGuild().getName()));
+		this.setKey("name", this.getGuild().getName());
 	}
 	public void setOwner() {
-		db.getCollection("guilds").updateOne(eq("_id", getId()), set("ownerid", this.getGuild().getOwner()));
+		this.setKey("ownerid", this.getGuild().getOwner());
 	}
 	public void updateCounts() {
-		db.getCollection("guilds").updateOne(eq("_id", getId()), 
-				combine(set("textchannels", this.getGuild().getTextChannels().size()),
+		this.bsonUpdates(set("textchannels", this.getGuild().getTextChannels().size()),
 						set("voicechannels", this.getGuild().getVoiceChannels().size()),
-						set("members", this.getGuild().getMembers().size())));
+						set("members", this.getGuild().getMembers().size()));
 	}
 	
 	public void setEconomy(EcoInfo ei) {
-		db.getCollection("guilds").updateOne(eq("_id", getId()),
-				set("economy", new BasicDBObject("MajSing", ei.getMaj(0))
+		this.setKey("economy", new BasicDBObject("MajSing", ei.getMaj(0))
 				.append("MajMult", ei.getMaj(1))
 				.append("MinSing", ei.getMin(0))
 				.append("MinMult", ei.getMin(1))
 				.append("startbal", new BsonDouble(ei.getStartVal()))
-				.append("dailybal", new BsonDouble(ei.getDaily()))));
+				.append("dailybal", new BsonDouble(ei.getDaily())));
 	}
 	
 	public void setIntroChannel(TextChannel intro) {
-		db.getCollection("guilds").updateOne(eq("_id", getId()), 
-				set("introID", intro.getId()));
+		this.setKey("introID", intro.getId());
 	}
 	
-	private boolean update() {
+	@Override
+	protected boolean update() {
 		try {
 			setName();
 			setOwner();
@@ -109,7 +94,7 @@ public class MongoGuild {
 			MongoDB.addUpdated("g" + getId());
 			return true;
 		} catch (Exception e) {
-			LoggerCache.getLogger("MONGO").error(e, "Couldn't update MongoGuild with ID " + getId());
+			this.log.error(e, "Couldn't update MongoGuild with ID " + getId());
 			return false;
 		}
 	}
