@@ -1,13 +1,11 @@
 package wh1spr.bot.mongodb;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.BsonInt32;
 import org.bson.Document;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
 import com.mongodb.client.MongoDatabase;
 
 import net.dv8tion.jda.core.JDA;

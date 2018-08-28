@@ -2,72 +2,54 @@ package wh1spr.bot.mongodb;
 
 import org.bson.Document;
 
-import com.mongodb.client.MongoDatabase;
-
-import static com.mongodb.client.model.Filters.*;
-import static com.mongodb.client.model.Updates.*;
-
-import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
-import wh1spr.bot.Main;
-import wh1spr.logger.LoggerCache;
 
-public class MongoUser {
+public class MongoUser extends BasicMongoItem {
 	
 	MongoUser(User user) {
 		this(user.getId());
 	}
 	private MongoUser(String userId) {
-		this.userId = userId;
+		super("users");
+		this.setId(userId);
 		
 		if (!MongoDB.exists(jda.getUserById(userId))) throw new IllegalArgumentException("User doesn't exist in db.");
 		
-		if (MongoDB.isUpdated("u" + userId)) 
+		if (MongoDB.isUpdated(getUser())) 
 			if (!update())
 				throw new Error("Could not update User " + userId + " in MongoDB.");
 	}
 
-	private JDA jda = Main.getBot().getJDA();
-	private MongoDatabase db = MongoDB.getDb();
-	private String userId = null;
-	public String getId() {
-		return this.userId;
-	}
 	public User getUser() {
-		return jda.getUserById(userId);
+		return jda.getUserById(getId());
 	}
-	
-	public Document getDoc() {
-		return MongoDB.getDb().getCollection("users").find(eq("_id", getId())).first();
-	}
+
+	//TODO Warnings
+	//TODO Bans
 	
 	/*************
 	 *  GETTERS  * Getters assume that what you're doing is correct
 	 *  		 * Getters use newest doc version, and only get stuff that can't be easily obtained with guild.
 	 *************/
-	
 	public String getUserMention() {
 		return getDoc().getString("mention");
 	}
 	
 	public boolean hasIntro(Guild guild) {
-		if (!(new MongoGuild(guild)).hasIntro()) return false;
-		else if (!getDoc()
-				.get("guilds", Document.class)
-				.get(guild.getId(), Document.class)
-				.containsKey("introID")){
+		if (!MongoDB.getMongoGuild(guild).hasIntro()) return false;
+		else if (!getDoc().get("guilds", Document.class)
+				.get(guild.getId(), Document.class).containsKey("introID")){
 			return false;
 		} else {
 			return true;
 		}
 	}
+	
 	public String getIntroId(Guild guild) {
 		if (hasIntro(guild)) {
-			return getDoc()
-					.get("guilds", Document.class)
-					.get(guild.getId(), Document.class)
-					.getString("introID");
+			return getDoc().get("guilds", Document.class)
+					.get(guild.getId(), Document.class).getString("introID");
 		} else {
 			return null;
 		}
@@ -78,16 +60,17 @@ public class MongoUser {
 	 *  		 * Setters update straight to DB. Getters use newest doc version.
 	 *************/
 	public void setMention() {
-		db.getCollection("users").updateOne(eq("_id", getId()), set("mention", String.format("%s#%s", getUser().getName(), getUser().getDiscriminator())));			
+		this.setKey("mention", String.format("%s#%s", getUser().getName(), getUser().getDiscriminator()));			
 	}
 	
-	private boolean update() {
+	@Override
+	protected boolean update() {
 		try {
 			setMention();
 			MongoDB.addUpdated("u" + getId());
 			return true;
 		} catch (Exception e) {
-			LoggerCache.getLogger("MONGO").error(e, "Couldn't update MongoGuild with ID " + getId());
+			log.error(e, "Couldn't update MongoGuild with ID " + getId());
 			return false;
 		}
 	}

@@ -68,7 +68,7 @@ public class MongoDB {
 	
 	//updated-cache (just strings)
 	// prefixes u-user g-guild c-channel v-voicechannel
-	// should get cleared at midnight or something
+	// should get cleared at midnight or something, just to make sure
 	private static List<String> updatedCache = new ArrayList<String>();
 	static void addUpdated(String id) {
 		updatedCache.add(id);
