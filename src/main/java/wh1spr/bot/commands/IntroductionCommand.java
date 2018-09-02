@@ -9,7 +9,6 @@ import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.command.Command;
 import wh1spr.bot.dummy.Perm;
-import wh1spr.bot.morty.Database;
 // TO BE REDONE
 @Deprecated
 public class IntroductionCommand extends Command {
@@ -26,7 +25,7 @@ public class IntroductionCommand extends Command {
 		
 		if (message.getMentionedUsers().size() == 1) {
 			User target = message.getMentionedUsers().get(0);
-			String msgId = Database.getIntroductionId(target);
+			String msgId = null; // needs redoing anyways
 			if (msgId.equals("0")) {
 				channel.sendMessage(":x: This user does not have an introduction.").queue();
 			} else {
