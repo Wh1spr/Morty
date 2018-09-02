@@ -11,7 +11,6 @@ import com.mongodb.client.MongoDatabase;
 
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.Main;
 import wh1spr.logger.Logger;
@@ -78,7 +77,7 @@ public class MongoDB {
 	}
 	public static boolean isUpdated(User u) {return isUpdated("u" + u.getId());}
 	public static boolean isUpdated(Guild g) {return isUpdated("g" + g.getId());}
-	public static boolean isUpdated(TextChannel t) {return isUpdated("t" + t.getId());} //intro channels should get locked on morty shutdown
+//	public static boolean isUpdated(TextChannel t) {return isUpdated("t" + t.getId());} //intro channels should get locked on morty shutdown
 //	public static boolean isUpdated(VoiceChannel v) {return isUpdated("v" + v.getId());} //idk why
 	
 }

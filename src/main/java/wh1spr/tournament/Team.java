@@ -98,7 +98,7 @@ public class Team {
 	public Team addToRoster(Person p) {
 		if (roster.size() >= getGameSize() && getGameSize() != -1) throw new IllegalArgumentException("Reached roster limit due to GameSize. Remove someone first.");
 		roster.add(p);
-		if () //check if in member list and shizzle
+//		if () //check if in member list and shizzle
 		return this;
 	}
 	

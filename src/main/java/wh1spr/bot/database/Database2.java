@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 import net.dv8tion.jda.core.JDA;
 import wh1spr.bot.database.modules.*;
+import wh1spr.bot.mongodb.MongoDB;
+import wh1spr.bot.mongodb.MongoGuild;
 import wh1spr.logger.Logger;
 import wh1spr.logger.LoggerCache;
 
@@ -104,5 +106,25 @@ public class Database2 {
 		rs = stmt.executeUpdate(sql);
 		if (rs >= 0) return true;
 		return false;
+	}
+	
+	public static void TRANSER() throws Exception { // no time for exceptions this time.
+		// we'll start with economy
+		
+		//this is for Morty, so we only need to check guilds that Morty is in
+		jda.getGuilds().forEach(g-> {
+			if (eco.hasEconomy(g)) {
+				EcoInfo ei = eco.getGuildInfo(g.getId());
+				MongoGuild mg = MongoDB.getMongoGuild(g);
+				mg.setEconomy(ei);
+			}
+		});
+		
+		//then the users and their balances
+		// since mongodb is made in the way i did it, it's not actually necessary to check every user, and
+		// just do the ones that have balances
+		
+		
+		
 	}
 }
