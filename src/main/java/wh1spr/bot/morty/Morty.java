@@ -4,14 +4,12 @@ import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.OnlineStatus;
-import wh1spr.bot.Main;
 import wh1spr.bot.command.*;
 import wh1spr.bot.commands.*;
 import wh1spr.bot.commands.dev.*;
 import wh1spr.bot.commands.economy.settings.*;
 import wh1spr.bot.commands.maelstrom.*;
 import wh1spr.bot.commands.economy.*;
-//import wh1spr.bot.commands.images.*;
 import wh1spr.bot.commands.mod.*;
 import wh1spr.bot.dummy.Bot;
 import wh1spr.logger.LoggerCache;
@@ -37,8 +35,6 @@ public class Morty extends Bot {
 		commandRegistry.registerCommand(new ChangeNameCommand("changename", "cn"));
 		commandRegistry.registerCommand(new CommandDisableCommand("disablecommand", this.getCommandRegistry(), "dcmd"));
 		commandRegistry.registerCommand(new CommandEnableCommand("enablecommand", this.getCommandRegistry(), "ecmd"));
-//		commandRegistry.registerCommand(new CommandDisableCommand("disablecommand", this.getImageRegistry(), "dcmd"));
-//		commandRegistry.registerCommand(new CommandEnableCommand("enablecommand", this.getImageRegistry(), "ecmd"));
 		commandRegistry.registerCommand(new EmojiToUnicodeCommand("emote"));
 		commandRegistry.registerCommand(new EvalCommand("eval", this));
 		commandRegistry.registerCommand(new FlushLogCommand("flushlog", "fl"));
@@ -49,7 +45,6 @@ public class Morty extends Bot {
 		
 		// Maelstrom Commands
 		commandRegistry.registerCommand(new AcceptCommand("accept"));
-		
 		
 		// Economy Commands
 		commandRegistry.registerCommand(new EcoSetupCommand("ecosetup"));
@@ -70,12 +65,7 @@ public class Morty extends Bot {
 //		commandRegistry.registerCommand(new IntroductionCommand("intro")); // I'm gonna redo this
 		
 		// Fun Commands
-		
-			
-		// Image Commands
-//		commandRegistry.registerCommand(new AddImageCommand("addimage", this.getImageRegistry()));
-//		commandRegistry.registerCommand(new RemoveImageCommand("removeimage", this.getImageRegistry()));
-//		this.getImageRegistry().registerAllCommands();
+		// Morty seems to be German, no fun here.
 		log.info("All commands registered.");
 		
 	}
@@ -86,7 +76,6 @@ public class Morty extends Bot {
 			jda = new JDABuilder(AccountType.BOT)
 			        .setToken(this.getToken()).addEventListener(
 			        		new CommandHandler(this.getPrefix(), this.getCommandRegistry()),
-			        		new CommandHandler(this.getPrefix(), this.getImageRegistry()),
 			        		this.getAutoEvents())
 			        .buildBlocking();
 		} catch (Exception e) {
@@ -94,7 +83,6 @@ public class Morty extends Bot {
 			shutdown();
 		}
 		return jda;
-		
 	}
 
 	@Override

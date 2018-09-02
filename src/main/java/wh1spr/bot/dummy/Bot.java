@@ -1,9 +1,7 @@
 package wh1spr.bot.dummy;
 
 import net.dv8tion.jda.core.JDA;
-import wh1spr.bot.Main;
 import wh1spr.bot.command.CommandRegistry;
-import wh1spr.bot.command.ImageRegistry;
 import wh1spr.bot.commands.economy.util.EconomyStatus;
 import wh1spr.logger.Logger;
 import wh1spr.logger.LoggerCache;
@@ -20,7 +18,6 @@ public abstract class Bot {
 	private final String DATA_PATH;
 	
 	private final CommandRegistry commandRegistry;
-	private final ImageRegistry imageRegistry;
 	
 	private AutoEventHandlerDummy autoEvents;
 	
@@ -30,7 +27,6 @@ public abstract class Bot {
 		this.DATA_PATH = dataPath;
 		
 		this.commandRegistry = new CommandRegistry(this);
-		this.imageRegistry = new ImageRegistry(this);
 		
 		this.autoEvents = new AutoEventHandlerDummy(this);
 	}
@@ -58,10 +54,6 @@ public abstract class Bot {
 	
 	public CommandRegistry getCommandRegistry() {
 		return this.commandRegistry;
-	}
-	
-	public ImageRegistry getImageRegistry() {
-		return this.imageRegistry;
 	}
 	
 	public AutoEventHandlerDummy getAutoEvents() {
