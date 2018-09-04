@@ -28,10 +28,10 @@ public abstract class BasicMongoItem {
 	 */
 	protected BasicMongoItem(String collection) {
 		if (collection == null) throw new IllegalArgumentException("Collection cannot be null.");
+		log = LoggerCache.getLogger("MONGO");
 		db.getCollection(collection); // will throw error if name is not valid.
 		this.collection = collection;
 		this.update();
-		log = LoggerCache.getLogger("MONGO");
 	}
 	
 	private String collection = null;
