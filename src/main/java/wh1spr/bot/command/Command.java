@@ -14,6 +14,7 @@ import net.dv8tion.jda.core.entities.User;
 public abstract class Command {
 
 	public Command(String name, String... aliases) {
+		if (name == null) throw new IllegalArgumentException("Name cannot be null.");
 		this.name = name;
 		for (String alias : aliases) {
 			this.aliases.add(alias);
