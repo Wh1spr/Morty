@@ -1,5 +1,6 @@
 package wh1spr.bot.commands.mod.util;
 
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.Tools;
 import wh1spr.bot.mongodb.BasicMongoItem;
@@ -42,9 +43,10 @@ public abstract class Action extends BasicMongoItem {
 		return this.getDoc().getString("date");
 	}
 	
-	protected void setItem(User a, User by, String reason) {
+	protected void setItem(Guild g, User a, User by, String reason) {
 		if (isSet()) throw new IllegalArgumentException("This action is already set.");
-		bsonUpdates(set("user", a.getId()), set("by", by.getId()), set("reason", reason), set("date", Tools.getDateTimeStamp()));
+		bsonUpdates(set("guild", g.getId()), set("user", a.getId()), set("by", by.getId()),
+				set("reason", reason), set("date", Tools.getDateTimeStamp()));
 	}
 	
 	@Override

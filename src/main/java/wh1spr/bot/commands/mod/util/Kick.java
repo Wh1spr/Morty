@@ -1,5 +1,6 @@
 package wh1spr.bot.commands.mod.util;
 
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.mongodb.MongoUser;
 
@@ -9,14 +10,14 @@ public class Kick extends Action {
 		super(hex, "kicks");
 	}
 	
-	public Kick(String hex, User a, User by, String reason) {
+	public Kick(String hex, Guild g, User a, User by, String reason) {
 		super(hex, "kicks");
-		setItem(a,by,reason);
+		setItem(g, a,by,reason);
 	}
 	
 	@Override
-	public void setItem(User a, User by, String reason) {
-		super.setItem(a, by, reason);
+	public void setItem(Guild g, User a, User by, String reason) {
+		super.setItem(g, a, by, reason);
 		KickUser ma = new KickUser(a);
 		new MongoUser(by);
 		ma.addKick(this.getHexString());
