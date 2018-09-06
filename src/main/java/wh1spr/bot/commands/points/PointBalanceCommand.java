@@ -35,7 +35,7 @@ public class PointBalanceCommand extends PointsCommand {
 	
 	@Override
 	public void onCallPrivate(JDA jda, MessageChannel channel, User invoker, Message message, List<String> args) {
-		//nothing
+		this.cantUse(channel);
 	}
 
 }
