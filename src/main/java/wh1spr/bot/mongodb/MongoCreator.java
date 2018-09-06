@@ -11,6 +11,7 @@ import com.mongodb.client.MongoDatabase;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
+import wh1spr.bot.dummy.Bot;
 
 class MongoCreator {
 
@@ -51,6 +52,20 @@ class MongoCreator {
 		db.getCollection("guilds").insertOne(g);
 		
 		return new MongoGuild(guild);
+	}
+	
+	MongoBot createBot(Bot b) {
+		if (MongoDB.exists(b)) throw new IllegalArgumentException("Cannot create a bot that already exists in db.");
+		if (!MongoDB.exists(b.getJDA().getSelfUser())) createUser(b.getJDA().getSelfUser());
+		
+		Document bot = new Document("_id", b.getJDA().getSelfUser().getId());
+		bot.append("name", b.getJDA().getSelfUser().getName())
+			.append("warninghex", "0")
+			.append("banhex", "0")
+			.append("kickhex", "0");
+		db.getCollection("bots").insertOne(bot);
+		
+		return new MongoBot(b);
 	}
 	
 }

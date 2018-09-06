@@ -13,6 +13,7 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.Main;
+import wh1spr.bot.dummy.Bot;
 import wh1spr.logger.Logger;
 import wh1spr.logger.LoggerCache;
 
@@ -62,6 +63,16 @@ public class MongoDB {
 	}
 	public static boolean exists(User user) {
 		if (db.getCollection("users").find(eq("_id", user.getId())).first() == null) return false;
+		else return true;
+	}
+	
+	//Bot
+	public static MongoBot getMongoBot(Bot b) {
+		if (!exists(b)) mc.createBot(b);
+		return new MongoBot(b);
+	}
+	public static boolean exists(Bot b) {
+		if (db.getCollection("bots").find(eq("_id", b.getJDA().getSelfUser().getId())).first() == null) return false;
 		else return true;
 	}
 	
