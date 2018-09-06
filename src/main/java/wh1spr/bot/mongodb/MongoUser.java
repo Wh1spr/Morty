@@ -7,14 +7,14 @@ import net.dv8tion.jda.core.entities.User;
 
 public class MongoUser extends BasicMongoItem {
 	
-	MongoUser(User user) {
+	protected MongoUser(User user) {
 		this(user.getId());
 	}
 	private MongoUser(String userId) {
 		super("users");
 		this.setId(userId);
 		
-		if (!MongoDB.exists(jda.getUserById(userId))) throw new IllegalArgumentException("User doesn't exist in db.");
+		if (!MongoDB.exists(getUser())) MongoDB.getCreator().createUser(getUser());
 		
 		if (MongoDB.isUpdated(getUser())) 
 			if (!update())
@@ -24,9 +24,6 @@ public class MongoUser extends BasicMongoItem {
 	public User getUser() {
 		return jda.getUserById(getId());
 	}
-
-	//TODO Warnings
-	//TODO Bans
 	
 	/*************
 	 *  GETTERS  * Getters assume that what you're doing is correct
@@ -70,7 +67,7 @@ public class MongoUser extends BasicMongoItem {
 			MongoDB.addUpdated("u" + getId());
 			return true;
 		} catch (Exception e) {
-			log.error(e, "Couldn't update MongoGuild with ID " + getId());
+			log.error(e, "Couldn't update MongoUser with ID " + getId());
 			return false;
 		}
 	}

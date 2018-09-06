@@ -20,7 +20,7 @@ public class MongoGuild extends BasicMongoItem {
 	private MongoGuild(String guildId) {
 		super("guilds"); //collection
 		this.setId(guildId);
-		if (!MongoDB.exists(jda.getGuildById(guildId))) throw new IllegalArgumentException("Guild doesn't exist in db.");
+		if (!MongoDB.exists(jda.getGuildById(guildId))) MongoDB.getCreator().createGuild(getGuild());
 		
 		if (MongoDB.isUpdated(getGuild())) 
 			if (!update())
