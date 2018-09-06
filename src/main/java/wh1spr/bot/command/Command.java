@@ -1,10 +1,12 @@
 package wh1spr.bot.command;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.vdurmont.emoji.EmojiManager;
 
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
@@ -57,6 +59,10 @@ public abstract class Command {
 
 	public void onCallPrivate(JDA jda, MessageChannel channel, User invoker, Message message, List<String> args) {
 		onCall(jda, null, channel, invoker, message, args);
+	}
+	
+	public void cantUse(MessageChannel channel) {
+		channel.sendMessage(new EmbedBuilder().setColor(Color.RED).setTitle(":no_entry_sign: You can't use this command in a private message.").build()).queue();
 	}
 	
 	public static void failure(Message message) {
