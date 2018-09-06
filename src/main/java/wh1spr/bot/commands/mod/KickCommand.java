@@ -10,7 +10,6 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.Main;
 import wh1spr.bot.command.Command;
@@ -36,21 +35,13 @@ public class KickCommand extends Command {
 		User kicked = toKick.getUser();
 		String reason = message.getContentDisplay().split(" ", 3)[2];
 		
-		// Role Check
-		Role invokerRole = guild.getMember(invoker).getRoles().isEmpty()?guild.getPublicRole():guild.getMember(invoker).getRoles().get(0);
-		Role toKickRole = toKick.getRoles().isEmpty()?guild.getPublicRole():toKick.getRoles().get(0);
-		Role botRole = guild.getSelfMember().getRoles().get(0); // Bots always have their own role
-		if (invokerRole.getPosition() <= toKickRole.getPosition() || toKick.isOwner()) {
-			channel.sendMessage(new EmbedBuilder().setColor(Color.RED).setTitle(":no_entry_sign: You can't kick someone that has a role higher than yours.").build()).queue();
-			return;
-		} else if (botRole.getPosition() <= toKickRole.getPosition()) {
-			channel.sendMessage(new EmbedBuilder().setColor(Color.RED).setTitle(":no_entry_sign: I can't kick someone with a higher rank than myself!")
-					.setDescription("To fix this, place the Morty role higher in the role list.").build()).queue();
+		// Role Check.
+		if (!guild.getMember(invoker).canInteract(toKick) || !guild.getSelfMember().canInteract(toKick)) {
+			channel.sendMessage(new EmbedBuilder().setColor(Color.RED).setTitle(":no_entry_sign: You are not able to kick this user.").build()).queue();
 			return;
 		}
 		
 		// Here I'm sure I can kick a user. 
-		
 		MongoBot bot = new MongoBot(Main.getBot());
 		bot.setKickHex(bot.getKickHex()+1);
 		Kick kick = new Kick(bot.getKickHexString(), guild, kicked, invoker, reason);

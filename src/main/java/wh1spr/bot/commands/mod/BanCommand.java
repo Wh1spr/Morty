@@ -10,7 +10,6 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.Main;
 import wh1spr.bot.command.Command;
@@ -36,16 +35,9 @@ public class BanCommand extends Command {
 		User banned = toBan.getUser();
 		String reason = message.getContentDisplay().split(" ", 3)[2];
 		
-		// Role Check
-		Role invokerRole = guild.getMember(invoker).getRoles().isEmpty()?guild.getPublicRole():guild.getMember(invoker).getRoles().get(0);
-		Role toBanRole = toBan.getRoles().isEmpty()?guild.getPublicRole():toBan.getRoles().get(0);
-		Role botRole = guild.getSelfMember().getRoles().get(0); // Bots always have their own role
-		if (invokerRole.getPosition() <= toBanRole.getPosition() || toBan.isOwner()) {
-			channel.sendMessage(new EmbedBuilder().setColor(Color.RED).setTitle(":no_entry_sign: You can't ban someone that has a role higher than yours.").build()).queue();
-			return;
-		} else if (botRole.getPosition() <= toBanRole.getPosition()) {
-			channel.sendMessage(new EmbedBuilder().setColor(Color.RED).setTitle(":no_entry_sign: I can't ban someone with a higher rank than myself!")
-					.setDescription("To fix this, place the Morty role higher in the role list.").build()).queue();
+		// Role Check.
+		if (!guild.getMember(invoker).canInteract(toBan) || !guild.getSelfMember().canInteract(toBan)) {
+			channel.sendMessage(new EmbedBuilder().setColor(Color.RED).setTitle(":no_entry_sign: You are not able to ban this user.").build()).queue();
 			return;
 		}
 		
