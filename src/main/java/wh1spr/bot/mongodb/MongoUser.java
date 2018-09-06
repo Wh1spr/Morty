@@ -9,10 +9,10 @@ import net.dv8tion.jda.core.entities.User;
 
 public class MongoUser extends BasicMongoItem {
 	
-	protected MongoUser(User user) {
+	public MongoUser(User user) {
 		this(user.getId());
 	}
-	private MongoUser(String userId) {
+	public MongoUser(String userId) {
 		super("users");
 		this.setId(userId);
 		
