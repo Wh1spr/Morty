@@ -1,6 +1,7 @@
 package wh1spr.bot.commands.mod;
 
 import java.awt.Color;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -10,6 +11,7 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.Main;
 import wh1spr.bot.command.Command;
@@ -46,9 +48,13 @@ public class KickCommand extends Command {
 		bot.setKickHex(bot.getKickHex()+1);
 		Kick kick = new Kick(bot.getKickHexString(), guild, kicked, invoker, reason);
 		
-		toKick.getUser().openPrivateChannel().complete().sendMessage(String.format("You have been kicked from *%s*.\n**Reason:** *%s*", guild.getName(), reason)).complete();
+		MessageEmbed e = new EmbedBuilder().setColor(Color.RED).setTitle(":no_entry_sign: You have been kicked!")
+				.setDescription(String.format("By **%s**%nFrom **%s**%nReason: *%n*", kick.getIssuername(), guild.getName(), kick.getReason()))
+				.setTimestamp(LocalDateTime.now()).build();
+		
+		toKick.getUser().openPrivateChannel().complete().sendMessage(e).complete();
 		channel.sendMessage(new EmbedBuilder().setColor(Color.ORANGE).setTitle(toKick.getUser().getName() + " has been kicked from the server.")
-				.setDescription("Ban ID: " + kick.getHexString()).build()).queue();
+				.setDescription("Kick ID: **" + kick.getHexString() + "**").build()).queue();
 		
 		guild.getController().kick(toKick, reason).complete();
 	}

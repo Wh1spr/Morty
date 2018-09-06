@@ -1,6 +1,7 @@
 package wh1spr.bot.commands.mod;
 
 import java.awt.Color;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import net.dv8tion.jda.core.EmbedBuilder;
@@ -10,6 +11,7 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.Main;
 import wh1spr.bot.command.Command;
@@ -47,8 +49,13 @@ public class BanCommand extends Command {
 		bot.setBanHex(bot.getBanHex()+1);
 		Ban ban = new Ban(bot.getBanHexString(), guild, banned, invoker, reason);
 		
-		toBan.getUser().openPrivateChannel().complete().sendMessage(String.format("You have been banned from *%s*.\n**Reason:** *%s*", guild.getName(), reason)).complete();
-		channel.sendMessage(new EmbedBuilder().setColor(Color.ORANGE).setTitle(toBan.getUser().getName() + " has been banned from the server.").setDescription("Ban ID: " + ban.getHexString()).build()).queue();
+		MessageEmbed e = new EmbedBuilder().setColor(Color.RED).setTitle(":no_entry_sign: You have been banned!")
+				.setDescription(String.format("By **%s**%nFrom **%s**%nReason: *%n*", ban.getIssuername(), guild.getName(), ban.getReason()))
+				.setTimestamp(LocalDateTime.now()).build();
+		
+		toBan.getUser().openPrivateChannel().complete().sendMessage(e).complete();
+		channel.sendMessage(new EmbedBuilder().setColor(Color.ORANGE).setTitle(toBan.getUser().getName() + " has been banned from the server.")
+				.setDescription("Ban ID: **" + ban.getHexString() + "**").build()).queue();
 		
 		guild.getController().ban(toBan, 0, reason).complete();
 	}
