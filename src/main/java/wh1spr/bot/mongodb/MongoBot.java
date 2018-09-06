@@ -5,7 +5,8 @@ import wh1spr.bot.dummy.Bot;
 
 public class MongoBot extends BasicMongoItem {
 
-	protected MongoBot(Bot b) {
+	public MongoBot(Bot b) {
+		//only active bot should be called.
 		super("bots");
 		this.setId(jda.getSelfUser().getId());
 		
@@ -41,6 +42,28 @@ public class MongoBot extends BasicMongoItem {
 			return 0;
 		}
 	}
+	public String getWarnHexString() {
+		if (hasKey("warnhex")) {
+			return getDoc().getString("warnhex");
+		} else {
+			return "0";
+		}
+	}
+	public String getBanHexString() {
+		if (hasKey("banhex")) {
+			return getDoc().getString("banhex");
+		} else {
+			return "0";
+		}
+	}
+	public String getKickHexString() {
+		if (hasKey("kickhex")) {
+			return getDoc().getString("kickhex");
+		} else {
+			return "0";
+		}
+	}
+	
 	public int getNrOfGuilds() {
 		return this.getDoc().getInteger("guilds", 0);
 	}
@@ -69,5 +92,4 @@ public class MongoBot extends BasicMongoItem {
 			return false;
 		}
 	}
-	
 }

@@ -38,6 +38,9 @@ public class EvalCommand extends Command {
         se.put("dbent", Database2.getEntity());
         se.put("bot", b);
         
+        se.put("user", invoker);
+        se.put("member", guild.getMember(invoker));
+        
         try {
             channel.sendMessage("Evaluated Successfully:\n```\n"+se.eval(message.getContentRaw().split(" ",2)[1]
             		.replaceAll("eco", "Packages.wh1spr.bot.commands.economy.util.EconomyStatus")
