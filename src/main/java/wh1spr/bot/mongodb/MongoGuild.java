@@ -5,12 +5,12 @@ import org.bson.Document;
 
 import com.mongodb.BasicDBObject;
 
+import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Updates.*;
 
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.TextChannel;
 import wh1spr.bot.database.EcoInfo;
-import wh1spr.logger.LoggerCache;
 
 public class MongoGuild extends BasicMongoItem {
 
@@ -20,11 +20,19 @@ public class MongoGuild extends BasicMongoItem {
 	private MongoGuild(String guildId) {
 		super("guilds"); //collection
 		this.setId(guildId);
-		if (!MongoDB.exists(jda.getGuildById(guildId))) MongoDB.getCreator().createGuild(getGuild());
 		
-		if (MongoDB.isUpdated(getGuild())) 
-			if (!update())
-				throw new Error("Could not update guild " + this.getId() + " in MongoDB.");
+		if (jda.getGuildById(guildId)==null) { //either gone or nonexistent
+			if (exists(guildId)) {
+				
+			} else {
+				throw new IllegalArgumentException("Given userId is unknown");
+			}
+		} else {
+			if (!MongoDB.exists(getGuild())) MongoDB.getCreator().createGuild(getGuild());
+			if (MongoDB.isUpdated(getGuild())) 
+				if (!update())
+					throw new Error("Could not update Guild " + guildId + " in MongoDB.");
+		}
 	}
 	
 	public Guild getGuild() {
@@ -97,5 +105,10 @@ public class MongoGuild extends BasicMongoItem {
 			this.log.error(e, "Couldn't update MongoGuild with ID " + getId());
 			return false;
 		}
+	}
+	
+	public static boolean exists(String guildId) {
+		if (MongoDB.getDb().getCollection("guilds").find(eq("_id", guildId)).first() == null) return false;
+		else return true;
 	}
 }

@@ -1,5 +1,7 @@
 package wh1spr.bot.mongodb;
 
+import static com.mongodb.client.model.Filters.eq;
+
 import org.bson.Document;
 
 import net.dv8tion.jda.core.entities.Guild;
@@ -14,11 +16,19 @@ public class MongoUser extends BasicMongoItem {
 		super("users");
 		this.setId(userId);
 		
-		if (!MongoDB.exists(getUser())) MongoDB.getCreator().createUser(getUser());
+		if (jda.getUserById(userId)==null) { //either gone or nonexistent
+			if (exists(userId)) {
+				
+			} else {
+				throw new IllegalArgumentException("Given userId is unknown");
+			}
+		} else {
+			if (!MongoDB.exists(getUser())) MongoDB.getCreator().createUser(getUser());
+			if (MongoDB.isUpdated(getUser())) 
+				if (!update())
+					throw new Error("Could not update User " + userId + " in MongoDB.");
+		}
 		
-		if (MongoDB.isUpdated(getUser())) 
-			if (!update())
-				throw new Error("Could not update User " + userId + " in MongoDB.");
 	}
 
 	public User getUser() {
@@ -70,5 +80,10 @@ public class MongoUser extends BasicMongoItem {
 			log.error(e, "Couldn't update MongoUser with ID " + getId());
 			return false;
 		}
+	}
+	
+	public static boolean exists(String userId) {
+		if (MongoDB.getDb().getCollection("users").find(eq("_id", userId)).first() == null) return false;
+		else return true;
 	}
 }
