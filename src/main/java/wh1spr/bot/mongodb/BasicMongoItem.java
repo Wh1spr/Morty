@@ -67,7 +67,12 @@ public abstract class BasicMongoItem {
 	 * in the collection returned by {@link BasicMongoItem#getCollection()}
 	 */
 	public final Document getDoc() {
-		return this.getCollection().find(eq("_id", getId())).first();
+		Document doc = this.getCollection().find(eq("_id", getId())).first();
+		if (doc == null)  {
+			doc = new Document("_id", this.getId());
+			this.getCollection().insertOne(doc);
+		}
+		return doc;
 	}
 	
 	/**
