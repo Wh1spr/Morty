@@ -22,4 +22,8 @@ public class Warning extends Action {
 		new MongoUser(by);
 		ma.addWarning(this.getHexString());
 	}
+	
+	public static boolean exists(String hex) {
+		return exists("warnings", hex);
+	}
 }

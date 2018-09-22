@@ -22,4 +22,8 @@ public class Kick extends Action {
 		new MongoUser(by);
 		ma.addKick(this.getHexString());
 	}
+	
+	public static boolean exists(String hex) {
+		return exists("kicks", hex);
+	}
 }

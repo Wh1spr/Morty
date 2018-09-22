@@ -22,4 +22,8 @@ public class Ban extends Action {
 		new MongoUser(by);
 		ma.addBan(this.getHexString());
 	}
+	
+	public static boolean exists(String hex) {
+		return exists("bans", hex);
+	}
 }

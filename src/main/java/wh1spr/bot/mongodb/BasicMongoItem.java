@@ -120,4 +120,8 @@ public abstract class BasicMongoItem {
 	}
 	
 	protected abstract boolean update();
+
+	protected static boolean exists(String collection, String hex) {
+		return MongoDB.getDb().getCollection(collection).find(eq("_id", hex)).first()!=null;
+	}
 }
