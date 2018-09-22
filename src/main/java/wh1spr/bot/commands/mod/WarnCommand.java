@@ -12,11 +12,10 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
-import wh1spr.bot.Main;
 import wh1spr.bot.command.Command;
+import wh1spr.bot.commands.mod.util.WarnUser;
 import wh1spr.bot.commands.mod.util.Warning;
 import wh1spr.bot.dummy.Perm;
-import wh1spr.bot.mongodb.MongoBot;
 
 public class WarnCommand extends Command {
 
@@ -34,7 +33,7 @@ public class WarnCommand extends Command {
 			return;
 		}
 		Member toWarn = message.getMentionedMembers(guild).get(0);
-		String reason = message.getContentDisplay().split(" ", 3)[2];
+		String reason = message.getContentRaw().split(" ", 3)[2];
 		
 		// Role Check.
 		if (!guild.getMember(invoker).canInteract(toWarn)) {
@@ -43,12 +42,11 @@ public class WarnCommand extends Command {
 		}
 		
 		// Here I'm sure I am allowed to warn a user. 
-		MongoBot bot = new MongoBot(Main.getBot());
-		bot.setWarnHex(bot.getWarnHex()+1);
-		Warning warn = new Warning(bot.getWarnHexString(), guild, toWarn.getUser(), invoker, reason);
+		WarnUser wu =  new WarnUser(toWarn.getUser());
+		Warning warn = wu.warn(guild, invoker, reason);
 		
 		MessageEmbed e = new EmbedBuilder().setColor(Color.orange).setTitle(":warning: You have been warned!")
-				.setDescription(String.format("By **%s**%nReason: *%n*", warn.getIssuername(), warn.getReason()))
+				.setDescription(String.format("By **%s**%nReason: *%s*", warn.getIssuername(), warn.getReason()))
 				.setTimestamp(LocalDateTime.now()).build();
 		
 		toWarn.getUser().openPrivateChannel().complete().sendMessage(e).complete();

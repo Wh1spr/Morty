@@ -9,12 +9,15 @@ import org.bson.BsonArray;
 
 import com.mongodb.client.model.Updates;
 
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
+import wh1spr.bot.Main;
+import wh1spr.bot.mongodb.MongoBot;
 import wh1spr.bot.mongodb.MongoUser;
 
 public class WarnUser extends MongoUser {
-
-	public WarnUser(String userId) {
+	
+	private WarnUser(String userId) {
 		super(userId);
 		
 		if (!getDoc().containsKey("warnings")) {
@@ -38,5 +41,11 @@ public class WarnUser extends MongoUser {
 		this.bsonUpdates(Updates.push("warnings", hex));
 	}
 	
-
+	public Warning warn(Guild g, User by, String reason) {
+		MongoBot bot = new MongoBot(Main.getBot());
+		bot.setWarnHex(bot.getWarnHex()+1);
+		Warning warn = new Warning(bot.getWarnHexString(), g, this.getUser(), by, reason);
+		
+		return warn;
+	}
 }

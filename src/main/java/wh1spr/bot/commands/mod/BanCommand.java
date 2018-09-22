@@ -16,6 +16,9 @@ import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.Main;
 import wh1spr.bot.command.Command;
 import wh1spr.bot.commands.mod.util.Ban;
+import wh1spr.bot.commands.mod.util.BanUser;
+import wh1spr.bot.commands.mod.util.WarnUser;
+import wh1spr.bot.commands.mod.util.Warning;
 import wh1spr.bot.mongodb.MongoBot;
 
 public class BanCommand extends Command {
@@ -34,7 +37,6 @@ public class BanCommand extends Command {
 			return;
 		}
 		Member toBan = message.getMentionedMembers(guild).get(0);
-		User banned = toBan.getUser();
 		String reason = message.getContentDisplay().split(" ", 3)[2];
 		
 		// Role Check.
@@ -44,13 +46,11 @@ public class BanCommand extends Command {
 		}
 		
 		// Here I'm sure I can ban a user.
-		
-		MongoBot bot = new MongoBot(Main.getBot());
-		bot.setBanHex(bot.getBanHex()+1);
-		Ban ban = new Ban(bot.getBanHexString(), guild, banned, invoker, reason);
+		BanUser bu =  new BanUser(toBan.getUser());
+		Ban ban = bu.ban(guild, invoker, reason);
 		
 		MessageEmbed e = new EmbedBuilder().setColor(Color.RED).setTitle(":no_entry_sign: You have been banned!")
-				.setDescription(String.format("By **%s**%nFrom **%s**%nReason: *%n*", ban.getIssuername(), guild.getName(), ban.getReason()))
+				.setDescription(String.format("By **%s**%nFrom **%s**%nReason: *%s*", ban.getIssuername(), guild.getName(), ban.getReason()))
 				.setTimestamp(LocalDateTime.now()).build();
 		
 		toBan.getUser().openPrivateChannel().complete().sendMessage(e).complete();

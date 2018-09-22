@@ -13,10 +13,9 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
-import wh1spr.bot.Main;
 import wh1spr.bot.command.Command;
 import wh1spr.bot.commands.mod.util.Kick;
-import wh1spr.bot.mongodb.MongoBot;
+import wh1spr.bot.commands.mod.util.KickUser;
 
 public class KickCommand extends Command {
 
@@ -34,7 +33,6 @@ public class KickCommand extends Command {
 			return;
 		}
 		Member toKick = message.getMentionedMembers(guild).get(0);
-		User kicked = toKick.getUser();
 		String reason = message.getContentDisplay().split(" ", 3)[2];
 		
 		// Role Check.
@@ -44,12 +42,11 @@ public class KickCommand extends Command {
 		}
 		
 		// Here I'm sure I can kick a user. 
-		MongoBot bot = new MongoBot(Main.getBot());
-		bot.setKickHex(bot.getKickHex()+1);
-		Kick kick = new Kick(bot.getKickHexString(), guild, kicked, invoker, reason);
+		KickUser ku =  new KickUser(toKick.getUser());
+		Kick kick = ku.kick(guild, invoker, reason);
 		
 		MessageEmbed e = new EmbedBuilder().setColor(Color.RED).setTitle(":no_entry_sign: You have been kicked!")
-				.setDescription(String.format("By **%s**%nFrom **%s**%nReason: *%n*", kick.getIssuername(), guild.getName(), kick.getReason()))
+				.setDescription(String.format("By **%s**%nFrom **%s**%nReason: *%s*", kick.getIssuername(), guild.getName(), kick.getReason()))
 				.setTimestamp(LocalDateTime.now()).build();
 		
 		toKick.getUser().openPrivateChannel().complete().sendMessage(e).complete();

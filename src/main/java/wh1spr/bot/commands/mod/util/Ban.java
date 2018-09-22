@@ -22,5 +22,4 @@ public class Ban extends Action {
 		new MongoUser(by);
 		ma.addBan(this.getHexString());
 	}
-	
 }

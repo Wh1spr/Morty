@@ -9,7 +9,10 @@ import org.bson.BsonArray;
 
 import com.mongodb.client.model.Updates;
 
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
+import wh1spr.bot.Main;
+import wh1spr.bot.mongodb.MongoBot;
 import wh1spr.bot.mongodb.MongoUser;
 
 public class KickUser extends MongoUser {
@@ -36,5 +39,13 @@ public class KickUser extends MongoUser {
 	
 	public void addKick(String hex) {
 		this.bsonUpdates(Updates.push("kicks", hex));
+	}
+	
+	public Kick kick(Guild g, User by, String reason) {
+		MongoBot bot = new MongoBot(Main.getBot());
+		bot.setKickHex(bot.getKickHex()+1);
+		Kick kick = new Kick(bot.getKickHexString(), g, this.getUser(), by, reason);
+		
+		return kick;
 	}
 }
