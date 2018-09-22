@@ -31,25 +31,6 @@ public class CleanCommand extends Command {
 	public void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args) {
 		if (!Perm.has(Perm.STAFF, invoker)) {return;}
 		
-		int maxRemove = 0;
-		
-		switch(Perm.getPerm(guild.getMember(invoker))) {
-		case STAFF:
-			maxRemove = 50;
-			break;
-		case ADMIN:
-			maxRemove = 200;
-			break;
-		case SERVER:
-			maxRemove = 500;
-			break;
-		case OWNER:
-			maxRemove = Integer.MAX_VALUE;
-			break;
-		default:
-			maxRemove = -1;
-		}
-		
 		TextChannel tchannel = (TextChannel) channel;
 		
 		List<Message> messages = new ArrayList<Message>();
@@ -62,9 +43,7 @@ public class CleanCommand extends Command {
 			//get number
 			try {
 				nr = Integer.valueOf(args.get(0));
-				if (nr > maxRemove) {
-					nr = maxRemove;
-				}
+				if (nr < 0) nr = 0;
 			} catch (Exception e) {
 				failure(message);
 				return;
@@ -79,6 +58,8 @@ public class CleanCommand extends Command {
 			total = nr;
 			
 			for (int i = nr; i > 0; i -= 100) {
+				messages.clear();
+				toDelete.clear();
 				if (i % 100 > 0 && (i / 100) >= 1) {
 					messages.addAll(channel.getHistory().retrievePast(100).complete(true));
 					nr -= 100;
@@ -98,6 +79,7 @@ public class CleanCommand extends Command {
 				
 				//DELETE MESSAGES
 				tchannel.deleteMessages(toDelete).complete(true);
+				deleted += 100;
 				
 			}
 			
@@ -114,6 +96,12 @@ public class CleanCommand extends Command {
 			}
 			
 		}
+		try {
+			channel.deleteMessageById(message.getId()).complete();
+		} catch (Exception e) {
+			//np
+		}
+		
 	}
 
 }
