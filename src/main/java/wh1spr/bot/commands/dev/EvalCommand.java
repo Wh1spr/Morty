@@ -39,7 +39,8 @@ public class EvalCommand extends Command {
         se.put("bot", b);
         
         se.put("user", invoker);
-        se.put("member", guild.getMember(invoker));
+        if (guild!=null) 
+        	se.put("member", guild.getMember(invoker));
         
         try {
             channel.sendMessage("Evaluated Successfully:\n```\n"+se.eval(message.getContentRaw().split(" ",2)[1]
