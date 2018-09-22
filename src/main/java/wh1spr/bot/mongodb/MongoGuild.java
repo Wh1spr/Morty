@@ -14,7 +14,7 @@ import wh1spr.bot.database.EcoInfo;
 
 public class MongoGuild extends BasicMongoItem {
 
-	MongoGuild(Guild guild) {
+	protected MongoGuild(Guild guild) {
 		this(guild.getId());
 	}
 	private MongoGuild(String guildId) {
