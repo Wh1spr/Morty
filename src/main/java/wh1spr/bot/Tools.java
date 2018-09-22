@@ -44,6 +44,6 @@ public final class Tools {
 	    return str.matches("-?\\d+(\\.\\d+)?");  //match a number with optional '-' and decimal.
 	}
 	public static boolean isPosInteger(String str) {
-		return str.matches("\\+?[^-]\\d+");
+		return str.matches("\\+?[^-]\\d*");
 	}
 }
