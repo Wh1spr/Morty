@@ -19,7 +19,10 @@ import wh1spr.bot.mongodb.MongoUser;
 public class ShopUser extends MongoUser {
 
 	public ShopUser(User user, PointTypeManager tm) {
-		super(user);
+		this(user.getId(), tm);
+	}
+	public ShopUser(String userId, PointTypeManager tm) {
+		super(userId);
 		if (tm == null) throw new IllegalArgumentException("PointTypeManager cannot be null.");
 		this.tm = tm;
 		
@@ -42,16 +45,16 @@ public class ShopUser extends MongoUser {
 		return (List<Document>)this.getDoc().get(tm.getModuleName(), Document.class).get(tm.getTypeName() + "inv");
 	}
 	
-	public List<InventoryItem> getItems() {
-		List<InventoryItem> list = new ArrayList<InventoryItem>();
+	public List<ShopItem> getItems() {
+		List<ShopItem> list = new ArrayList<ShopItem>();
 		getInventoryArray().forEach(el -> {
-			list.add(new InventoryItem(el));
+			list.add(new ShopItem(el));
 		});
 		return list;
 	}
 	
-	public InventoryItem getItem(int index) {
-		List<InventoryItem> a = getItems();
+	public ShopItem getItem(int index) {
+		List<ShopItem> a = getItems();
 		if (a.size() <= index) {
 			return null;
 		} else {
@@ -70,7 +73,7 @@ public class ShopUser extends MongoUser {
 	
 	public void removeItem(int index) {
 		if (getInventoryArray().size() <= index) return;
-		InventoryItem toDel = getItems().get(index);
+		ShopItem toDel = getItems().get(index);
 		this.bsonUpdates(pull(tm.getModuleName() + "." + tm.getTypeName() + "inv", toDel.getDocument()));
 	}
 }

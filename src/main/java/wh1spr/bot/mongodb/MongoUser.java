@@ -18,7 +18,7 @@ public class MongoUser extends BasicMongoItem {
 		
 		if (jda.getUserById(userId)==null) { //either gone or nonexistent
 			if (exists(userId)) {
-				
+				//np
 			} else {
 				throw new IllegalArgumentException("Given userId is unknown");
 			}

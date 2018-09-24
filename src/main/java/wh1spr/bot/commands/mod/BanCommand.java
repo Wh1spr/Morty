@@ -13,13 +13,9 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
-import wh1spr.bot.Main;
 import wh1spr.bot.command.Command;
 import wh1spr.bot.commands.mod.util.Ban;
 import wh1spr.bot.commands.mod.util.BanUser;
-import wh1spr.bot.commands.mod.util.WarnUser;
-import wh1spr.bot.commands.mod.util.Warning;
-import wh1spr.bot.mongodb.MongoBot;
 
 public class BanCommand extends Command {
 
