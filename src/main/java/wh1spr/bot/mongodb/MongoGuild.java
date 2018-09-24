@@ -17,7 +17,7 @@ public class MongoGuild extends BasicMongoItem {
 	protected MongoGuild(Guild guild) {
 		this(guild.getId());
 	}
-	private MongoGuild(String guildId) {
+	public MongoGuild(String guildId) {
 		super("guilds"); //collection
 		this.setId(guildId);
 		
@@ -64,6 +64,14 @@ public class MongoGuild extends BasicMongoItem {
 		//TODO check if this gives an error
 	}
 	
+	public String getName() {
+		if (getGuild() == null) {
+			return this.getDoc().getString("name");
+		} else {
+			return getGuild().getName();
+		}
+	}
+	
 	/*************
 	 *  SETTERS  * Setters assume what you're doing is correct.
 	 *  		 * Setters update straight to DB.
@@ -108,7 +116,6 @@ public class MongoGuild extends BasicMongoItem {
 	}
 	
 	public static boolean exists(String guildId) {
-		if (MongoDB.getDb().getCollection("guilds").find(eq("_id", guildId)).first() == null) return false;
-		else return true;
+		return exists("guilds", guildId);
 	}
 }

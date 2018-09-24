@@ -83,7 +83,6 @@ public class MongoUser extends BasicMongoItem {
 	}
 	
 	public static boolean exists(String userId) {
-		if (MongoDB.getDb().getCollection("users").find(eq("_id", userId)).first() == null) return false;
-		else return true;
+		return exists("users", userId);
 	}
 }

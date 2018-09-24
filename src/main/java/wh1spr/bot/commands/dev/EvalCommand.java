@@ -46,7 +46,7 @@ public class EvalCommand extends Command {
             channel.sendMessage("Evaluated Successfully:\n```\n"+se.eval(message.getContentRaw().split(" ",2)[1]
             		.replaceAll("eco", "Packages.wh1spr.bot.commands.economy.util.EconomyStatus")
             		.replaceAll("main", "Packages.wh1spr.bot.main")
-            		.replaceAll("db", "Packages.wh1spr.bot.database.Database2")
+            		.replaceAll("db", "Packages.wh1spr.bot.mongodb.MongoDB")
             		.replaceAll("perm", "Packages.wh1spr.bot.dummy.Perm")
             		.replaceAll("rank", "Packages.wh1spr.bot.dummy.Rank")
             		.replaceAll("slotscommand", "Packages.wh1spr.bot.commands.economy.SlotsCommand")

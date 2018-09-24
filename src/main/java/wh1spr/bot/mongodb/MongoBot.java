@@ -92,4 +92,8 @@ public class MongoBot extends BasicMongoItem {
 			return false;
 		}
 	}
+	
+	public static boolean exists(String botId) {
+		return exists("bots", botId);
+	}
 }

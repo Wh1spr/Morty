@@ -4,6 +4,7 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.Tools;
 import wh1spr.bot.mongodb.BasicMongoItem;
+import wh1spr.bot.mongodb.MongoGuild;
 import wh1spr.bot.mongodb.MongoUser;
 
 import static com.mongodb.client.model.Updates.*;
@@ -33,6 +34,14 @@ public abstract class Action extends BasicMongoItem {
 	
 	public String getIssuername() {
 		return new MongoUser(this.getDoc().getString("by")).getUserMention();	
+	}
+	
+	public String getGuildName() {
+		return new MongoGuild(this.getDoc().getString("guild")).getName();
+	}
+	
+	public String getGuildId() {
+		return this.getDoc().getString("guild");
 	}
 	
 	public String getReason() {

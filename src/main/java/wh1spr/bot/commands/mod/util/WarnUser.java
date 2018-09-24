@@ -17,7 +17,7 @@ import wh1spr.bot.mongodb.MongoUser;
 
 public class WarnUser extends MongoUser {
 	
-	private WarnUser(String userId) {
+	public WarnUser(String userId) {
 		super(userId);
 		
 		if (!getDoc().containsKey("warnings")) {
