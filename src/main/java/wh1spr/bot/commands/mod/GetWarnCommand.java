@@ -34,7 +34,7 @@ public class GetWarnCommand extends Command {
 		if (args.size() != 1) {
 			channel.sendMessage(failsyntax).queue();
 			return;
-		} else if (message.getMentionedUsers().isEmpty() && !MongoUser.exists(args.get(0)) && Tools.isNumeric(args.get(0))?jda.getUserById(args.get(0))==null:true) {
+		} else if (message.getMentionedUsers().isEmpty() && !MongoUser.exists(args.get(0)) && Tools.isPosInteger(args.get(0))?jda.getUserById(args.get(0))==null:true) {
 			// hex val
 			if (!Warning.exists(args.get(0))) {
 				channel.sendMessage(failnonexistent).queue();
