@@ -43,10 +43,6 @@ public class Main {
 		 * 2. Bots
 		 * 3. Database
 		 * 4. EconomyStatus
-		 * 
-		 * Between 2-4 commands have to check in with Database 
-		 * AND EconomyStatus to check if ready. If not ready, commands are
-		 * practically disabled.
 		 */
 		
 		LoggerCache.start("data/logs/main-%s.log");

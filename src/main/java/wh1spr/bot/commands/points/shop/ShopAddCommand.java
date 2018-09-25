@@ -14,7 +14,7 @@ import wh1spr.bot.commands.points.shop.util.ShopGuild;
 import wh1spr.bot.commands.points.shop.util.ShopItem;
 import wh1spr.bot.commands.points.util.PointTypeManager;
 import wh1spr.bot.commands.points.util.PointsCommand;
-import wh1spr.bot.reganplayz.EventBotPerm;
+import wh1spr.bot.dummy.Perm;
 
 public class ShopAddCommand extends PointsCommand {
 
@@ -26,7 +26,7 @@ public class ShopAddCommand extends PointsCommand {
 	
 	@Override
 	public void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args) {
-		if (!EventBotPerm.has(EventBotPerm.OWNER, invoker)) return;
+		if (!Perm.has(Perm.SERVER, invoker)) return;
 		
 		if (args.size() < 3) {
 			channel.sendMessage(failsyntax).queue();
