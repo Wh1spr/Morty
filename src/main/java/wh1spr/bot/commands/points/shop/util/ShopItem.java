@@ -33,6 +33,15 @@ public class ShopItem { // not basicmongoitem
 	public int getPrice() {return this.price;}
 	public int getAmount() {return this.amount;}
 	
+	public ShopItem setAmount(int amount) {
+		this.amount = amount;
+		return this;
+	}
+	
+	public ShopItem clone() {
+		return new ShopItem(getDocument());
+	}
+	
 	public Document getDocument() {
 		return new Document("name", getName()).append("desc", getDesc())
 				.append("price", getPrice()).append("amount", getAmount());

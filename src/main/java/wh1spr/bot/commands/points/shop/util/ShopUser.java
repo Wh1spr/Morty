@@ -63,7 +63,21 @@ public class ShopUser extends MongoUser {
 	}
 	
 	public boolean addItem(ShopItem item) {
-		if (getInventoryArray().size() < 20) { //limit to 20 items (2 columns i guess?)
+		
+		ShopItem equal = null;
+		for (ShopItem s : getItems()) {
+			if (s.getName().equals(item.getName()) && s.getPrice()==item.getPrice()) {
+				equal = s;
+				break;
+			}
+		}
+		
+		if (equal != null) {
+			item.setAmount(equal.getAmount() + item.getAmount());
+			removeItem(equal);
+			this.bsonUpdates(push(tm.getModuleName() + "." + tm.getTypeName() + "inv", item.getDocument()));
+			return true;
+		} else if (getInventoryArray().size() <= 20) { 
 			this.bsonUpdates(push(tm.getModuleName() + "." + tm.getTypeName() + "inv", item.getDocument()));
 			return true;
 		} else {
@@ -75,5 +89,9 @@ public class ShopUser extends MongoUser {
 		if (getInventoryArray().size() <= index) return;
 		ShopItem toDel = getItems().get(index);
 		this.bsonUpdates(pull(tm.getModuleName() + "." + tm.getTypeName() + "inv", toDel.getDocument()));
+	}
+	
+	public void removeItem(ShopItem item) {
+		this.bsonUpdates(pull(tm.getModuleName() + "." + tm.getTypeName() + "inv", item.getDocument()));
 	}
 }
