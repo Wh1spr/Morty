@@ -12,9 +12,7 @@ import static com.mongodb.client.model.Updates.*;
 public abstract class Action extends BasicMongoItem {
 
 	Action(String hex, String array) {
-		super(array);
-		if (hex == null) throw new IllegalArgumentException("Hex cannot be null.");
-		this.setId(hex);
+		super(array, hex);
 	}
 	
 	public boolean isSet() {

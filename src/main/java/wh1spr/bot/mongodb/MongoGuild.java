@@ -5,7 +5,6 @@ import org.bson.Document;
 
 import com.mongodb.BasicDBObject;
 
-import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Updates.*;
 
 import net.dv8tion.jda.core.entities.Guild;
@@ -14,18 +13,17 @@ import wh1spr.bot.database.EcoInfo;
 
 public class MongoGuild extends BasicMongoItem {
 
-	protected MongoGuild(Guild guild) {
+	public MongoGuild(Guild guild) {
 		this(guild.getId());
 	}
 	public MongoGuild(String guildId) {
-		super("guilds"); //collection
-		this.setId(guildId);
+		super("guilds", guildId); //collection
 		
 		if (jda.getGuildById(guildId)==null) { //either gone or nonexistent
 			if (exists(guildId)) {
 				
 			} else {
-				throw new IllegalArgumentException("Given userId is unknown");
+				throw new IllegalArgumentException("Given guildId is unknown");
 			}
 		} else {
 			if (!MongoDB.exists(getGuild())) MongoDB.getCreator().createGuild(getGuild());
@@ -103,6 +101,7 @@ public class MongoGuild extends BasicMongoItem {
 	
 	@Override
 	protected boolean update() {
+		if (getGuild() == null) return false;
 		try {
 			setName();
 			setOwner();

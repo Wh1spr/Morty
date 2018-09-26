@@ -26,11 +26,13 @@ public abstract class BasicMongoItem {
 	 * @param collection The MongoDB Collection this item is a part of. Database gets set by {@link MongoDB}
 	 * @throws IllegalArgumentException if collection is null.
 	 */
-	protected BasicMongoItem(String collection) {
+	protected BasicMongoItem(String collection, String id) {
 		if (collection == null) throw new IllegalArgumentException("Collection cannot be null.");
+		if (id == null) throw new IllegalArgumentException("Given ID cannot be null.");
 		log = LoggerCache.getLogger("MONGO");
 		db.getCollection(collection); // will throw error if name is not valid.
 		this.collection = collection;
+		this.setId(id);
 		this.update();
 	}
 	
@@ -52,7 +54,7 @@ public abstract class BasicMongoItem {
 	 * @param id the Id of the item.
 	 * @throws IllegalArgumentException if the item already had an ID set.
 	 */
-	protected void setId(String id) {
+	private void setId(String id) {
 		if (this.id != null) throw new IllegalArgumentException("This item already has an ID.");
 		this.id = id;
 	}

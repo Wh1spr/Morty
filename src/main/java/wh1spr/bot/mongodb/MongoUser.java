@@ -1,7 +1,5 @@
 package wh1spr.bot.mongodb;
 
-import static com.mongodb.client.model.Filters.eq;
-
 import org.bson.Document;
 
 import net.dv8tion.jda.core.entities.Guild;
@@ -13,8 +11,7 @@ public class MongoUser extends BasicMongoItem {
 		this(user.getId());
 	}
 	public MongoUser(String userId) {
-		super("users");
-		this.setId(userId);
+		super("users", userId);
 		
 		if (jda.getUserById(userId)==null) { //either gone or nonexistent
 			if (exists(userId)) {
@@ -72,6 +69,7 @@ public class MongoUser extends BasicMongoItem {
 	
 	@Override
 	protected boolean update() {
+		if (getUser() == null) return false;
 		try {
 			setMention();
 			MongoDB.addUpdated("u" + getId());
