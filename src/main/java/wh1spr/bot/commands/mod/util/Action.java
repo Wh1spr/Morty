@@ -55,10 +55,5 @@ public abstract class Action extends BasicMongoItem {
 		bsonUpdates(set("guild", g.getId()), set("user", a.getId()), set("by", by.getId()),
 				set("reason", reason), set("date", Tools.getDateTimeStamp()));
 	}
-	
-	@Override
-	protected boolean update() {
-		return true; //nothing to update
-	}
 
 }

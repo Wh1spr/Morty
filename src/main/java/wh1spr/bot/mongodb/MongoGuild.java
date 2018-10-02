@@ -11,7 +11,7 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.TextChannel;
 import wh1spr.bot.database.EcoInfo;
 
-public class MongoGuild extends BasicMongoItem {
+public class MongoGuild extends BasicUpdateMongoItem {
 
 	public MongoGuild(Guild guild) {
 		this(guild.getId());
@@ -20,13 +20,11 @@ public class MongoGuild extends BasicMongoItem {
 		super("guilds", guildId); //collection
 		
 		if (jda.getGuildById(guildId)==null) { //either gone or nonexistent
-			if (exists(guildId)) {
-				
-			} else {
+			if (!exists(guildId)) {
 				throw new IllegalArgumentException("Given guildId is unknown");
 			}
 		} else {
-			if (!MongoDB.exists(getGuild())) MongoDB.getCreator().createGuild(getGuild());
+			if (!exists(guildId)) MongoDB.getCreator().createGuild(getGuild());
 			if (MongoDB.isUpdated(getGuild())) 
 				if (!update())
 					throw new Error("Could not update Guild " + guildId + " in MongoDB.");
@@ -78,7 +76,7 @@ public class MongoGuild extends BasicMongoItem {
 		this.setKey("name", this.getGuild().getName());
 	}
 	public void setOwner() {
-		this.setKey("ownerid", this.getGuild().getOwner());
+		this.setKey("ownerid", this.getGuild().getOwner().getUser().getId());
 	}
 	public void updateCounts() {
 		this.bsonUpdates(set("textchannels", this.getGuild().getTextChannels().size()),

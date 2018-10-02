@@ -5,7 +5,7 @@ import org.bson.Document;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
 
-public class MongoUser extends BasicMongoItem {
+public class MongoUser extends BasicUpdateMongoItem {
 	
 	public MongoUser(User user) {
 		this(user.getId());

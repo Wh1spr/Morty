@@ -3,16 +3,15 @@ package wh1spr.bot.mongodb;
 import net.dv8tion.jda.core.entities.SelfUser;
 import wh1spr.bot.dummy.Bot;
 
-public class MongoBot extends BasicMongoItem {
+public class MongoBot extends BasicUpdateMongoItem {
 
 	public MongoBot(Bot b) {
 		//only active bot should be called.
-		super("bots");
-		this.setId(jda.getSelfUser().getId());
+		super("bots", b.getJDA().getSelfUser().getId());
 		
 		if (!MongoDB.exists(getUser())) MongoDB.getCreator().createBot(b);
 		
-		if (MongoDB.isUpdated(getUser())) 
+		if (!MongoDB.isUpdated(getUser())) 
 			if (!update())
 				throw new Error("Could not update Bot " + getId() + " in MongoDB.");
 	}
