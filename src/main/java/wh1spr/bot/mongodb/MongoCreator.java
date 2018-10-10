@@ -8,18 +8,15 @@ import org.bson.Document;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoDatabase;
 
-import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.dummy.Bot;
 
 class MongoCreator {
 
-	private JDA jda = null;
 	private MongoDatabase db = null;
 	
-	MongoCreator(JDA Jda, MongoDatabase db) {
-		this.jda = Jda;
+	MongoCreator(MongoDatabase db) {
 		this.db = db;
 	}
 	
