@@ -1,7 +1,5 @@
 package wh1spr.bot.mongodb;
 
-import static com.mongodb.client.model.Filters.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +7,6 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 
-import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.Main;
@@ -20,23 +17,16 @@ import wh1spr.logger.LoggerCache;
 public class Mongo {
 	
 	private static Logger log = LoggerCache.getLogger("MONGO");
-	private static JDA jda = null;
 	private static MongoClient client = null;
 	private static MongoDatabase db = null;
 	
 	private static MongoCreator mc = null;
 	
-	public static void start(JDA jda) {
-		MongoDB.jda = jda;
+	public static void start() {
 		log.info("Setting up database...");
 		client = MongoClients.create(Main.properties.getProperty("MONGO", "mongodb://localhost"));
 		db = client.getDatabase("discord");
-		
-		mc = new MongoCreator(jda, db);
-		
-		//consistency checks
-		// really necessary? -> update on use better?
-		// 	if so => gotta use a cache so you'd know if it's "fully" updated
+		mc = new MongoCreator(db);
 	}
 	
 	public static MongoDatabase getDb() {
@@ -48,32 +38,23 @@ public class Mongo {
 	
 	//Guild
 	public static MongoGuild getMongoGuild(Guild guild) {
-		if (!exists(guild)) mc.createGuild(guild);
+		if (guild==null) throw new IllegalArgumentException("Guild cannot be null!");
+		if (!MongoGuild.exists(guild.getId())) mc.createGuild(guild);
 		return new MongoGuild(guild);
-	}
-	public static boolean exists(Guild guild) {
-		if (db.getCollection("guilds").find(eq("_id", guild.getId())).first() == null) return false;
-		else return true;
 	}
 	
 	//User
 	public static MongoUser getMongoUser(User user) {
-		if (!exists(user)) mc.createUser(user);
+		if (user==null) throw new IllegalArgumentException("User cannot be null!");
+		if (!MongoUser.exists(user.getId())) mc.createUser(user);
 		return new MongoUser(user);
-	}
-	public static boolean exists(User user) {
-		if (db.getCollection("users").find(eq("_id", user.getId())).first() == null) return false;
-		else return true;
 	}
 	
 	//Bot
 	public static MongoBot getMongoBot(Bot b) {
-		if (!exists(b)) mc.createBot(b);
+		if (b==null) throw new IllegalArgumentException("Bot cannot be null!");
+		if (!MongoBot.exists(b.getJDA().getSelfUser().getId())) mc.createBot(b);
 		return new MongoBot(b);
-	}
-	public static boolean exists(Bot b) {
-		if (db.getCollection("bots").find(eq("_id", b.getJDA().getSelfUser().getId())).first() == null) return false;
-		else return true;
 	}
 	
 	//updated-cache (just strings)
@@ -88,7 +69,5 @@ public class Mongo {
 	}
 	public static boolean isUpdated(User u) {return isUpdated("u" + u.getId());}
 	public static boolean isUpdated(Guild g) {return isUpdated("g" + g.getId());}
-//	public static boolean isUpdated(TextChannel t) {return isUpdated("t" + t.getId());} //intro channels should get locked on morty shutdown
-//	public static boolean isUpdated(VoiceChannel v) {return isUpdated("v" + v.getId());} //idk why
 	
 }
