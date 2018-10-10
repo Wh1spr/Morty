@@ -119,4 +119,20 @@ public abstract class BasicMongoItem {
 	protected static boolean exists(String collection, String hex) {
 		return Mongo.getDb().getCollection(collection).find(eq("_id", hex)).first()!=null;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof BasicMongoItem) {
+			BasicMongoItem b = (BasicMongoItem) o;
+			if (b.getId().equals(this.getId())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return this.getId().hashCode();
+	}
 }
