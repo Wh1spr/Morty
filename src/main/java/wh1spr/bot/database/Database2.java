@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import net.dv8tion.jda.core.JDA;
 import wh1spr.bot.database.modules.*;
-import wh1spr.bot.mongodb.MongoDB;
+import wh1spr.bot.mongodb.Mongo;
 import wh1spr.bot.mongodb.MongoGuild;
 import wh1spr.logger.Logger;
 import wh1spr.logger.LoggerCache;
@@ -115,7 +115,7 @@ public class Database2 {
 		jda.getGuilds().forEach(g-> {
 			if (eco.hasEconomy(g)) {
 				EcoInfo ei = eco.getGuildInfo(g.getId());
-				MongoGuild mg = MongoDB.getMongoGuild(g);
+				MongoGuild mg = Mongo.getMongoGuild(g);
 				mg.setEconomy(ei);
 			}
 		});

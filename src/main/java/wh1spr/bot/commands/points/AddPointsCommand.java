@@ -15,7 +15,7 @@ import wh1spr.bot.commands.points.util.PointTypeManager;
 import wh1spr.bot.commands.points.util.PointsCommand;
 import wh1spr.bot.commands.points.util.PointsUser;
 import wh1spr.bot.dummy.Perm;
-import wh1spr.bot.mongodb.MongoDB;
+import wh1spr.bot.mongodb.Mongo;
 
 public class AddPointsCommand extends PointsCommand {
 
@@ -45,7 +45,7 @@ public class AddPointsCommand extends PointsCommand {
 			channel.sendMessage(failsyntax).queue();
 			return;
 		}
-		PointsUser u = tm.getPointsUser(MongoDB.getMongoUser(message.getMentionedUsers().get(0)));
+		PointsUser u = tm.getPointsUser(Mongo.getMongoUser(message.getMentionedUsers().get(0)));
 		int amount = Integer.parseInt(args.get(1));
 		u.setPoints(u.getPoints() + amount);
 		

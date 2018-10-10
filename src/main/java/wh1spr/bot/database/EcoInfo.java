@@ -3,7 +3,7 @@ package wh1spr.bot.database;
 import net.dv8tion.jda.core.entities.Guild;
 import wh1spr.bot.Main;
 import wh1spr.bot.Tools;
-import wh1spr.bot.mongodb.MongoDB;
+import wh1spr.bot.mongodb.Mongo;
 import wh1spr.bot.mongodb.MongoGuild;
 
 public class EcoInfo {
@@ -16,7 +16,7 @@ public class EcoInfo {
 		this.minMult = minMult;
 		this.start = start;
 		this.daily = daily;
-		this.mongo = MongoDB.getMongoGuild(getGuild());
+		this.mongo = Mongo.getMongoGuild(getGuild());
 	}
 	public EcoInfo(Guild guild, String majSing, String majMult, String minSing, String minMult, Double start, Double daily) {
 		this(guild.getId(), majSing, majMult, minSing, minMult, start, daily);

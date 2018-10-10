@@ -13,7 +13,7 @@ import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.commands.points.util.PointTypeManager;
 import wh1spr.bot.commands.points.util.PointsCommand;
 import wh1spr.bot.commands.points.util.PointsUser;
-import wh1spr.bot.mongodb.MongoDB;
+import wh1spr.bot.mongodb.Mongo;
 
 public class PointBalanceCommand extends PointsCommand {
 
@@ -32,10 +32,10 @@ public class PointBalanceCommand extends PointsCommand {
 		EmbedBuilder e = new EmbedBuilder().setColor(Color.GREEN);
 		
 		if (args.isEmpty()) {
-			u = tm.getPointsUser(MongoDB.getMongoUser(invoker));
+			u = tm.getPointsUser(Mongo.getMongoUser(invoker));
 			e.setTitle(String.format("You have **%d EventPoint" + (u.getPoints()==1?"**":"s**"), u.getPoints()));
 		} else if (message.getMentionedMembers().size() == 1 && args.size()==1) {
-			u = tm.getPointsUser(MongoDB.getMongoUser(message.getMentionedUsers().get(0)));
+			u = tm.getPointsUser(Mongo.getMongoUser(message.getMentionedUsers().get(0)));
 			e.setTitle(String.format("%s has **%d EventPoint" + (u.getPoints()==1?"**":"s**"), u.getMongoUser().getUserMention(), u.getPoints()));
 		} else {
 			channel.sendMessage(failsyntax).queue();

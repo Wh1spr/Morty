@@ -8,7 +8,7 @@ import org.bson.Document;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoDatabase;
 
-import wh1spr.bot.mongodb.MongoDB;
+import wh1spr.bot.mongodb.Mongo;
 import wh1spr.bot.mongodb.MongoUser;
 
 public class PointsUser {
@@ -30,7 +30,7 @@ public class PointsUser {
 	}
 	
 	private MongoUser mongo = null;
-	private MongoDatabase db = MongoDB.getDb();
+	private MongoDatabase db = Mongo.getDb();
 	
 	public MongoUser getMongoUser() {
 		return this.mongo;

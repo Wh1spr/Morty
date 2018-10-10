@@ -9,9 +9,9 @@ public class MongoBot extends BasicUpdateMongoItem {
 		//only active bot should be called.
 		super("bots", b.getJDA().getSelfUser().getId());
 		
-		if (!MongoDB.exists(getUser())) MongoDB.getCreator().createBot(b);
+		if (!Mongo.exists(getUser())) Mongo.getCreator().createBot(b);
 		
-		if (!MongoDB.isUpdated(getUser())) 
+		if (!Mongo.isUpdated(getUser())) 
 			if (!update())
 				throw new Error("Could not update Bot " + getId() + " in MongoDB.");
 	}
@@ -84,7 +84,7 @@ public class MongoBot extends BasicUpdateMongoItem {
 	protected boolean update() {
 		try {
 			setGuilds();
-			MongoDB.addUpdated("u" + getId());
+			Mongo.addUpdated("u" + getId());
 			return true;
 		} catch (Exception e) {
 			log.error(e, "Couldn't update MongoBot with ID " + getId());

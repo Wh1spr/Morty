@@ -20,8 +20,8 @@ public class MongoUser extends BasicUpdateMongoItem {
 				throw new IllegalArgumentException("Given userId is unknown");
 			}
 		} else {
-			if (!MongoDB.exists(getUser())) MongoDB.getCreator().createUser(getUser());
-			if (MongoDB.isUpdated(getUser())) 
+			if (!Mongo.exists(getUser())) Mongo.getCreator().createUser(getUser());
+			if (Mongo.isUpdated(getUser())) 
 				if (!update())
 					throw new Error("Could not update User " + userId + " in MongoDB.");
 		}
@@ -41,7 +41,7 @@ public class MongoUser extends BasicUpdateMongoItem {
 	}
 	
 	public boolean hasIntro(Guild guild) {
-		if (!MongoDB.getMongoGuild(guild).hasIntro()) return false;
+		if (!Mongo.getMongoGuild(guild).hasIntro()) return false;
 		else if (!getDoc().get("guilds", Document.class)
 				.get(guild.getId(), Document.class).containsKey("introID")){
 			return false;
@@ -72,7 +72,7 @@ public class MongoUser extends BasicUpdateMongoItem {
 		if (getUser() == null) return false;
 		try {
 			setMention();
-			MongoDB.addUpdated("u" + getId());
+			Mongo.addUpdated("u" + getId());
 			return true;
 		} catch (Exception e) {
 			log.error(e, "Couldn't update MongoUser with ID " + getId());

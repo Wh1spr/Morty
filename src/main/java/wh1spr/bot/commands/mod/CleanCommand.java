@@ -29,7 +29,7 @@ public class CleanCommand extends Command {
 	// I'm making it so that, if the toDelete is <= 100, I remove them 1 by 1 if an error is thrown.
 	@Override
 	public void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args) {
-		if (!Perm.has(Perm.STAFF, invoker)) {return;}
+		if (!Perm.has(Perm.ADMIN, invoker)) {return;}
 		
 		TextChannel tchannel = (TextChannel) channel;
 		

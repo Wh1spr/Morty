@@ -17,7 +17,7 @@ import wh1spr.bot.dummy.Bot;
 import wh1spr.logger.Logger;
 import wh1spr.logger.LoggerCache;
 
-public class MongoDB {
+public class Mongo {
 	
 	private static Logger log = LoggerCache.getLogger("MONGO");
 	private static JDA jda = null;

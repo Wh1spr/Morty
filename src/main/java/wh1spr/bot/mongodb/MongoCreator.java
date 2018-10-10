@@ -24,7 +24,7 @@ class MongoCreator {
 	}
 	
 	MongoUser createUser(User user) {
-		if (MongoDB.exists(user)) throw new IllegalArgumentException("Cannot create a user that already exists in db.");
+		if (MongoUser.exists(user.getId())) throw new IllegalArgumentException("Cannot create a user that already exists in db.");
 		
 		Document u = new Document("_id", user.getId());
 		u.append("mention", user.getName() + "#" + user.getDiscriminator());
@@ -41,7 +41,7 @@ class MongoCreator {
 	}
 	
 	MongoGuild createGuild(Guild guild) {
-		if (MongoDB.exists(guild)) throw new IllegalArgumentException("Cannot create a guild that already exists in db.");
+		if (MongoGuild.exists(guild.getId())) throw new IllegalArgumentException("Cannot create a guild that already exists in db.");
 		
 		Document g = new Document("_id", guild.getId());
 		g.append("name", guild.getName())
@@ -55,14 +55,13 @@ class MongoCreator {
 	}
 	
 	MongoBot createBot(Bot b) {
-		if (MongoDB.exists(b)) throw new IllegalArgumentException("Cannot create a bot that already exists in db.");
-		if (!MongoDB.exists(b.getJDA().getSelfUser())) createUser(b.getJDA().getSelfUser());
+		if (MongoBot.exists(b.getJDA().getSelfUser().getId())) throw new IllegalArgumentException("Cannot create a bot that already exists in db.");
+		if (!MongoUser.exists(b.getJDA().getSelfUser().getId())) createUser(b.getJDA().getSelfUser());
 		
 		Document bot = new Document("_id", b.getJDA().getSelfUser().getId());
-		bot.append("name", b.getJDA().getSelfUser().getName())
-			.append("warninghex", "0")
-			.append("banhex", "0")
-			.append("kickhex", "0");
+		bot.append("name", b.getJDA().getSelfUser().getName());
+		bot.append("guilds", b.getJDA().getGuilds().size())
+		   .append("users", b.getJDA().getUsers().size());
 		db.getCollection("bots").insertOne(bot);
 		
 		return new MongoBot(b);

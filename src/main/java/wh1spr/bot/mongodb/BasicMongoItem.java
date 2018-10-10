@@ -23,7 +23,7 @@ public abstract class BasicMongoItem {
 	
 	/**
 	 * A basic MongoDB Item. Contains ID of the item in a MongoDB and some helper functions.
-	 * @param collection The MongoDB Collection this item is a part of. Database gets set by {@link MongoDB}
+	 * @param collection The MongoDB Collection this item is a part of. Database gets set by {@link Mongo}
 	 * @param id The ID of this BasicMongoItem in the given collection in the database.
 	 * @throws IllegalArgumentException if collection is null.
 	 */
@@ -47,7 +47,7 @@ public abstract class BasicMongoItem {
 	
 	private String id = null;
 	protected JDA jda = Main.getBot().getJDA();
-	protected MongoDatabase db = MongoDB.getDb();
+	protected MongoDatabase db = Mongo.getDb();
 	
 	private void setId(String id) {
 		if (this.id != null) throw new IllegalArgumentException("This item already has an ID.");
@@ -117,6 +117,6 @@ public abstract class BasicMongoItem {
 	}
 
 	protected static boolean exists(String collection, String hex) {
-		return MongoDB.getDb().getCollection(collection).find(eq("_id", hex)).first()!=null;
+		return Mongo.getDb().getCollection(collection).find(eq("_id", hex)).first()!=null;
 	}
 }
