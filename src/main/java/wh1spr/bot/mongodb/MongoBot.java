@@ -9,7 +9,7 @@ public class MongoBot extends BasicUpdateMongoItem {
 		//only active bot should be called.
 		super("bots", b.getJDA().getSelfUser().getId());
 		
-		if (!Mongo.exists(getUser())) Mongo.getCreator().createBot(b);
+		if (!exists(getUser().getId())) Mongo.getCreator().createBot(b);
 		
 		if (!Mongo.isUpdated(getUser())) 
 			if (!update())

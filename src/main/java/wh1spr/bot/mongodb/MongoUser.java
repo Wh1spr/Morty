@@ -20,7 +20,7 @@ public class MongoUser extends BasicUpdateMongoItem {
 				throw new IllegalArgumentException("Given userId is unknown");
 			}
 		} else {
-			if (!Mongo.exists(getUser())) Mongo.getCreator().createUser(getUser());
+			if (!exists(userId)) Mongo.getCreator().createUser(getUser());
 			if (Mongo.isUpdated(getUser())) 
 				if (!update())
 					throw new Error("Could not update User " + userId + " in MongoDB.");
@@ -39,25 +39,26 @@ public class MongoUser extends BasicUpdateMongoItem {
 	public String getUserMention() {
 		return getDoc().getString("mention");
 	}
-	
-	public boolean hasIntro(Guild guild) {
-		if (!Mongo.getMongoGuild(guild).hasIntro()) return false;
-		else if (!getDoc().get("guilds", Document.class)
-				.get(guild.getId(), Document.class).containsKey("introID")){
-			return false;
-		} else {
-			return true;
-		}
-	}
-	
-	public String getIntroId(Guild guild) {
-		if (hasIntro(guild)) {
-			return getDoc().get("guilds", Document.class)
-					.get(guild.getId(), Document.class).getString("introID");
-		} else {
-			return null;
-		}
-	}
+
+// FOR INTROUSER
+//	public boolean hasIntro(Guild guild) {
+//		if (!Mongo.getMongoGuild(guild).hasIntro()) return false;
+//		else if (!getDoc().get("guilds", Document.class)
+//				.get(guild.getId(), Document.class).containsKey("introID")){
+//			return false;
+//		} else {
+//			return true;
+//		}
+//	}
+//
+//	public String getIntroId(Guild guild) {
+//		if (hasIntro(guild)) {
+//			return getDoc().get("guilds", Document.class)
+//					.get(guild.getId(), Document.class).getString("introID");
+//		} else {
+//			return null;
+//		}
+//	}
 	
 	/*************
 	 *  SETTERS  * Setters assume what you're doing is correct.
