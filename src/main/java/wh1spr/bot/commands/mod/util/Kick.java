@@ -26,4 +26,8 @@ public class Kick extends Action {
 	public static boolean exists(String hex) {
 		return exists("kicks", hex);
 	}
+	
+	public static String getAndSetNextHex() {
+		return Action.getAndSetNextHex("kicks");
+	}
 }

@@ -135,4 +135,9 @@ public abstract class BasicMongoItem {
 	public int hashCode() {
 		return this.getId().hashCode();
 	}
+	
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName() + "[" + this.getId() + "]";
+	}
 }

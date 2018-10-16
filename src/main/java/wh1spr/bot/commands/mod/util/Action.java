@@ -4,15 +4,19 @@ import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.Tools;
 import wh1spr.bot.mongodb.BasicMongoItem;
+import wh1spr.bot.mongodb.Mongo;
 import wh1spr.bot.mongodb.MongoGuild;
 import wh1spr.bot.mongodb.MongoUser;
 
+import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Updates.*;
+
+import org.bson.Document;
 
 public abstract class Action extends BasicMongoItem {
 
-	Action(String hex, String array) {
-		super(array, hex);
+	Action(String hex, String collection) {
+		super(collection, hex);
 	}
 	
 	public boolean isSet() {
@@ -54,6 +58,19 @@ public abstract class Action extends BasicMongoItem {
 		if (isSet()) throw new IllegalArgumentException("This action is already set.");
 		bsonUpdates(set("guild", g.getId()), set("user", a.getId()), set("by", by.getId()),
 				set("reason", reason), set("date", Tools.getDateTimeStamp()));
+	}
+	
+	protected static String getAndSetNextHex(String collection) {
+		Document hexdoc = Mongo.getDb().getCollection(collection).find(eq("_id", "0")).first();
+		String nextHex = null;
+		if (hexdoc==null) {
+			nextHex = "1";
+			Mongo.getDb().getCollection(collection).insertOne(new Document("_id", "0").append("hex", nextHex));
+		} else {
+			nextHex = Integer.toHexString(Integer.parseInt(hexdoc.getString("hex"), 16) + 1);
+			Mongo.getDb().getCollection(collection).updateOne(eq("_id", "0"), set("hex", nextHex));
+		}
+		return nextHex;
 	}
 
 }

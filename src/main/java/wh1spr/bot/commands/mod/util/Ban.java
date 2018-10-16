@@ -26,4 +26,8 @@ public class Ban extends Action {
 	public static boolean exists(String hex) {
 		return exists("bans", hex);
 	}
+	
+	public static String getAndSetNextHex() {
+		return Action.getAndSetNextHex("bans");
+	}
 }

@@ -26,4 +26,8 @@ public class Warning extends Action {
 	public static boolean exists(String hex) {
 		return exists("warnings", hex);
 	}
+	
+	public static String getAndSetNextHex() {
+		return Action.getAndSetNextHex("warnings");
+	}
 }

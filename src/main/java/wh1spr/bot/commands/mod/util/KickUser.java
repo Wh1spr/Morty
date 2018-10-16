@@ -11,8 +11,6 @@ import com.mongodb.client.model.Updates;
 
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
-import wh1spr.bot.Main;
-import wh1spr.bot.mongodb.MongoBot;
 import wh1spr.bot.mongodb.MongoUser;
 
 public class KickUser extends MongoUser {
@@ -20,8 +18,8 @@ public class KickUser extends MongoUser {
 	public KickUser(String userId) {
 		super(userId);
 		
-		if (!getDoc().containsKey("warnings")) {
-			this.bsonUpdates(set("warnings", new BsonArray()));
+		if (!getDoc().containsKey("kicks")) {
+			this.bsonUpdates(set("kicks", new BsonArray()));
 		}
 	}
 	
@@ -42,10 +40,6 @@ public class KickUser extends MongoUser {
 	}
 	
 	public Kick kick(Guild g, User by, String reason) {
-		MongoBot bot = new MongoBot(Main.getBot());
-		bot.setKickHex(bot.getKickHex()+1);
-		Kick kick = new Kick(bot.getKickHexString(), g, this.getUser(), by, reason);
-		
-		return kick;
+		return new Kick(Kick.getAndSetNextHex(), g, this.getUser(), by, reason);
 	}
 }

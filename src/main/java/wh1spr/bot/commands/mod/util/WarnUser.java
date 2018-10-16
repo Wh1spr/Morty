@@ -11,8 +11,6 @@ import com.mongodb.client.model.Updates;
 
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
-import wh1spr.bot.Main;
-import wh1spr.bot.mongodb.MongoBot;
 import wh1spr.bot.mongodb.MongoUser;
 
 public class WarnUser extends MongoUser {
@@ -42,10 +40,6 @@ public class WarnUser extends MongoUser {
 	}
 	
 	public Warning warn(Guild g, User by, String reason) {
-		MongoBot bot = new MongoBot(Main.getBot());
-		bot.setWarnHex(bot.getWarnHex()+1);
-		Warning warn = new Warning(bot.getWarnHexString(), g, this.getUser(), by, reason);
-		
-		return warn;
+		return new Warning(Warning.getAndSetNextHex(), g, this.getUser(), by, reason);
 	}
 }
