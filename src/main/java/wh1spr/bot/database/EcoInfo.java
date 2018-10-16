@@ -56,27 +56,27 @@ public class EcoInfo {
 	// Setters assume what you're doing is correct.
 	public void setMajSing(String s) {
 		this.majSing = s;
-		mongo.setEconomy(this);
+//		mongo.setEconomy(this);
 	}
 	public void setMajMult(String s) {
 		this.majMult = s;
-		mongo.setEconomy(this);
+//		mongo.setEconomy(this);
 	}
 	public void setMinSing(String s) {
 		this.minSing = s;
-		mongo.setEconomy(this);
+//		mongo.setEconomy(this);
 	}
 	public void setMinMult(String s) {
 		this.minMult = s;
-		mongo.setEconomy(this);
+//		mongo.setEconomy(this);
 	}
 	public void setStartval(Double val) {
 		this.start = Tools.round(val);
-		mongo.setEconomy(this);
+//		mongo.setEconomy(this);
 	}
 	public void setDailyval(Double val) {
 		this.daily = Tools.round(val);
-		mongo.setEconomy(this);
+//		mongo.setEconomy(this);
 	}
 	
 	
