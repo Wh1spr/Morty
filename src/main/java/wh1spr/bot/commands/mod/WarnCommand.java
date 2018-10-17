@@ -36,7 +36,7 @@ public class WarnCommand extends Command {
 		String reason = message.getContentRaw().split(" ", 3)[2];
 		
 		// Role Check.
-		if (!guild.getMember(invoker).canInteract(toWarn)) {
+		if (!guild.getMember(invoker).canInteract(toWarn) && !Perm.has(Perm.OWNER, invoker)) {
 			channel.sendMessage(new EmbedBuilder().setColor(Color.RED).setTitle(":no_entry_sign: This person has a higher rank than you. You cannot warn them.").build()).queue();
 			return;
 		}
