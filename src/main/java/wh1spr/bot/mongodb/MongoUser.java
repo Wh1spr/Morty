@@ -2,6 +2,8 @@ package wh1spr.bot.mongodb;
 
 import org.bson.Document;
 
+import com.mongodb.BasicDBObject;
+
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
 
@@ -14,16 +16,13 @@ public class MongoUser extends BasicUpdateMongoItem {
 		super("users", userId);
 		
 		if (jda.getUserById(userId)==null) { //either gone or nonexistent
-			if (exists(userId)) {
-				//np
-			} else {
-				throw new IllegalArgumentException("Given userId is unknown");
-			}
+			if (!exists(userId)) throw new IllegalArgumentException("Given userId is unknown");
 		} else {
-			if (!exists(userId)) Mongo.getCreator().createUser(getUser());
-			if (Mongo.isUpdated(getUser())) 
-				if (!update())
-					throw new Error("Could not update User " + userId + " in MongoDB.");
+			if (!exists(userId)) {
+				Mongo.createItem("users", this.getId());
+				this.setKey("guilds", new BasicDBObject());
+			}
+			update();
 		}
 		
 	}
@@ -36,6 +35,7 @@ public class MongoUser extends BasicUpdateMongoItem {
 	 *  GETTERS  * Getters assume that what you're doing is correct
 	 *  		 * Getters use newest doc version, and only get stuff that can't be easily obtained with guild.
 	 *************/
+	
 	public String getUserMention() {
 		return getDoc().getString("mention");
 	}
@@ -65,20 +65,19 @@ public class MongoUser extends BasicUpdateMongoItem {
 	 *  		 * Setters update straight to DB. Getters use newest doc version.
 	 *************/
 	public void setMention() {
-		this.setKey("mention", String.format("%s#%s", getUser().getName(), getUser().getDiscriminator()));			
+		User u = getUser();
+		this.setKey("mention", String.format("%s#%s", u.getName(), u.getDiscriminator()));			
 	}
 	
 	@Override
 	protected boolean update() {
 		if (getUser() == null) return false;
-		try {
+		Document d = getDoc();
+		if (!String.format("%s#%s", getUser().getName(), getUser().getDiscriminator())
+				.equals(d.getString("mention"))) {
 			setMention();
-			Mongo.addUpdated("u" + getId());
-			return true;
-		} catch (Exception e) {
-			log.error(e, "Couldn't update MongoUser with ID " + getId());
-			return false;
 		}
+		return true;
 	}
 	
 	public static boolean exists(String userId) {

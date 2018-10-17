@@ -3,9 +3,12 @@ package wh1spr.bot.mongodb;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bson.Document;
+
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
+import static com.mongodb.client.model.Filters.*;
 
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
@@ -56,6 +59,13 @@ public class Mongo {
 		if (!MongoBot.exists(b.getJDA().getSelfUser().getId())) mc.createBot(b);
 		return new MongoBot(b);
 	}
+	
+	public static void createItem(String collection, String id) {
+		if (getDb().getCollection(collection).find(eq("_id",id)).first()!=null)
+			throw new IllegalArgumentException("Illegal argument, ID " + id + " already exists in Collection " + collection);
+		getDb().getCollection(collection).insertOne(new Document("_id", id));
+	}
+	
 	
 	//updated-cache (just strings)
 	// prefixes u-user g-guild c-channel v-voicechannel
