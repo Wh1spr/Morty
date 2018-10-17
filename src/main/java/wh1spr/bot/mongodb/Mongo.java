@@ -46,12 +46,6 @@ public class Mongo {
 		return new MongoGuild(guild);
 	}
 	
-	//User
-	public static MongoUser getMongoUser(User user) {
-		if (user==null) throw new IllegalArgumentException("User cannot be null!");
-		if (!MongoUser.exists(user.getId())) mc.createUser(user);
-		return new MongoUser(user);
-	}
 	
 	//Bot
 	public static MongoBot getMongoBot(Bot b) {
@@ -77,7 +71,6 @@ public class Mongo {
 	static boolean isUpdated(String id) {
 		return updatedCache.contains(id);
 	}
-	public static boolean isUpdated(User u) {return isUpdated("u" + u.getId());}
 	public static boolean isUpdated(Guild g) {return isUpdated("g" + g.getId());}
 	
 }

@@ -4,7 +4,6 @@ import org.bson.Document;
 
 import com.mongodb.BasicDBObject;
 
-import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
 
 public class MongoUser extends BasicUpdateMongoItem {
