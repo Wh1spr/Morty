@@ -41,7 +41,6 @@ public class Morty extends Bot {
 		commandRegistry.registerCommand(new FlushEcoCommand("flusheco", "fe"));
 		commandRegistry.registerCommand(new ShutdownCommand("shutdown", this, "oof"));
 		commandRegistry.registerCommand(new SendFromJDACommand("send"));
-		commandRegistry.registerCommand(new SqlExecCommand("sql"));
 		
 		// Maelstrom Commands
 		commandRegistry.registerCommand(new AcceptCommand("accept"));
@@ -59,6 +58,12 @@ public class Morty extends Bot {
 		
 		// Mod Commands
 		commandRegistry.registerCommand(new CleanCommand("clean"));
+		commandRegistry.registerCommand(new WarnCommand("warn"));
+		commandRegistry.registerCommand(new GetWarnCommand("getwarn"));
+		commandRegistry.registerCommand(new KickCommand("kick"));
+		commandRegistry.registerCommand(new GetKickCommand("getkick"));
+		commandRegistry.registerCommand(new BanCommand("ban"));
+		commandRegistry.registerCommand(new GetBanCommand("getban"));
 		
 		// Other Commands
 		commandRegistry.registerCommand(new VoteCommand("vote", this));
