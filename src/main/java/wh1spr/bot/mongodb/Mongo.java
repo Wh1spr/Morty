@@ -46,14 +46,6 @@ public class Mongo {
 		return new MongoGuild(guild);
 	}
 	
-	
-	//Bot
-	public static MongoBot getMongoBot(Bot b) {
-		if (b==null) throw new IllegalArgumentException("Bot cannot be null!");
-		if (!MongoBot.exists(b.getJDA().getSelfUser().getId())) mc.createBot(b);
-		return new MongoBot(b);
-	}
-	
 	public static void createItem(String collection, String id) {
 		if (getDb().getCollection(collection).find(eq("_id",id)).first()!=null)
 			throw new IllegalArgumentException("Illegal argument, ID " + id + " already exists in Collection " + collection);

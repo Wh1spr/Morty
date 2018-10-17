@@ -1,19 +1,23 @@
 package wh1spr.bot.mongodb;
 
+import org.bson.Document;
+
 import net.dv8tion.jda.core.entities.SelfUser;
 import wh1spr.bot.dummy.Bot;
 
 public class MongoBot extends BasicUpdateMongoItem {
 
+	private Bot b = null;
+	
 	public MongoBot(Bot b) {
-		//only active bot should be called.
+		//only active bot should be called, so we expect JDA to be good
 		super("bots", b.getJDA().getSelfUser().getId());
+		this.b = b;
 		
-		if (!exists(getUser().getId())) Mongo.getCreator().createBot(b);
-		
-		if (!Mongo.isUpdated(getUser())) 
-			if (!update())
-				throw new Error("Could not update Bot " + getId() + " in MongoDB.");
+		if (!exists(getUser().getId())) {
+			Mongo.createItem("bots", this.getId());
+		}
+		update();
 	}
 	
 	public SelfUser getUser() {
@@ -34,15 +38,11 @@ public class MongoBot extends BasicUpdateMongoItem {
 	
 	@Override
 	protected boolean update() {
-		try {
-			setGuilds();
-			setUsers();
-			Mongo.addUpdated("u" + getId());
-			return true;
-		} catch (Exception e) {
-			log.error(e, "Couldn't update MongoBot with ID " + getId());
-			return false;
-		}
+		new MongoUser(b.getJDA().getSelfUser()); //Calls update on user
+		Document d = getDoc();
+		if (d.getInteger("guilds")!=b.getJDA().getGuilds().size()) setGuilds();
+		if (d.getInteger("users")!=b.getJDA().getUsers().size()) setUsers();
+		return true;
 	}
 	
 	public static boolean exists(String botId) {
