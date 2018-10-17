@@ -10,7 +10,6 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
-import wh1spr.bot.Main;
 import wh1spr.bot.Tools;
 import wh1spr.bot.commands.mod.util.WarnUser;
 import wh1spr.bot.commands.mod.util.Warning;

@@ -5,6 +5,11 @@ import net.dv8tion.jda.core.events.guild.member.GuildMemberLeaveEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import wh1spr.bot.commands.economy.util.Balance;
 import wh1spr.bot.commands.economy.util.EconomyStatus;
+import wh1spr.bot.database.Database2;
+import wh1spr.bot.database.modules.EconomyModule;
+import wh1spr.bot.database.modules.EntityModule;
+import wh1spr.bot.database.modules.IntroModule;
+import wh1spr.bot.database.modules.MaelstromModule;
 import wh1spr.bot.dummy.AutoEventHandlerDummy;
 import wh1spr.bot.dummy.Bot;
 
@@ -12,6 +17,18 @@ public class AutoEventHandlerMorty extends AutoEventHandlerDummy {
 
 	public AutoEventHandlerMorty(Bot bot) {
 		super(bot);
+	}
+	
+	protected EntityModule dbent = null;
+	protected EconomyModule dbeco = null;
+	protected IntroModule dbintro = null;
+	protected MaelstromModule dbmaelstrom = null;
+	
+	protected void db() {
+		if (dbent == null) dbent = Database2.getEntity();
+		if (dbeco == null) dbeco = Database2.getEco();
+		if (dbintro == null) dbintro = Database2.getIntro();
+		if (dbmaelstrom == null) dbmaelstrom = Database2.getMaelstrom();
 	}
 	
 	private final String welcome = "433718059254153216";
@@ -51,7 +68,7 @@ public class AutoEventHandlerMorty extends AutoEventHandlerDummy {
 		
 		if (event.getGuild().getId().equals(Bot.MAELSTROM)) {
 			dbmaelstrom.deleteMember(event.getMember());
-			event.getGuild().getTextChannelById(welcome).sendMessage("**Goodbye, " + event.getUser().getAsMention() + "**").queue();
+			event.getGuild().getTextChannelById(welcome).sendMessage("*Goodbye,* **" + event.getUser().getName() + "#" + event.getUser().getDiscriminator() + "**").queue();
 		}
 	}
 	

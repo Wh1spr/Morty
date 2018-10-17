@@ -20,70 +20,23 @@ public class MongoBot extends BasicUpdateMongoItem {
 		return jda.getSelfUser();
 	}
 	
-	public int getWarnHex() {
-		if (hasKey("warnhex")) {
-			return Integer.parseInt(getDoc().getString("warnhex"), 16);
-		} else {
-			return 0;
-		}
-	}
-	public int getKickHex() {
-		if (hasKey("kickhex")) {
-			return Integer.parseInt(getDoc().getString("kickhex"), 16);
-		} else {
-			return 0;
-		}
-	}
-	public int getBanHex() {
-		if (hasKey("banhex")) {
-			return Integer.parseInt(getDoc().getString("banhex"), 16);
-		} else {
-			return 0;
-		}
-	}
-	public String getWarnHexString() {
-		if (hasKey("warnhex")) {
-			return getDoc().getString("warnhex");
-		} else {
-			return "0";
-		}
-	}
-	public String getBanHexString() {
-		if (hasKey("banhex")) {
-			return getDoc().getString("banhex");
-		} else {
-			return "0";
-		}
-	}
-	public String getKickHexString() {
-		if (hasKey("kickhex")) {
-			return getDoc().getString("kickhex");
-		} else {
-			return "0";
-		}
-	}
-	
 	public int getNrOfGuilds() {
 		return this.getDoc().getInteger("guilds", 0);
 	}
 	
-	public void setWarnHex(int nr) {
-		this.setKey("warnhex", Integer.toHexString(nr));
-	}
-	public void setKickHex(int nr) {
-		this.setKey("kickhex", Integer.toHexString(nr));
-	}
-	public void setBanHex(int nr) {
-		this.setKey("banhex", Integer.toHexString(nr));
-	}
 	public void setGuilds() {
 		this.setKey("guilds", jda.getGuilds().size());
 	}
 
+	public void setUsers() {
+		this.setKey("users", jda.getUsers().size());
+	}
+	
 	@Override
 	protected boolean update() {
 		try {
 			setGuilds();
+			setUsers();
 			Mongo.addUpdated("u" + getId());
 			return true;
 		} catch (Exception e) {
