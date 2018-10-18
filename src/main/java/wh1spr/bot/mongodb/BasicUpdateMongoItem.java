@@ -7,5 +7,4 @@ public abstract class BasicUpdateMongoItem extends BasicMongoItem {
 	}
 
 	protected abstract boolean update();
-
 }

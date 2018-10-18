@@ -2,6 +2,10 @@ package wh1spr.bot.mongodb;
 
 import static com.mongodb.client.model.Updates.*;
 
+import java.time.OffsetDateTime;
+
+import org.bson.Document;
+
 import net.dv8tion.jda.core.entities.Guild;
 
 public class MongoGuild extends BasicUpdateMongoItem {
@@ -10,14 +14,16 @@ public class MongoGuild extends BasicUpdateMongoItem {
 		this(guild.getId());
 	}
 	public MongoGuild(String guildId) {
-		super("guilds", guildId); //collection
+		super("guilds", guildId);
+		
 		if (jda.getGuildById(guildId)==null) { //either gone or nonexistent
 			if (!exists(guildId)) throw new IllegalArgumentException("Given guildId is unknown");
 		} else {
-			if (!exists(guildId)) Mongo.getCreator().createGuild(getGuild());
-			else if (!Mongo.isUpdated(getGuild())) 
-				if (!update())
-					throw new Error("Could not update Guild " + guildId + " in MongoDB.");
+			if (!exists(guildId)) {
+				Mongo.createItem("guilds", this.getId());
+				this.setKey("creationtime", getGuild().getCreationTime().toString());
+			}
+			update();
 		}
 	}
 	
@@ -60,6 +66,9 @@ public class MongoGuild extends BasicUpdateMongoItem {
 			return getGuild().getName();
 		}
 	}
+	public OffsetDateTime getCreationTime() {
+		return OffsetDateTime.parse(this.getDoc().getString("creationtime"));
+	}
 	
 	/*************
 	 *  SETTERS  * Setters assume what you're doing is correct.
@@ -76,7 +85,6 @@ public class MongoGuild extends BasicUpdateMongoItem {
 						set("voicechannels", this.getGuild().getVoiceChannels().size()),
 						set("members", this.getGuild().getMembers().size()));
 	}
-	
 //	public void setEconomy(EcoInfo ei) {
 //		this.setKey("economy", new BasicDBObject("MajSing", ei.getMaj(0))
 //				.append("MajMult", ei.getMaj(1))
@@ -93,16 +101,19 @@ public class MongoGuild extends BasicUpdateMongoItem {
 	@Override
 	protected boolean update() {
 		if (getGuild() == null) return false;
-		try {
-			setName();
+		Document gd = this.getDoc();
+		Guild g = getGuild();
+		if (!gd.getString("name").equals(g.getName())) setName();
+		if (!gd.getString("owner").equals(g.getOwner().getUser().getId())) {
 			setOwner();
-			updateCounts();
-			Mongo.addUpdated("g" + getId());
-			return true;
-		} catch (Exception e) {
-			this.log.error(e, "Couldn't update MongoGuild with ID " + getId());
-			return false;
+			new MongoUser(g.getOwner().getUser());
 		}
+		if (gd.getInteger("textchannels")!=g.getTextChannels().size()
+				|| gd.getInteger("voicechannels")!=g.getVoiceChannels().size()
+				|| gd.getInteger("members")!=g.getMembers().size()) {
+			updateCounts();
+		}
+		return true;
 	}
 	
 	public static boolean exists(String guildId) {
