@@ -34,29 +34,19 @@ public abstract class Command {
 	protected String name = null;
 	protected ArrayList<String> aliases = new ArrayList<String>();
 	
+	// Enable/Disable
 	private boolean isDisabled = false;
-	public boolean isDisabled() {
-		return isDisabled;
-	}
+	public boolean isDisabled() {return isDisabled;}
+	public void disable() {isDisabled = true;}
+	public void enable() {isDisabled = false;}
 	
-	public void disable() {
-		isDisabled = true;
-	}
-	public void enable() {
-		isDisabled = false;
-	}
-	
+	// Maelstrom only
 	private boolean mOnly = true;
-	protected void setMaelstromOnly(boolean toggle) {
-		this.mOnly = toggle;
-	}
+	protected void setMaelstromOnly(boolean toggle) {this.mOnly = toggle;}
+	public boolean isMaelstromOnly() {return this.mOnly;}
 	
-	public boolean isMaelstromOnly() {
-		return this.mOnly;
-	}
-	
+	// Calls
 	public abstract void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args);
-
 	public void onCallPrivate(JDA jda, MessageChannel channel, User invoker, Message message, List<String> args) {
 		onCall(jda, null, channel, invoker, message, args);
 	}
@@ -74,7 +64,5 @@ public abstract class Command {
 	public static void success(Message message) {
 		message.addReaction(EmojiManager.getForAlias("white_check_mark").getUnicode()).queue();
 	}
-
-
 
 }

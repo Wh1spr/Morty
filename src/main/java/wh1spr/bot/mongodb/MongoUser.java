@@ -39,6 +39,9 @@ public class MongoUser extends BasicUpdateMongoItem {
 		return getDoc().getString("mention");
 	}
 
+//	public Document getGuildDoc(Guild g) {
+//		return getDoc().get("guilds", Document.class).get(g.getId(), Document.class);
+//	}
 // FOR INTROUSER
 //	public boolean hasIntro(Guild guild) {
 //		if (!Mongo.getMongoGuild(guild).hasIntro()) return false;

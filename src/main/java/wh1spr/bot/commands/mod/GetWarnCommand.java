@@ -25,7 +25,7 @@ public class GetWarnCommand extends Command {
 	}
 
 	private static MessageEmbed failnonexistent = new EmbedBuilder().setColor(Color.RED).setTitle(":no_entry_sign: This warning does not exist.").build();
-	private static MessageEmbed failsyntax = new EmbedBuilder().setColor(Color.RED).setTitle(":no_entry_sign: Incorrect Syntax.").setDescription("`E!GetWarn <hex value | @user | userId>").build();
+	private static MessageEmbed failsyntax = new EmbedBuilder().setColor(Color.RED).setTitle(":no_entry_sign: Incorrect Syntax.").setDescription("`E!GetWarn <hex value | @user | userId>`").build();
 	
 	@Override
 	public void onCall(JDA jda, Guild guild, MessageChannel channel, User invoker, Message message, List<String> args) {
@@ -34,7 +34,7 @@ public class GetWarnCommand extends Command {
 		if (args.size() != 1) {
 			channel.sendMessage(failsyntax).queue();
 			return;
-		} else if (message.getMentionedUsers().isEmpty() && !MongoUser.exists(args.get(0)) && Tools.isPosInteger(args.get(0))?jda.getUserById(args.get(0))==null:true) {
+		} else if (message.getMentionedUsers().isEmpty() && !MongoUser.exists(args.get(0)) && (Tools.isPosInteger(args.get(0))?jda.getUserById(args.get(0))==null:true)) {
 			// hex val
 			if (!Warning.exists(args.get(0))) {
 				channel.sendMessage(failnonexistent).queue();

@@ -116,8 +116,8 @@ public abstract class BasicMongoItem {
 		this.getCollection().deleteOne(eq("_id", this.getId()));
 	}
 
-	protected static boolean exists(String collection, String hex) {
-		return Mongo.getDb().getCollection(collection).find(eq("_id", hex)).first()!=null;
+	protected static boolean exists(String collection, String id) {
+		return Mongo.getDb().getCollection(collection).find(eq("_id", id)).first()!=null;
 	}
 	
 	@Override
