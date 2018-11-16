@@ -4,7 +4,9 @@ import org.bson.Document;
 
 import com.mongodb.BasicDBObject;
 
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
+import wh1spr.bot.command.Command;
 
 public class MongoUser extends BasicUpdateMongoItem {
 	
@@ -30,6 +32,12 @@ public class MongoUser extends BasicUpdateMongoItem {
 		return jda.getUserById(getId());
 	}
 	
+	public boolean isBotBanned() {
+		return getDoc().getBoolean("banned", false);
+	}
+	public void botBan() {this.setKey("banned", true);}
+	public void botPardon() {this.deleteKey("banned");}
+	
 	/*************
 	 *  GETTERS  * Getters assume that what you're doing is correct
 	 *  		 * Getters use newest doc version, and only get stuff that can't be easily obtained with guild.
@@ -37,6 +45,20 @@ public class MongoUser extends BasicUpdateMongoItem {
 	
 	public String getUserMention() {
 		return getDoc().getString("mention");
+	}
+	
+	public long getPermOverride() {
+		if (!getDoc().containsKey("poverride")) return 0L;
+		return getDoc().getLong("poverride");
+	}
+	
+	public long getPerms(Guild g) {
+		Document d = getDoc();
+		if (this.getUser()==null) return getPermOverride();
+		if (!g.isMember(this.getUser()) && (getPermOverride()&Command.PERM_BOT_OWNER)!=0) return 0L;
+		if (isBotBanned()) return 0L;
+		if (!d.containsKey(String.format("guilds.%s.perms", g.getId()))) return getPermOverride() | Command.PERM_EVERYONE;
+		return d.get("guilds", Document.class).get(g.getId(), Document.class).getLong("perms") | getPermOverride();
 	}
 
 //	public Document getGuildDoc(Guild g) {
