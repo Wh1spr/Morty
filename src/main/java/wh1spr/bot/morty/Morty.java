@@ -81,7 +81,8 @@ public class Morty extends Bot {
 			        .setToken(this.getToken()).addEventListener(
 			        		new CommandHandler(this.getPrefix(), this.getCommandRegistry()),
 			        		this.getAutoEvents())
-			        .buildBlocking();
+			        .build();
+			jda.awaitReady();
 		} catch (Exception e) {
 			log.fatal(e, "JDA instance could not be initialized.");
 			shutdown();
