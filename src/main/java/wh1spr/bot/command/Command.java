@@ -22,7 +22,6 @@ public abstract class Command {
 			this.aliases.add(alias);
 		}
 		this.CMD_PERM = perm;
-		System.out.println(PERM_BOT_OWNER);
 	}
 	
 	@Deprecated

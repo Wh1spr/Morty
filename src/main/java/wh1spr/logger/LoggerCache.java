@@ -27,7 +27,7 @@ public class LoggerCache {
 		LoggerCache.url = url;
 		try {
 			new File(url.substring(0, url.lastIndexOf('/'))).mkdirs();
-			mainOut = new PrintWriter(new BufferedWriter (new FileWriter(String.format(url, getDateStamp()), true)));
+			mainOut = new PrintWriter(new FileWriter(String.format(url, getDateStamp()), true));
 			main = getLogger("MAIN");
 		} catch (IOException e) {
 			System.err.println("Logger startup failed, exiting...");
@@ -62,6 +62,9 @@ public class LoggerCache {
 		return log;
 	}
 	
+	/**
+	 * Shuts down all currently active loggers.
+	 */
 	public static void shutdown() {
 		ArrayList<Logger> copy = new ArrayList<Logger>(cache.values());
 		Iterator<Logger> iter = copy.iterator();
@@ -75,38 +78,30 @@ public class LoggerCache {
 		main.shutdown();
 	}
 
-	public static void removeLogger(String name) {
-		Logger l = cache.get(name.toUpperCase());
-		if (l == null) return;
-		removeLogger(l);
-	}
 	
 	public static void removeLogger(Logger log) {
 		log.shutdown();
 		cache.remove(log.getName());
 	}
 	
-	public static void flush() {
-		mainOut.flush();
-	}
-	
 	private static class DailyCycle extends TimerTask {
 		@Override
 		public void run() {
 			PrintWriter oldOut = LoggerCache.mainOut;
+			Logger old = new Logger("LOG-TRANSFER", oldOut, level);
+			old.info("Logger transferring to new file. Closing this file!");
+			old.shutdown();
 			
 			try {
-				final PrintWriter newOut = new PrintWriter(new BufferedWriter (new FileWriter(String.format(url, getDateStamp()), true)));
+				final PrintWriter newOut = new PrintWriter(new FileWriter(String.format(url, getDateStamp()), true));
 				LoggerCache.mainOut = newOut;
 				
 				LoggerCache.cache.values().forEach(el->{
 					el.setOut(newOut);
 				});
+				main.info("New logfile created, hello!");
 			} catch (IOException e) {/*Didn't happen before, shouldn't happen now*/}
 			
-			Logger old = new Logger("LOG-TRANSFER", oldOut);
-			old.info("Logger transferring to new file. Closing this file!");
-			old.shutdown();
 			oldOut.close();
 		}
 	}
