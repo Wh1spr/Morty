@@ -44,6 +44,17 @@ public class LoggerCache {
 		t.schedule(new DailyCycle(), today.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
 	}
 	
+	public static void setLevel(int lvl) {
+		main.info("Setting logger level to '" + lvl + "'");
+		LoggerCache.level = lvl;
+		ArrayList<Logger> copy = new ArrayList<Logger>(cache.values());
+		Iterator<Logger> iter = copy.iterator();
+		while (iter.hasNext()) {
+			iter.next().setLvl(lvl);
+		}
+	}
+	private static int level = 2;
+	
 	/**
 	 * Returns a {@link Logger} with the given name.
 	 * @param name Name of the logger, this should be descriptive of where the logger is used.
@@ -57,7 +68,7 @@ public class LoggerCache {
 	
 	private static Logger newLogger(String name) {
 		name = name.toUpperCase();
-		Logger log = new Logger(name, mainOut);
+		Logger log = new Logger(name, mainOut, level);
 		cache.put(name, log);
 		return log;
 	}
@@ -112,4 +123,10 @@ public class LoggerCache {
 	    String strDate = sdfDate.format(now);
 	    return strDate;
 	}
+	
+	public static final int DEBUG = 1;
+	public static final int INFO = 2;
+	public static final int WARNING = 3;
+	public static final int ERROR = 4;
+	public static final int FATAL = 5;
 }
