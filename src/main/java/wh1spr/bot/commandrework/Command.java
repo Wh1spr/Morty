@@ -23,7 +23,10 @@ public abstract class Command {
 		
 		log.debug("Creating command " + id + "  with default permission " + perm.getName());
 		this.id = id.toLowerCase();
+		
+		if (perm.isGuild()) this.setGuildOnly(true);
 		this.perm = perm;
+		
 		this.name = name.toLowerCase();
 		for (String alias : aliases) {
 			this.aliases.add(alias.toLowerCase());
@@ -104,6 +107,14 @@ public abstract class Command {
 	public boolean isDisabled() {return isDisabled;}
 	public void disable() {isDisabled = true;}
 	public void enable() {isDisabled = false;}
+	
+	// Guild only
+	private boolean gOnly = false;
+	protected void setGuildOnly(boolean toggle) {
+		if (this.getPermission().isGuild() && !toggle) throw new IllegalArgumentException("Tried to set GuildOnly to false, but permission is Guild-only.");
+		this.gOnly = toggle;
+	}
+	public boolean isGuildOnly() {return this.gOnly;}
 	
 	// Maelstrom only
 	private boolean mOnly = false;
