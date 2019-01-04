@@ -18,7 +18,6 @@ public abstract class Command {
 
 	public Command(String id, Permission perm, String name, String... aliases) {
 		if (id == null) throw new IllegalArgumentException("Command ID cannot be null.");
-		if (perm == null) throw new IllegalArgumentException("Default permission cannot be null.");
 		if (name == null) throw new IllegalArgumentException("Name cannot be null.");
 		
 		log.debug("Creating command " + id + "  with default permission " + perm.getName());
@@ -39,6 +38,9 @@ public abstract class Command {
 		return this.id;
 	}
 	
+	/**
+	 * If return is null, then it is DEV
+	 */
 	public Permission getPermission() {
 		return this.perm;
 	}

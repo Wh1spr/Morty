@@ -100,6 +100,7 @@ public class CommandRegistry {
      */
     public boolean canUse(String cmdNameOrId, Member m) {
     	//isdev => true
+    	if (getCommand(cmdNameOrId).getPermission()==null) return false;
     	Iterator<Role> iter = m.getRoles().iterator();
     	while(iter.hasNext()) {
     		Role r = iter.next();
@@ -113,6 +114,7 @@ public class CommandRegistry {
      * @return Wether or not Members that have the given Role can use the command with given name or id
      */
     public boolean canUse(String cmdNameOrId, Role r) {
+    	if (getCommand(cmdNameOrId).getPermission()==null) return false; //no role has DEV
     	if (rolePermOverrides.containsKey(r.getIdLong())) {
     		HashMap<String, Boolean> overrides = rolePermOverrides.get(r.getIdLong());
     		if (overrides.containsKey(cmdNameOrId)) {
@@ -128,7 +130,8 @@ public class CommandRegistry {
      */
     public boolean canUse(String cmdNameOrId, User u) {
     	if (getCommand(cmdNameOrId).isGuildOnly()) return false;
-    	//isdev => false
+    	//isdev => true
+    	if (getCommand(cmdNameOrId).getPermission()==null) return false;
     	return true;
     }
     
