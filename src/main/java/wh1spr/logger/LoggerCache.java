@@ -1,6 +1,5 @@
 package wh1spr.logger;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
