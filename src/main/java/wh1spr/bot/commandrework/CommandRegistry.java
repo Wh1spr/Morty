@@ -1,6 +1,7 @@
 package wh1spr.bot.commandrework;
 
 import java.util.HashMap;
+import java.util.Set;
 
 import wh1spr.logger.Logger;
 import wh1spr.logger.LoggerCache;
@@ -34,6 +35,26 @@ public class CommandRegistry {
 			}
 		}
 	}
+	
+	public Command getCommand(String name) {
+        return nameregistry.get(name);
+    }
+
+    public int getNrCommands() {
+        return idregistry.size();
+    }
+    
+    public int getNrAliasesAndNames() {
+    	return nameregistry.size();
+    }
+
+    public Set<String> getRegisteredCommandsAndAliases() {
+        return nameregistry.keySet();
+    }
+    
+    public Set<String> getRegisteredCommandIds() {
+    	return idregistry.keySet();
+    }
 	
 
 }
