@@ -26,6 +26,11 @@ public class CommandRegistry {
 	// role id, (command Id, y/n)
 	protected HashMap<Long, HashMap<String, Boolean>> rolePermOverrides = new HashMap<Long, HashMap<String, Boolean>>();
 	
+	/**
+	 * Registers a command in this {@link CommandRegistry}
+	 * @param cmd The {@link Command} to register
+	 * @throws IllegalArgumentException If the given command has conflicting Id/Name values with other commands
+	 */
 	public void registerCommand(Command cmd) {
 		if (idregistry.containsKey(cmd.getId())) 
 			throw new IllegalArgumentException(String.format("Command ID '%s' is already in use by '%s'",cmd.getId(), idregistry.get(cmd.getId()).getName()));
@@ -48,29 +53,51 @@ public class CommandRegistry {
 		}
 	}
 	
+	/**
+	 * Returns the command with given name or id value
+	 * @param nameOrId A name, alias, or ID to identify the command
+	 * @return command with given name or id value
+	 */
 	public Command getCommand(String nameOrId) {
 		if (nameregistry.containsKey(nameOrId)) return nameregistry.get(nameOrId);
 		else if (idregistry.containsKey(nameOrId)) return idregistry.get(nameOrId);
 		else return null;
     }
 
+	/**
+	 * @return The number of registered commands.
+	 */
     public int getNrCommands() {
         return idregistry.size();
     }
     
+    /**
+     * @return The number of registered commands and aliases.
+     */
     public int getNrAliasesAndNames() {
     	return nameregistry.size();
     }
 
+    /**
+     * @return A set of registered commands and aliases.
+     */
     public Set<String> getRegisteredCommandsAndAliases() {
         return nameregistry.keySet();
     }
     
+    /**
+     * @return A set of uniquely registered command Ids
+     */
     public Set<String> getRegisteredCommandIds() {
     	return idregistry.keySet();
     }
     
     //TODO if isdeveloper => MongoUser
+    /**
+     * @param cmdNameOrId Name, alias or id of the command
+     * @param m Member to check
+     * @return Wether or not this Member can use the command with given name or id
+     */
     public boolean canUse(String cmdNameOrId, Member m) {
     	//isdev => true
     	Iterator<Role> iter = m.getRoles().iterator();
@@ -80,6 +107,11 @@ public class CommandRegistry {
     	}
     	return false;
     }
+    /**
+     * @param cmdNameOrId Name, alias or id of the command
+     * @param r Role to check
+     * @return Wether or not Members that have the given Role can use the command with given name or id
+     */
     public boolean canUse(String cmdNameOrId, Role r) {
     	if (rolePermOverrides.containsKey(r.getIdLong())) {
     		HashMap<String, Boolean> overrides = rolePermOverrides.get(r.getIdLong());
@@ -89,6 +121,11 @@ public class CommandRegistry {
     	}
     	return r.hasPermission(getCommand(cmdNameOrId).getPermission());
     }
+    /**
+     * @param cmdNameOrId Name, alias or id of the command
+     * @param u User to check
+     * @return Wether or not the given User can use the command with geiven name or id
+     */
     public boolean canUse(String cmdNameOrId, User u) {
     	if (getCommand(cmdNameOrId).isGuildOnly()) return false;
     	//isdev => false
