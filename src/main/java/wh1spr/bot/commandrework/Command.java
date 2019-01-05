@@ -114,13 +114,14 @@ public abstract class Command {
 	private boolean gOnly = false;
 	protected void setGuildOnly(boolean toggle) {
 		if (this.getPermission().isGuild() && !toggle) throw new IllegalArgumentException("Tried to set GuildOnly to false, but permission is Guild-only.");
+		if (this.isMaelstromOnly() && !toggle) throw new IllegalArgumentException("Tried to set GuildOnly to false, but MaelstromOnly is true.");
 		this.gOnly = toggle;
 	}
 	public boolean isGuildOnly() {return this.gOnly;}
 	
 	// Maelstrom only
 	private boolean mOnly = false;
-	protected void setMaelstromOnly(boolean toggle) {this.mOnly = toggle;}
+	protected void setMaelstromOnly(boolean toggle) {this.mOnly = toggle; this.setGuildOnly(true);}
 	public boolean isMaelstromOnly() {return this.mOnly;}
 	
 	// Calls
