@@ -85,4 +85,10 @@ public class MongoUser extends BasicUpdateMongoItem {
 	public static boolean exists(String userId) {
 		return exists("users", userId);
 	}
+	
+	@Override
+	protected void create() {
+		// TODO Auto-generated method stub
+		
+	}
 }

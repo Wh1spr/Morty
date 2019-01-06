@@ -48,4 +48,9 @@ public class MongoBot extends BasicUpdateMongoItem {
 	public static boolean exists(String botId) {
 		return exists("bots", botId);
 	}
+
+	@Override
+	protected void create() {
+		// TODO Auto-generated method stub
+	}
 }

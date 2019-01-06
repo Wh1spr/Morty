@@ -119,4 +119,10 @@ public class MongoGuild extends BasicUpdateMongoItem {
 	public static boolean exists(String guildId) {
 		return exists("guilds", guildId);
 	}
+	
+	@Override
+	protected void create() {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -27,6 +27,7 @@ public class Mongo {
 		return db;
 	}
 	
+	@Deprecated
 	public static void createItem(String collection, String id) {
 		if (getDb().getCollection(collection).find(eq("_id",id)).first()!=null)
 			throw new IllegalArgumentException("Illegal argument, ID " + id + " already exists in Collection " + collection);
