@@ -1,25 +1,33 @@
 package wh1spr.bot.mongodb;
 
+import java.util.Set;
+
 import org.bson.Document;
 
 import com.mongodb.BasicDBObject;
 
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
 
 public class MongoUser extends BasicUpdateMongoItem {
 	
 	public MongoUser(User user) {
-		this(user.getId());
+		this(user.getIdLong());
 	}
+	
+	@Deprecated
 	public MongoUser(String userId) {
+		this(Long.parseLong(userId));
+	}
+
+	public MongoUser(long userId) {
 		super("users", userId);
 		
 		if (jda.getUserById(userId)==null) { //either gone or nonexistent
 			if (!exists(userId)) throw new IllegalArgumentException("Given userId is unknown");
 		} else {
 			if (!exists(userId)) {
-				Mongo.createItem("users", this.getId());
-				this.setKey("guilds", new BasicDBObject());
+				this.createItem();
 			}
 			update();
 		}
@@ -27,21 +35,46 @@ public class MongoUser extends BasicUpdateMongoItem {
 	}
 
 	public User getUser() {
-		return jda.getUserById(getId());
+		return jda.getUserById(getIdLong());
 	}
 	
-	/*************
-	 *  GETTERS  * Getters assume that what you're doing is correct
-	 *  		 * Getters use newest doc version, and only get stuff that can't be easily obtained with guild.
-	 *************/
-	
+	@Deprecated
 	public String getUserMention() {
+		return this.getUserMention();
+	}
+	
+	public String getMention() {
 		return getDoc().getString("mention");
 	}
+	
+	public void setMention() {
+		User u = getUser();
+		this.setKey("mention", String.format("%s#%s", u.getName(), u.getDiscriminator()));			
+	}
+	
+	public void addGuild(Guild g) {
+		//TODO
+		//pushes a guildid from guilds
+	}
+	
+	public void removeGuild(Guild g) {
+		//TODO
+		//removes guildid from guilds 
+		//destroys data from that guild, except bans/warnings/kicks...
+	}
+	
+	/**
+	 * @param g Guild to check
+	 * @return Wether or not this MongoUser has a Guild in its DB Document
+	 */
+	public boolean hasGuild(Guild g) {
+		return getGuildDoc(g)!=null;
+	}
 
-//	public Document getGuildDoc(Guild g) {
-//		return getDoc().get("guilds", Document.class).get(g.getId(), Document.class);
-//	}
+	protected Document getGuildDoc(Guild g) {
+		return getDoc().get("guilds", Document.class).get(g.getId(), Document.class);
+	}
+	
 // FOR INTROUSER
 //	public boolean hasIntro(Guild guild) {
 //		if (!Mongo.getMongoGuild(guild).hasIntro()) return false;
@@ -62,33 +95,40 @@ public class MongoUser extends BasicUpdateMongoItem {
 //		}
 //	}
 	
-	/*************
-	 *  SETTERS  * Setters assume what you're doing is correct.
-	 *  		 * Setters update straight to DB. Getters use newest doc version.
-	 *************/
-	public void setMention() {
-		User u = getUser();
-		this.setKey("mention", String.format("%s#%s", u.getName(), u.getDiscriminator()));			
-	}
-	
 	@Override
 	protected boolean update() {
 		if (getUser() == null) return false;
 		Document d = getDoc();
-		if (!String.format("%s#%s", getUser().getName(), getUser().getDiscriminator())
-				.equals(d.getString("mention"))) {
+		if (!String.format("%s#%s", getUser().getName(), getUser().getDiscriminator()).equals(d.getString("mention"))) {
 			setMention();
 		}
+		
+		Set<String> has = getDoc().get("guilds", Document.class).keySet();
+		
+		jda.getMutualGuilds(getUser()).forEach(el->{
+			if (!hasGuild(el)) {
+				addGuild(el);
+			} else {
+				has.remove(el.getId());
+			}
+		});
+		has.forEach(el->this.deleteKey("guilds." + el));
+		
 		return true;
 	}
 	
+	@Deprecated
 	public static boolean exists(String userId) {
+		return exists("users", userId);
+	}
+	
+	public static boolean exists(long userId) {
 		return exists("users", userId);
 	}
 	
 	@Override
 	protected void create() {
-		// TODO Auto-generated method stub
-		
+		setMention();
+		this.setKey("guilds", new BasicDBObject());
 	}
 }

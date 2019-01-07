@@ -39,10 +39,6 @@ public abstract class BasicMongoItem {
 		db.getCollection(collection); // will throw error if name is not valid.
 		this.collection = collection;
 		this.setId(id);
-		if (!exists(collection, id)) {
-			createItem();
-			create();
-		}
 	}
 	
 	private String collection = null;
@@ -149,10 +145,14 @@ public abstract class BasicMongoItem {
 	 */
 	protected abstract void create();
 	
-	private void createItem() {
+	/**
+	 * Creates a Document in the DB, filled by {@link BasicMongoItem#create()}
+	 */
+	protected void createItem() {
 		if (exists(this.collection, getIdLong()))
 			throw new IllegalArgumentException("Illegal argument, ID " + id + " already exists in Collection " + collection);
 		getCollection().insertOne(new Document("_id", id));
+		create();
 	}
 	
 	@Override

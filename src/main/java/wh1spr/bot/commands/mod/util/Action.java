@@ -72,5 +72,8 @@ public abstract class Action extends BasicMongoItem {
 		}
 		return nextHex;
 	}
+	
+	@Override
+	protected void create() {} //not needed, done by Action#setItem()
 
 }

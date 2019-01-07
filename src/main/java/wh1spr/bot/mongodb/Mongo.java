@@ -27,6 +27,11 @@ public class Mongo {
 		return db;
 	}
 	
+	
+	/**
+	 * @deprecated Moved to BasicMongoItem
+	 * @see BasicMongoItem#createItem()
+	 */
 	@Deprecated
 	public static void createItem(String collection, String id) {
 		if (getDb().getCollection(collection).find(eq("_id",id)).first()!=null)
