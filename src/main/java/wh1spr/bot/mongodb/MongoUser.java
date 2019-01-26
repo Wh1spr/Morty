@@ -8,6 +8,7 @@ import com.mongodb.BasicDBObject;
 
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
+import wh1spr.bot.Tools;
 
 public class MongoUser extends BasicUpdateMongoItem {
 	
@@ -38,9 +39,13 @@ public class MongoUser extends BasicUpdateMongoItem {
 		return jda.getUserById(getIdLong());
 	}
 	
+	/**
+	 * @see MongoUser#getMention()
+	 * @return
+	 */
 	@Deprecated
 	public String getUserMention() {
-		return this.getUserMention();
+		return this.getMention();
 	}
 	
 	public String getMention() {
@@ -117,9 +122,9 @@ public class MongoUser extends BasicUpdateMongoItem {
 		return true;
 	}
 	
-	@Deprecated
 	public static boolean exists(String userId) {
-		return exists("users", userId);
+		if (Tools.isPosInteger(userId)) return exists(Long.parseLong(userId));
+		else return false;
 	}
 	
 	public static boolean exists(long userId) {
