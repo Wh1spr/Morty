@@ -26,16 +26,4 @@ public class Mongo {
 	public static MongoDatabase getDb() {
 		return db;
 	}
-	
-	
-	/**
-	 * @deprecated Moved to BasicMongoItem
-	 * @see BasicMongoItem#createItem()
-	 */
-	@Deprecated
-	public static void createItem(String collection, String id) {
-		if (getDb().getCollection(collection).find(eq("_id",id)).first()!=null)
-			throw new IllegalArgumentException("Illegal argument, ID " + id + " already exists in Collection " + collection);
-		getDb().getCollection(collection).insertOne(new Document("_id", id));
-	}
 }

@@ -21,11 +21,6 @@ public abstract class BasicMongoItem {
 
 	protected Logger log;
 	
-	@Deprecated
-	protected BasicMongoItem(String collection, String id) {
-		this(collection, Long.parseLong(id));
-	}
-	
 	/**
 	 * A basic MongoDB Item. Contains ID of the item in a MongoDB and some helper functions.
 	 * @param collection The MongoDB Collection this item is a part of. Database gets set by {@link Mongo}
@@ -63,8 +58,7 @@ public abstract class BasicMongoItem {
 	 * @see BasicMongoItem#getIdLong()
 	 * @return The ID of the Item in the MongoDB.
 	 */
-	@Deprecated
-	public String getId() {
+	public String getIdString() {
 		return String.valueOf(this.id);
 	}
 	
@@ -98,7 +92,7 @@ public abstract class BasicMongoItem {
 	}
 	
 	/**
-	 * @return Wether or not this key has a mapping.
+	 * @return Whether or not this key has a mapping.
 	 */
 	protected boolean hasKey(String key) {
 		Document item = this.getCollection().find(eq("_id", this.getIdLong())).first();
