@@ -75,8 +75,9 @@ public class Main {
 				prefix = "!";
 			}
 			if (key == null) {
-				log.error("Key for MORTY could not be found in main.properties. Morty has not started.");
-				return; // Morty can not start
+				log.fatal("Key for MORTY could not be found in main.properties. Morty has not started.");
+				LoggerCache.shutdown();
+				System.exit(1);
 			}
 			
 			log.info("Running MORTY...");
