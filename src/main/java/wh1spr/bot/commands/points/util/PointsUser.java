@@ -23,7 +23,7 @@ public class PointsUser {
 		this.type = type;
 		
 		if (!mongo.getDoc().containsKey(module)) {
-			db.getCollection("users").updateOne(eq("_id", mongo.getId()), set(module,
+			db.getCollection("users").updateOne(eq("_id", mongo.getIdLong()), set(module,
 					new BasicDBObject()));
 		}
 		
@@ -53,11 +53,11 @@ public class PointsUser {
 	}
 	
 	public void setPoints(int points) {
-		db.getCollection("users").updateOne(eq("_id", mongo.getId()), set(module+"."+type, points));
+		db.getCollection("users").updateOne(eq("_id", mongo.getIdLong()), set(module+"."+type, points));
 	}
 	
 	public void deletePoints() {
-		db.getCollection("users").updateOne(eq("_id", mongo.getId()), unset(module+"."+type));
+		db.getCollection("users").updateOne(eq("_id", mongo.getIdLong()), unset(module+"."+type));
 	}
 
 }

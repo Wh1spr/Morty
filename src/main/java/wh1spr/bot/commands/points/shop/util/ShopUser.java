@@ -22,6 +22,9 @@ public class ShopUser extends MongoUser {
 		this(user.getId(), tm);
 	}
 	public ShopUser(String userId, PointTypeManager tm) {
+		this(Long.parseLong(userId), tm);
+	}
+	public ShopUser(long userId, PointTypeManager tm) {
 		super(userId);
 		if (tm == null) throw new IllegalArgumentException("PointTypeManager cannot be null.");
 		this.tm = tm;
