@@ -54,13 +54,16 @@ public class GetWarnCommand extends Command {
 			WarnUser wu = null;
 			if (!message.getMentionedUsers().isEmpty()) {
 				wu = new WarnUser(message.getMentionedUsers().get(0));
-			} else { 
-				wu = new WarnUser(args.get(0));
+			} else {
+				if (jda.getUserById(args.get(0))!=null) {
+					wu = new WarnUser(Long.parseLong(args.get(0)));
+				}
 			}
+			if (wu==null) return;
 			List<Warning> warns = wu.getWarnings();
 			
 			if (warns.isEmpty()) {
-				channel.sendMessage(new EmbedBuilder().setColor(Color.GREEN).setTitle(":white_check_mark: **" + wu.getUserMention() + "** has no warnings!").build()).queue();
+				channel.sendMessage(new EmbedBuilder().setColor(Color.GREEN).setTitle(":white_check_mark: **" + wu.getMention() + "** has no warnings!").build()).queue();
 				return;
 			} else {
 				//divide in this guild and others (ALSO CHECK NULL)
@@ -68,7 +71,7 @@ public class GetWarnCommand extends Command {
 					String w = getWarningsFromList(warns);
 					
 					channel.sendMessage(new EmbedBuilder().setColor(Color.ORANGE)
-							.setTitle(String.format("**%s** has **%d** warning%s.", wu.getUserMention(), warns.size(), warns.size()==1?"":"s"))
+							.setTitle(String.format("**%s** has **%d** warning%s.", wu.getMention(), warns.size(), warns.size()==1?"":"s"))
 							.setDescription("**Hex Values:** " + w).build()).queue();
 				} else {
 					List<Warning> guildwarns = new ArrayList<Warning>();
@@ -76,7 +79,7 @@ public class GetWarnCommand extends Command {
 					warns.removeAll(guildwarns);
 					
 					EmbedBuilder eb = new EmbedBuilder().setColor(Color.ORANGE)
-							.setTitle(String.format("**%s** has **%d** warning%s.", wu.getUserMention(), warns.size(), warns.size()==1?"":"s"));
+							.setTitle(String.format("**%s** has **%d** warning%s.", wu.getMention(), warns.size(), warns.size()==1?"":"s"));
 					if (!guildwarns.isEmpty()) eb.addField("**This server**", "**Hex Values:** " + getWarningsFromList(guildwarns), true);
 					if (!warns.isEmpty()) eb.addField("**Other servers:** ", "**Hex Values:** " + getWarningsFromList(warns), true);
 					

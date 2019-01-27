@@ -15,11 +15,6 @@ public class MongoUser extends BasicUpdateMongoItem {
 	public MongoUser(User user) {
 		this(user.getIdLong());
 	}
-	
-	@Deprecated
-	public MongoUser(String userId) {
-		this(Long.parseLong(userId));
-	}
 
 	public MongoUser(long userId) {
 		super("users", userId);
@@ -39,15 +34,6 @@ public class MongoUser extends BasicUpdateMongoItem {
 		return jda.getUserById(getIdLong());
 	}
 	
-	/**
-	 * @see MongoUser#getMention()
-	 * @return
-	 */
-	@Deprecated
-	public String getUserMention() {
-		return this.getMention();
-	}
-	
 	public String getMention() {
 		return getDoc().getString("mention");
 	}
@@ -58,14 +44,11 @@ public class MongoUser extends BasicUpdateMongoItem {
 	}
 	
 	public void addGuild(Guild g) {
-		//TODO
-		//pushes a guildid from guilds
+		this.setKey("guilds." + g.getId(), new BasicDBObject());
 	}
 	
 	public void removeGuild(Guild g) {
-		//TODO
-		//removes guildid from guilds 
-		//destroys data from that guild, except bans/warnings/kicks...
+		this.deleteKey("guilds." + g.getId());
 	}
 	
 	/**
@@ -78,6 +61,12 @@ public class MongoUser extends BasicUpdateMongoItem {
 
 	protected Document getGuildDoc(Guild g) {
 		return getDoc().get("guilds", Document.class).get(g.getId(), Document.class);
+	}
+	
+	public boolean isDev() {
+		Boolean dev = getDoc().getBoolean("dev");
+		if (dev == null) return false;
+		else return dev;
 	}
 	
 // FOR INTROUSER

@@ -36,7 +36,7 @@ public class PointBalanceCommand extends PointsCommand {
 			e.setTitle(String.format("You have **%d EventPoint" + (u.getPoints()==1?"**":"s**"), u.getPoints()));
 		} else if (message.getMentionedMembers().size() == 1 && args.size()==1) {
 			u = tm.getPointsUser(new MongoUser(message.getMentionedUsers().get(0)));
-			e.setTitle(String.format("%s has **%d EventPoint" + (u.getPoints()==1?"**":"s**"), u.getMongoUser().getUserMention(), u.getPoints()));
+			e.setTitle(String.format("%s has **%d EventPoint" + (u.getPoints()==1?"**":"s**"), u.getMongoUser().getMention(), u.getPoints()));
 		} else {
 			channel.sendMessage(failsyntax).queue();
 			return;

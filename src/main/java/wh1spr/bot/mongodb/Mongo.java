@@ -1,11 +1,8 @@
 package wh1spr.bot.mongodb;
 
-import org.bson.Document;
-
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
-import static com.mongodb.client.model.Filters.*;
 
 import wh1spr.bot.Main;
 import wh1spr.logger.Logger;
