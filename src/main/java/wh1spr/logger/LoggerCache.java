@@ -1,6 +1,5 @@
 package wh1spr.logger;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
@@ -27,7 +26,7 @@ public class LoggerCache {
 		LoggerCache.url = url;
 		try {
 			new File(url.substring(0, url.lastIndexOf('/'))).mkdirs();
-			mainOut = new PrintWriter(new BufferedWriter (new FileWriter(String.format(url, getDateStamp()), true)));
+			mainOut = new PrintWriter(new FileWriter(String.format(url, getDateStamp()), true));
 			main = getLogger("MAIN");
 		} catch (IOException e) {
 			System.err.println("Logger startup failed, exiting...");
@@ -44,6 +43,17 @@ public class LoggerCache {
 		t.schedule(new DailyCycle(), today.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
 	}
 	
+	public static void setLevel(int lvl) {
+		main.info("Setting logger level to '" + lvl + "'");
+		LoggerCache.level = lvl;
+		ArrayList<Logger> copy = new ArrayList<Logger>(cache.values());
+		Iterator<Logger> iter = copy.iterator();
+		while (iter.hasNext()) {
+			iter.next().setLvl(lvl);
+		}
+	}
+	private static int level = 2;
+	
 	/**
 	 * Returns a {@link Logger} with the given name.
 	 * @param name Name of the logger, this should be descriptive of where the logger is used.
@@ -57,11 +67,14 @@ public class LoggerCache {
 	
 	private static Logger newLogger(String name) {
 		name = name.toUpperCase();
-		Logger log = new Logger(name, mainOut);
+		Logger log = new Logger(name, mainOut, level);
 		cache.put(name, log);
 		return log;
 	}
 	
+	/**
+	 * Shuts down all currently active loggers.
+	 */
 	public static void shutdown() {
 		ArrayList<Logger> copy = new ArrayList<Logger>(cache.values());
 		Iterator<Logger> iter = copy.iterator();
@@ -75,38 +88,30 @@ public class LoggerCache {
 		main.shutdown();
 	}
 
-	public static void removeLogger(String name) {
-		Logger l = cache.get(name.toUpperCase());
-		if (l == null) return;
-		removeLogger(l);
-	}
 	
 	public static void removeLogger(Logger log) {
 		log.shutdown();
 		cache.remove(log.getName());
 	}
 	
-	public static void flush() {
-		mainOut.flush();
-	}
-	
 	private static class DailyCycle extends TimerTask {
 		@Override
 		public void run() {
 			PrintWriter oldOut = LoggerCache.mainOut;
+			Logger old = new Logger("LOG-TRANSFER", oldOut, level);
+			old.info("Logger transferring to new file. Closing this file!");
+			old.shutdown();
 			
 			try {
-				final PrintWriter newOut = new PrintWriter(new BufferedWriter (new FileWriter(String.format(url, getDateStamp()), true)));
+				final PrintWriter newOut = new PrintWriter(new FileWriter(String.format(url, getDateStamp()), true));
 				LoggerCache.mainOut = newOut;
 				
 				LoggerCache.cache.values().forEach(el->{
 					el.setOut(newOut);
 				});
+				main.info("New logfile created, hello!");
 			} catch (IOException e) {/*Didn't happen before, shouldn't happen now*/}
 			
-			Logger old = new Logger("LOG-TRANSFER", oldOut);
-			old.info("Logger transferring to new file. Closing this file!");
-			old.shutdown();
 			oldOut.close();
 		}
 	}
@@ -117,4 +122,10 @@ public class LoggerCache {
 	    String strDate = sdfDate.format(now);
 	    return strDate;
 	}
+	
+	public static final int DEBUG = 1;
+	public static final int INFO = 2;
+	public static final int WARNING = 3;
+	public static final int ERROR = 4;
+	public static final int FATAL = 5;
 }

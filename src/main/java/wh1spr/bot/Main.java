@@ -44,7 +44,7 @@ public class Main {
 		 * 3. Database
 		 * 4. EconomyStatus
 		 */
-		
+		LoggerCache.setLevel(LoggerCache.DEBUG);
 		LoggerCache.start("data/logs/main-%s.log");
 		log = LoggerCache.getLogger("MAIN");
 		

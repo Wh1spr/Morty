@@ -9,6 +9,7 @@ import com.mongodb.BasicDBObject;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.Tools;
+import wh1spr.bot.command.Command;
 
 public class MongoUser extends BasicUpdateMongoItem {
 	
@@ -33,11 +34,7 @@ public class MongoUser extends BasicUpdateMongoItem {
 	public User getUser() {
 		return jda.getUserById(getIdLong());
 	}
-	
-	public String getMention() {
-		return getDoc().getString("mention");
-	}
-	
+
 	public void setMention() {
 		User u = getUser();
 		this.setKey("mention", String.format("%s#%s", u.getName(), u.getDiscriminator()));			
@@ -57,6 +54,26 @@ public class MongoUser extends BasicUpdateMongoItem {
 	 */
 	public boolean hasGuild(Guild g) {
 		return getGuildDoc(g)!=null;
+  }
+  
+	public boolean isBotBanned() {
+		return getDoc().getBoolean("banned", false);
+	}
+	public void botBan() {this.setKey("banned", true);}
+	public void botPardon() {this.deleteKey("banned");}
+	
+	public long getPermOverride() {
+		if (!getDoc().containsKey("poverride")) return 0L;
+		return getDoc().getLong("poverride");
+	}
+	
+	public long getPerms(Guild g) {
+		Document d = getDoc();
+		if (this.getUser()==null) return getPermOverride();
+		if (!g.isMember(this.getUser()) && (getPermOverride()&Command.PERM_BOT_OWNER)!=0) return 0L;
+		if (isBotBanned()) return 0L;
+		if (!d.containsKey(String.format("guilds.%s.perms", g.getId()))) return getPermOverride() | Command.PERM_EVERYONE;
+		return d.get("guilds", Document.class).get(g.getId(), Document.class).getLong("perms") | getPermOverride();
 	}
 
 	protected Document getGuildDoc(Guild g) {
