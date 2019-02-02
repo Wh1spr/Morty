@@ -1,11 +1,8 @@
 package wh1spr.bot.mongodb;
 
-import org.bson.Document;
-
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
-import static com.mongodb.client.model.Filters.*;
 
 import wh1spr.bot.Main;
 import wh1spr.logger.Logger;
@@ -25,11 +22,5 @@ public class Mongo {
 	
 	public static MongoDatabase getDb() {
 		return db;
-	}
-	
-	public static void createItem(String collection, String id) {
-		if (getDb().getCollection(collection).find(eq("_id",id)).first()!=null)
-			throw new IllegalArgumentException("Illegal argument, ID " + id + " already exists in Collection " + collection);
-		getDb().getCollection(collection).insertOne(new Document("_id", id));
 	}
 }

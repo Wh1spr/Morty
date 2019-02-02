@@ -15,7 +15,7 @@ import wh1spr.bot.mongodb.MongoUser;
 
 public class WarnUser extends MongoUser {
 	
-	public WarnUser(String userId) {
+	public WarnUser(Long userId) {
 		super(userId);
 		
 		if (!getDoc().containsKey("warnings")) {
@@ -24,7 +24,7 @@ public class WarnUser extends MongoUser {
 	}
 	
 	public WarnUser(User user) {
-		this(user.getId());
+		this(user.getIdLong());
 	}
 	
 	@SuppressWarnings("unchecked")

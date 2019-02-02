@@ -16,30 +16,31 @@ import org.bson.Document;
 public abstract class Action extends BasicMongoItem {
 
 	Action(String hex, String collection) {
-		super(collection, hex);
+		super(collection, Long.parseLong(hex, 16));
 	}
 	
 	public boolean isSet() {
 		return getDate()!=null;
 	}
 
-	public int getHex() {
-		return Integer.parseInt(getId(), 16);
+	public long getHexLong() {
+		return this.getIdLong();
 	}
+	
 	public String getHexString() {
-		return this.getId();
+		return Long.toHexString(this.getIdLong());
 	}
 	
 	public String getUsername() {
-		return new MongoUser(this.getDoc().getString("user")).getUserMention();
+		return new MongoUser(this.getDoc().getLong("user")).getMention();
 	}
 	
 	public String getIssuername() {
-		return new MongoUser(this.getDoc().getString("by")).getUserMention();	
+		return new MongoUser(this.getDoc().getLong("by")).getMention();	
 	}
 	
 	public String getGuildName() {
-		return new MongoGuild(this.getDoc().getString("guild")).getName();
+		return new MongoGuild(this.getDoc().getLong("guild")).getName();
 	}
 	
 	public String getGuildId() {
@@ -56,21 +57,21 @@ public abstract class Action extends BasicMongoItem {
 	
 	protected void setItem(Guild g, User a, User by, String reason) {
 		if (isSet()) throw new IllegalArgumentException("This action is already set.");
-		bsonUpdates(set("guild", g.getId()), set("user", a.getId()), set("by", by.getId()),
+		bsonUpdates(set("guild", g.getIdLong()), set("user", a.getIdLong()), set("by", by.getIdLong()),
 				set("reason", reason), set("date", Tools.getDateTimeStamp()));
 	}
 	
 	protected static String getAndSetNextHex(String collection) {
-		Document hexdoc = Mongo.getDb().getCollection(collection).find(eq("_id", "0")).first();
-		String nextHex = null;
+		Document hexdoc = Mongo.getDb().getCollection(collection).find(eq("_id", 0L)).first();
 		if (hexdoc==null) {
-			nextHex = "1";
-			Mongo.getDb().getCollection(collection).insertOne(new Document("_id", "0").append("hex", nextHex));
+			Mongo.getDb().getCollection(collection).insertOne(new Document("_id", 0L).append("hex", 1L));
 		} else {
-			nextHex = Integer.toHexString(Integer.parseInt(hexdoc.getString("hex"), 16) + 1);
-			Mongo.getDb().getCollection(collection).updateOne(eq("_id", "0"), set("hex", nextHex));
+			Mongo.getDb().getCollection(collection).updateOne(eq("_id", 0L), inc("hex",1L));
 		}
-		return nextHex;
+		return Long.toString(Mongo.getDb().getCollection(collection).find(eq("_id", 0L)).first().getLong("hex"));
 	}
+	
+	@Override
+	protected void create() {} //not needed, done by Action#setItem()
 
 }

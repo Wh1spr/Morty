@@ -14,8 +14,8 @@ import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.mongodb.MongoUser;
 
 public class KickUser extends MongoUser {
-
-	public KickUser(String userId) {
+	
+	public KickUser(Long userId) {
 		super(userId);
 		
 		if (!getDoc().containsKey("kicks")) {
@@ -24,7 +24,7 @@ public class KickUser extends MongoUser {
 	}
 	
 	public KickUser(User user) {
-		this(user.getId());
+		this(user.getIdLong());
 	}
 	
 	@SuppressWarnings("unchecked")

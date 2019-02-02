@@ -60,7 +60,7 @@ public class InventoryCommand extends PointsCommand {
 		
 		//I'm gonna limit to 20 items for now
 		List<ShopItem> items = u.getItems();
-		EmbedBuilder e = new EmbedBuilder().setColor(Color.CYAN).setTitle(String.format("**%s's Inventory**", u.getUserMention()));
+		EmbedBuilder e = new EmbedBuilder().setColor(Color.CYAN).setTitle(String.format("**%s's Inventory**", u.getMention()));
 		String fieldmsg = "";
 		int i = 1;
 		for(ShopItem item : items) {

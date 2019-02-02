@@ -14,8 +14,8 @@ import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.mongodb.MongoUser;
 
 public class BanUser extends MongoUser {
-
-	public BanUser(String userId) {
+	
+	public BanUser(Long userId) {
 		super(userId);
 		
 		if (!getDoc().containsKey("bans")) {
@@ -24,7 +24,7 @@ public class BanUser extends MongoUser {
 	}
 	
 	public BanUser(User user) {
-		this(user.getId());
+		this(user.getIdLong());
 	}
 	
 	@SuppressWarnings("unchecked")
