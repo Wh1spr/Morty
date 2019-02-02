@@ -2,9 +2,9 @@ package wh1spr.bot.mongodb;
 
 public abstract class BasicUpdateMongoItem extends BasicMongoItem {
 
-	protected BasicUpdateMongoItem(String collection, String id) {
+	protected BasicUpdateMongoItem(String collection, long id) {
 		super(collection, id);
 	}
-
+	
 	protected abstract boolean update();
 }

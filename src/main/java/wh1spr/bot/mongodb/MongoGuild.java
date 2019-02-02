@@ -11,30 +11,28 @@ import net.dv8tion.jda.core.entities.Guild;
 public class MongoGuild extends BasicUpdateMongoItem {
 
 	public MongoGuild(Guild guild) {
-		this(guild.getId());
+		this(guild.getIdLong());
 	}
-	public MongoGuild(String guildId) {
+	
+	public MongoGuild(Long guildId) {
 		super("guilds", guildId);
 		
 		if (jda.getGuildById(guildId)==null) { //either gone or nonexistent
 			if (!exists(guildId)) throw new IllegalArgumentException("Given guildId is unknown");
 		} else {
 			if (!exists(guildId)) {
-				Mongo.createItem("guilds", this.getId());
-				this.setKey("creationtime", getGuild().getCreationTime().toString());
+				this.createItem();
 			}
 			update();
 		}
 	}
 	
+	/**
+	 * @return Possibly null Guild instance
+	 */
 	public Guild getGuild() {
-		return jda.getGuildById(this.getId());
+		return jda.getGuildById(this.getIdLong());
 	}
-	
-	/*************
-	 *  GETTERS  * Getters assume that what you're doing is correct
-	 *  		 * Getters use newest doc version, and only get stuff that can't be easily obtained with guild.
-	 *************/
 	
 	//For economyguild => probs gonna get replaced with PointsGuild
 //	public boolean hasEconomy() {
@@ -66,24 +64,26 @@ public class MongoGuild extends BasicUpdateMongoItem {
 			return getGuild().getName();
 		}
 	}
-	public OffsetDateTime getCreationTime() {
-		return OffsetDateTime.parse(this.getDoc().getString("creationtime"));
-	}
-	
-	/*************
-	 *  SETTERS  * Setters assume what you're doing is correct.
-	 *  		 * Setters update straight to DB.
-	 *************/
 	public void setName() {
 		this.setKey("name", this.getGuild().getName());
 	}
-	public void setOwner() {
-		this.setKey("ownerid", this.getGuild().getOwner().getUser().getId());
+	public MongoUser getOwner() {
+		return new MongoUser(this.getDoc().getLong("ownerid"));
 	}
+	public void setOwner() {
+		if (this.getGuild()==null) return;
+		new MongoUser(this.getGuild().getOwner().getUser());
+		this.setKey("ownerid", this.getGuild().getOwner().getUser().getIdLong());
+	}
+	
 	public void updateCounts() {
 		this.bsonUpdates(set("textchannels", this.getGuild().getTextChannels().size()),
 						set("voicechannels", this.getGuild().getVoiceChannels().size()),
 						set("members", this.getGuild().getMembers().size()));
+	}
+	
+	public OffsetDateTime getCreationTime() {
+		return OffsetDateTime.parse(this.getDoc().getString("creationtime"));
 	}
 //	public void setEconomy(EcoInfo ei) {
 //		this.setKey("economy", new BasicDBObject("MajSing", ei.getMaj(0))
@@ -103,11 +103,8 @@ public class MongoGuild extends BasicUpdateMongoItem {
 		if (getGuild() == null) return false;
 		Document gd = this.getDoc();
 		Guild g = getGuild();
-		if (!gd.getString("name").equals(g.getName())) setName();
-		if (!gd.getString("owner").equals(g.getOwner().getUser().getId())) {
-			setOwner();
-			new MongoUser(g.getOwner().getUser());
-		}
+		if (!g.getName().equals(gd.getString("name"))) setName();
+		if (!gd.getLong("owner").equals(g.getOwner().getUser().getIdLong())) setOwner();
 		if (gd.getInteger("textchannels")!=g.getTextChannels().size()
 				|| gd.getInteger("voicechannels")!=g.getVoiceChannels().size()
 				|| gd.getInteger("members")!=g.getMembers().size()) {
@@ -118,5 +115,17 @@ public class MongoGuild extends BasicUpdateMongoItem {
 	
 	public static boolean exists(String guildId) {
 		return exists("guilds", guildId);
+	}
+	
+	public static boolean exists(long guildId) {
+		return exists("guilds", guildId);
+	}
+	
+	@Override
+	protected void create() {
+		this.setName();
+		this.setOwner();
+		this.updateCounts();
+		this.setKey("creationtime", getGuild().getCreationTime().toString());
 	}
 }

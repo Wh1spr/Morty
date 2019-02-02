@@ -54,13 +54,16 @@ public class GetKickCommand extends Command {
 			KickUser ku = null;
 			if (!message.getMentionedUsers().isEmpty()) {
 				ku = new KickUser(message.getMentionedUsers().get(0));
-			} else { 
-				ku = new KickUser(args.get(0));
+			} else {
+				if (jda.getUserById(args.get(0))!=null) {
+					ku = new KickUser(Long.parseLong(args.get(0)));
+				}
 			}
+			if (ku==null) return;
 			List<Kick> kicks = ku.getKicks();
 			
 			if (kicks.isEmpty()) {
-				channel.sendMessage(new EmbedBuilder().setColor(Color.GREEN).setTitle(":white_check_mark: **" + ku.getUserMention() + "** has no kicks!").build()).queue();
+				channel.sendMessage(new EmbedBuilder().setColor(Color.GREEN).setTitle(":white_check_mark: **" + ku.getMention() + "** has no kicks!").build()).queue();
 				return;
 			} else {
 				//divide in this guild and others (ALSO CHECK NULL)
@@ -68,7 +71,7 @@ public class GetKickCommand extends Command {
 					String w = getKicksFromList(kicks);
 					
 					channel.sendMessage(new EmbedBuilder().setColor(Color.ORANGE)
-							.setTitle(String.format("**%s** has **%d** ban%s.", ku.getUserMention(), kicks.size(), kicks.size()==1?"":"s"))
+							.setTitle(String.format("**%s** has **%d** ban%s.", ku.getMention(), kicks.size(), kicks.size()==1?"":"s"))
 							.setDescription("**Hex Values:** " + w).build()).queue();
 				} else {
 					List<Kick> guildkicks = new ArrayList<Kick>();
@@ -76,7 +79,7 @@ public class GetKickCommand extends Command {
 					kicks.removeAll(guildkicks);
 					
 					EmbedBuilder eb = new EmbedBuilder().setColor(Color.ORANGE)
-							.setTitle(String.format("**%s** has **%d** ban%s.", ku.getUserMention(), kicks.size(), kicks.size()==1?"":"s"));
+							.setTitle(String.format("**%s** has **%d** ban%s.", ku.getMention(), kicks.size(), kicks.size()==1?"":"s"));
 					if (!guildkicks.isEmpty()) eb.addField("**This server**", "**Hex Values:** " + getKicksFromList(guildkicks), true);
 					if (!kicks.isEmpty()) eb.addField("**Other servers:** ", "**Hex Values:** " + getKicksFromList(kicks), true);
 					

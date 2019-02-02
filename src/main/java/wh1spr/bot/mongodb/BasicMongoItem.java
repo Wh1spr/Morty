@@ -25,11 +25,11 @@ public abstract class BasicMongoItem {
 	 * A basic MongoDB Item. Contains ID of the item in a MongoDB and some helper functions.
 	 * @param collection The MongoDB Collection this item is a part of. Database gets set by {@link Mongo}
 	 * @param id The ID of this BasicMongoItem in the given collection in the database.
-	 * @throws IllegalArgumentException if collection is null.
+	 * @throws IllegalArgumentException if collection is null, id is smaller than 0
 	 */
-	protected BasicMongoItem(String collection, String id) {
+	protected BasicMongoItem(String collection, long id) {
 		if (collection == null) throw new IllegalArgumentException("Collection cannot be null.");
-		if (id == null) throw new IllegalArgumentException("Given ID cannot be null.");
+		if (this.id < 0) throw new IllegalArgumentException("Item ID has to be greater or equal to 0.");
 		log = LoggerCache.getLogger("MONGO");
 		db.getCollection(collection); // will throw error if name is not valid.
 		this.collection = collection;
@@ -45,28 +45,38 @@ public abstract class BasicMongoItem {
 		return db.getCollection(this.collection);
 	}
 	
-	private String id = null;
+	private long id = -1L;
 	protected JDA jda = Main.getBot().getJDA();
 	protected MongoDatabase db = Mongo.getDb();
 	
-	private void setId(String id) {
-		if (this.id != null) throw new IllegalArgumentException("This item already has an ID.");
+	private void setId(long id) {
+		if (this.id != -1L) throw new IllegalArgumentException("This item already has an ID.");
 		this.id = id;
 	}
+	
+	/**
+	 * @see BasicMongoItem#getIdLong()
+	 * @return The ID of the Item in the MongoDB.
+	 */
+	public String getIdString() {
+		return String.valueOf(this.id);
+	}
+	
 	/**
 	 * @return The ID of the Item in the MongoDB.
 	 */
-	public String getId() {
+	public long getIdLong() {
 		return this.id;
 	}
+	
 	/**
 	 * @return The Document corresponding to the id of this item
 	 * in the collection returned by {@link BasicMongoItem#getCollection()}
 	 */
 	public final Document getDoc() {
-		Document doc = this.getCollection().find(eq("_id", getId())).first();
+		Document doc = this.getCollection().find(eq("_id", getIdLong())).first();
 		if (doc == null)  {
-			doc = new Document("_id", this.getId());
+			doc = new Document("_id", this.getIdLong());
 			this.getCollection().insertOne(doc);
 		}
 		return doc;
@@ -82,10 +92,10 @@ public abstract class BasicMongoItem {
 	}
 	
 	/**
-	 * @return Wether or not this key has a mapping.
+	 * @return Whether or not this key has a mapping.
 	 */
 	protected boolean hasKey(String key) {
-		Document item = this.getCollection().find(eq("_id", this.getId())).first();
+		Document item = this.getCollection().find(eq("_id", this.getIdLong())).first();
 		if (item == null) return false; // shouldnt happen but hell who knows
 		else {
 			return item.containsKey(key);
@@ -106,25 +116,44 @@ public abstract class BasicMongoItem {
 	}
 	
 	protected void bsonUpdates(Bson... updates) {
-		this.getCollection().updateOne(eq("_id", this.getId()), combine(asList(updates)));
+		this.getCollection().updateOne(eq("_id", this.getIdLong()), combine(asList(updates)));
 	}
 	
 	/**
 	 * Deletes this item in the database.
 	 */
 	protected void delete() {
-		this.getCollection().deleteOne(eq("_id", this.getId()));
+		this.getCollection().deleteOne(eq("_id", this.getIdLong()));
+	}
+	
+	protected static boolean exists(String collection, String id) {
+		return exists(collection, Long.parseLong(id));
 	}
 
-	protected static boolean exists(String collection, String id) {
+	protected static boolean exists(String collection, long id) {
 		return Mongo.getDb().getCollection(collection).find(eq("_id", id)).first()!=null;
+	}
+	
+	/**
+	 * Fills in the BasicMongoItem on creation of the document in DB
+	 */
+	protected abstract void create();
+	
+	/**
+	 * Creates a Document in the DB, filled by {@link BasicMongoItem#create()}
+	 */
+	protected void createItem() {
+		if (exists(this.collection, getIdLong()))
+			throw new IllegalArgumentException("Illegal argument, ID " + id + " already exists in Collection " + collection);
+		getCollection().insertOne(new Document("_id", id));
+		create();
 	}
 	
 	@Override
 	public boolean equals(Object o) {
 		if (o instanceof BasicMongoItem) {
 			BasicMongoItem b = (BasicMongoItem) o;
-			if (b.getId().equals(this.getId())) {
+			if (Long.compare(b.getIdLong(), this.getIdLong()) == 0) {
 				return true;
 			}
 		}
@@ -133,11 +162,11 @@ public abstract class BasicMongoItem {
 	
 	@Override
 	public int hashCode() {
-		return this.getId().hashCode();
+		return new Long(this.getIdLong()).hashCode();
 	}
 	
 	@Override
 	public String toString() {
-		return this.getClass().getSimpleName() + "[" + this.getId() + "]";
+		return this.getClass().getSimpleName() + "[" + this.getIdLong() + "]";
 	}
 }

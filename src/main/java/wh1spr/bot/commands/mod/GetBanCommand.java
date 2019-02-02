@@ -55,12 +55,15 @@ public class GetBanCommand extends Command {
 			if (!message.getMentionedUsers().isEmpty()) {
 				bu = new BanUser(message.getMentionedUsers().get(0));
 			} else { 
-				bu = new BanUser(args.get(0));
+				if (jda.getUserById(args.get(0))!=null) {
+					bu = new BanUser(Long.parseLong(args.get(0)));
+				}
 			}
+			if (bu==null) return;
 			List<Ban> bans = bu.getBans();
 			
 			if (bans.isEmpty()) {
-				channel.sendMessage(new EmbedBuilder().setColor(Color.GREEN).setTitle(":white_check_mark: **" + bu.getUserMention() + "** has no bans!").build()).queue();
+				channel.sendMessage(new EmbedBuilder().setColor(Color.GREEN).setTitle(":white_check_mark: **" + bu.getMention() + "** has no bans!").build()).queue();
 				return;
 			} else {
 				//divide in this guild and others (ALSO CHECK NULL)
@@ -68,7 +71,7 @@ public class GetBanCommand extends Command {
 					String w = getBansFromList(bans);
 					
 					channel.sendMessage(new EmbedBuilder().setColor(Color.ORANGE)
-							.setTitle(String.format("**%s** has **%d** ban%s.", bu.getUserMention(), bans.size(), bans.size()==1?"":"s"))
+							.setTitle(String.format("**%s** has **%d** ban%s.", bu.getMention(), bans.size(), bans.size()==1?"":"s"))
 							.setDescription("**Hex Values:** " + w).build()).queue();
 				} else {
 					List<Ban> guildwarns = new ArrayList<Ban>();
@@ -76,7 +79,7 @@ public class GetBanCommand extends Command {
 					bans.removeAll(guildwarns);
 					
 					EmbedBuilder eb = new EmbedBuilder().setColor(Color.ORANGE)
-							.setTitle(String.format("**%s** has **%d** ban%s.", bu.getUserMention(), bans.size(), bans.size()==1?"":"s"));
+							.setTitle(String.format("**%s** has **%d** ban%s.", bu.getMention(), bans.size(), bans.size()==1?"":"s"));
 					if (!guildwarns.isEmpty()) eb.addField("**This server**", "**Hex Values:** " + getBansFromList(guildwarns), true);
 					if (!bans.isEmpty()) eb.addField("**Other servers:** ", "**Hex Values:** " + getBansFromList(bans), true);
 					
