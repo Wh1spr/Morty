@@ -40,20 +40,22 @@ public class Main {
 		/*
 		 * Launch Order
 		 * 1. LoggerCache
-		 * 2. Bots
-		 * 3. Database
+		 * 2. Database
+		 * 3. Bots
 		 * 4. EconomyStatus
 		 */
-		LoggerCache.setLevel(LoggerCache.DEBUG);
 		LoggerCache.start("data/logs/main-%s.log");
+		LoggerCache.setLevel(LoggerCache.DEBUG);
 		log = LoggerCache.getLogger("MAIN");
+		
+		log.info("Starting Database...");
+		Mongo.start();
 		
 		log.info("Starting Bot...");
 		morty();
 		
-		log.info("Starting Database...");
+		log.info("Starting Old database...");
 		Database2.start(bot.getJDA());
-		Mongo.start();
 		
 		log.info("Starting EconomyStatus...");
 		EconomyStatus.start();

@@ -89,7 +89,9 @@ public class EconomyStatus {
 	
 	public static void shutdown() {
 		LoggerCache.getLogger("MAIN").info("Shutting down economy.");
-		t.cancel();
+		if (t!=null) {
+			t.cancel();
+		}
 		updateBalances();
 	}
 	

@@ -34,6 +34,10 @@ public class MongoUser extends BasicUpdateMongoItem {
 	public User getUser() {
 		return jda.getUserById(getIdLong());
 	}
+	
+	public String getMention() {
+		return getDoc().getString("mention");
+	}
 
 	public void setMention() {
 		User u = getUser();
