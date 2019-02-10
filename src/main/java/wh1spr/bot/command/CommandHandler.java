@@ -13,6 +13,7 @@ import wh1spr.bot.Tools;
 import wh1spr.bot.database.Database2;
 import wh1spr.bot.dummy.Bot;
 
+@Deprecated
 public class CommandHandler extends ListenerAdapter {
 
 	public CommandHandler(String prefix, CommandRegistry registry) {

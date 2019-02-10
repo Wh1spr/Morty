@@ -5,7 +5,8 @@ import java.util.Set;
 
 import wh1spr.bot.dummy.Bot;
 
-public  class CommandRegistry {
+@Deprecated
+public class CommandRegistry {
 	
 	protected final Bot bot;
 	

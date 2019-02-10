@@ -78,4 +78,7 @@ public class CommandHandler extends ListenerAdapter {
 		
 	}
 
+	//TODO log a message
+	//=> only log commands, and removed messages BUT since removed messages cant be obtained, we'll have to log it all
+	
 }

@@ -13,7 +13,6 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.mongodb.Mongo;
-import wh1spr.bot.mongodb.MongoGuild;
 import wh1spr.bot.mongodb.MongoUser;
 import wh1spr.logger.Logger;
 import wh1spr.logger.LoggerCache;
@@ -211,7 +210,6 @@ public class CommandRegistry {
     }
     
     private void pushToDB(Role role, String commandId, boolean canUse) {
-    	//TODO
     	//we know there HAS to be a change in DB
     	//check if role exists in db
     	// 	if not, insert it

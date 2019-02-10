@@ -13,8 +13,9 @@ import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
 
+@Deprecated
 public abstract class Command {
-
+	@Deprecated
 	public Command(String name, long perm, String... aliases) {
 		if (name == null) throw new IllegalArgumentException("Name cannot be null.");
 		this.name = name;
