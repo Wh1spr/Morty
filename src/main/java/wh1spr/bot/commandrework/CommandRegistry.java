@@ -13,11 +13,13 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
 import wh1spr.bot.mongodb.Mongo;
+import wh1spr.bot.mongodb.MongoGuild;
 import wh1spr.bot.mongodb.MongoUser;
 import wh1spr.logger.Logger;
 import wh1spr.logger.LoggerCache;
 
 import static com.mongodb.client.model.Filters.*;
+import static com.mongodb.client.model.Updates.*;
 
 public class CommandRegistry {
 	
@@ -107,6 +109,7 @@ public class CommandRegistry {
      * @return Wether or not this Member can use the command with given name or id
      */
     public boolean canUse(String cmdNameOrId, Member m) {
+    	//no check for guildonly because Member can only be in guild
     	if (new MongoUser(m.getUser()).isBotBanned()) return false;
     	if (new MongoUser(m.getUser()).isDev()) return true;
     	if (getCommand(cmdNameOrId).getPermission()==null) return false;
@@ -138,6 +141,7 @@ public class CommandRegistry {
      * @return Wether or not the given User can use the command with geiven name or id
      */
     public boolean canUse(String cmdNameOrId, User u) {
+    	if (new MongoUser(u).isBotBanned()) return false;
     	if (getCommand(cmdNameOrId).isGuildOnly()) return false;
     	if (new MongoUser(u).isDev()) return true;
     	if (getCommand(cmdNameOrId).getPermission()==null) return false;
@@ -192,7 +196,7 @@ public class CommandRegistry {
     	if (this.idregistry.containsKey(commandId)) {
     		this.rolePermOverrides.get(role.getIdLong()).put(commandId, canUse);
     		if (setDB) {
-    			//TODO push to db
+    			pushToDB(role, commandId, canUse);
     		}
         	return true;
     	} else {
@@ -204,5 +208,32 @@ public class CommandRegistry {
      */
     public boolean setPermission(Role role, String commandId, boolean canUse) {
     	return setPermission(role, commandId, canUse, false);
+    }
+    
+    private void pushToDB(Role role, String commandId, boolean canUse) {
+    	//TODO
+    	//we know there HAS to be a change in DB
+    	//check if role exists in db
+    	// 	if not, insert it
+    	//change the string (get it, change it, replace it)
+    	Document roleDoc = Mongo.getDb().getCollection("guilds").find(elemMatch("roles", eq("id", role.getIdLong()))).first();
+    	
+    	if (roleDoc==null) {
+    		roleDoc = new Document("id", role.getIdLong());
+    	}
+    	String perms = roleDoc.getString("perms");
+    	if (perms == null) perms = (canUse?"+":"-") + commandId;
+    	else {
+    		if (perms.contains(commandId)) {
+    			//change the ±
+    			perms = perms.substring(0, perms.indexOf(commandId)-1) + (canUse?"+":"-") + perms.substring(perms.indexOf(commandId));
+    		} else {
+    			perms += ":" + (canUse?"+":"-") + commandId;
+    		}
+    	}
+    	roleDoc.put("perms", perms);
+    	//push and replace roleDoc to the array, so delete then push? (normally update, check if updated, then insert, but fuck that)
+    	Mongo.getDb().getCollection("guilds").findOneAndUpdate(eq("_id",role.getGuild().getIdLong()), pull("roles", eq("id", role.getIdLong())));
+    	Mongo.getDb().getCollection("guilds").findOneAndUpdate(eq("_id",role.getGuild().getIdLong()), push("roles", roleDoc));
     }
 }

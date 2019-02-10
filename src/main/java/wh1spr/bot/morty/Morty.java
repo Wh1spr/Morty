@@ -26,6 +26,7 @@ public class Morty extends Bot {
 		log.info("Starting JDA instance.");
 		this.jda = run();
 		jda.getPresence().setStatus(OnlineStatus.OFFLINE);
+		//TODO implement
 		//log.info("Registering permission overrides...");
 		//getCommandRegistry().registerPermissionOverrides(jda);
 	}
